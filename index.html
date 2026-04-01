@@ -29,6 +29,24 @@
     color: #9a918a;
     margin-top: 4px;
   }
+  .stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .stat {
+    font-size: 12px;
+    color: #5c534b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
   .search-bar {
     max-width: 960px;
     margin: 0 auto;
@@ -56,15 +74,30 @@
     margin-bottom: 28px;
   }
   .section-title {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #96503a;
+    letter-spacing: 0.5px;
     padding: 0 0 10px;
     border-bottom: 1px solid #e8e2da;
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  .section-title .section-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-title.released { color: #2e7d32; }
+  .section-title.released .section-indicator { background: #2e7d32; }
+  .section-title.local { color: #96503a; }
+  .section-title.local .section-indicator { background: #e65100; }
+  .section-title.cli { color: #5c534b; }
+  .section-title.cli .section-indicator { background: #78716c; }
+  .section-title.infra { color: #475569; }
+  .section-title.infra .section-indicator { background: #475569; }
   .app-card {
     display: flex;
     align-items: center;
@@ -103,16 +136,26 @@
     font-weight: 500;
     padding: 1px 6px;
     border-radius: 4px;
+  }
+  .badge.released {
     background: #e6f4e6;
     color: #2e7d32;
   }
-  .app-name .badge.local {
+  .badge.local {
     background: #fff3e0;
     color: #e65100;
   }
-  .app-name .badge.dev {
+  .badge.cli {
+    background: #f3efe9;
+    color: #78716c;
+  }
+  .badge.infra {
     background: #e3f2fd;
     color: #1565c0;
+  }
+  .badge.dev {
+    background: #fce4ec;
+    color: #c62828;
   }
   .app-desc {
     font-size: 12px;
@@ -121,6 +164,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .app-meta {
+    font-size: 11px;
+    color: #9a918a;
+    margin-top: 2px;
   }
   .app-actions {
     display: flex;
@@ -200,11 +248,17 @@
 
 <div class="header">
   <h1>App Launcher</h1>
-  <p>Claude Code Apps - Quick Access</p>
+  <p>Claude Code で作成したアプリ一覧</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-dot" style="background:#2e7d32"></span> 公開中</div>
+    <div class="stat"><span class="stat-dot" style="background:#e65100"></span> ローカル</div>
+    <div class="stat"><span class="stat-dot" style="background:#78716c"></span> CLI</div>
+    <div class="stat"><span class="stat-dot" style="background:#475569"></span> 基盤</div>
+  </div>
 </div>
 
 <div class="search-bar">
-  <input type="text" id="search" placeholder="Search apps..." autofocus>
+  <input type="text" id="search" placeholder="アプリを検索..." autofocus>
 </div>
 
 <div class="container" id="app-list"></div>
@@ -212,135 +266,225 @@
 
 <script>
 const apps = [
-  // Web Apps (Public)
+  // --- 公開中の Web アプリ ---
   {
-    category: "Web Apps",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "PR Generator",
-    desc: "AI press release generator for PR Times (esse-sense)",
+    desc: "PR Times 向け AI プレスリリース生成ツール（esse-sense）",
     icon: "PR", color: "#7c3aed",
     url: "https://pr-generator-public.vercel.app",
     admin: "https://pr-generator-public.vercel.app/admin",
     adminPw: "essense2026",
-    badge: "public", badgeType: ""
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
   },
   {
-    category: "Web Apps",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Essence CRM",
-    desc: "Kanban-style sales management with analytics",
+    desc: "カンバン形式の営業管理 + 分析ダッシュボード",
     icon: "CR", color: "#2563eb",
     url: "https://essence-crm.vercel.app",
     admin: "https://essence-crm.vercel.app/login",
-    adminNote: "Email/PW auth (initial setup creates admin)",
-    badge: "public", badgeType: ""
+    adminNote: "メール/パスワード認証（初回で管理者作成）",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
   },
   {
-    category: "Web Apps",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Future Insight App",
+    desc: "PESTLE / CLA / 弱いシグナル / シナリオ生成",
+    icon: "FI", color: "#0891b2",
+    url: "https://yuyanishimura0312.github.io/future-insight-app/",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Future Insight Workspace",
+    desc: "マルチユーザー対応フォーサイトワークスペース（Firebase Auth）",
+    icon: "FW", color: "#0e7490",
+    url: "https://yuyanishimura0312.github.io/future-insight-workspace/",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Research Dashboard",
+    desc: "リサーチ結果ダッシュボード（セマンティック検索付き）",
+    icon: "RD", color: "#6366f1",
+    url: "https://yuyanishimura0312.github.io/research-dashboard/",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
+
+  // --- ローカル Web アプリ ---
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
     name: "Miratuku Membership",
-    desc: "Membership site + CRM with Stripe payments",
+    desc: "メンバーシップサイト + CRM（Stripe 決済対応）",
     icon: "MM", color: "#059669",
-    url: null,
-    localCmd: "cd ~/miratuku-membership && npm run dev",
+    localCmd: "cd ~/projects/apps/miratuku-membership && npm run dev",
     localUrl: "http://localhost:3000",
     admin: "http://localhost:3000/admin/login",
     adminPw: "miratuku2026",
     stripeTest: "4242 4242 4242 4242",
-    badge: "dev", badgeType: "dev"
-  },
-  // Foresight & Research
-  {
-    category: "Foresight & Research",
-    name: "Future Insight App",
-    desc: "PESTLE / CLA / Weak signals / Scenario generation",
-    icon: "FI", color: "#0891b2",
-    url: "https://yuyanishimura0312.github.io/future-insight-app/",
-    badge: "public", badgeType: ""
+    hosting: "Next.js（Vercel デプロイ可）",
+    badge: "開発中", badgeType: "dev"
   },
   {
-    category: "Foresight & Research",
-    name: "Future Insight Workspace",
-    desc: "Multi-user foresight workspace with Firebase Auth",
-    icon: "FW", color: "#0e7490",
-    url: "https://yuyanishimura0312.github.io/future-insight-workspace/",
-    badge: "public", badgeType: ""
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Organization App",
+    desc: "AI 組織運営ダッシュボード - 5チーム + CxO 会議",
+    icon: "OA", color: "#0d9488",
+    localCmd: "cd ~/projects/apps/organization-app && npm run dev",
+    localUrl: "http://localhost:5200",
+    hosting: "Next.js",
+    badge: "ローカル", badgeType: "local"
   },
   {
-    category: "Foresight & Research",
-    name: "Research Dashboard",
-    desc: "Research results dashboard with semantic search",
-    icon: "RD", color: "#6366f1",
-    url: "https://yuyanishimura0312.github.io/research-dashboard/",
-    badge: "public", badgeType: ""
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Secretary App",
+    desc: "AI 秘書アプリ（カレンダー連携 + CxO 会議）",
+    icon: "SA", color: "#7c3aed",
+    localCmd: "cd ~/projects/apps/secretary-app && python app.py",
+    localUrl: "http://localhost:5100",
+    hosting: "Flask",
+    badge: "ローカル", badgeType: "local"
   },
   {
-    category: "Foresight & Research",
-    name: "Research Agents",
-    desc: "5-agent AI research team + 8-agent PESTLE mode",
-    icon: "RA", color: "#8b5cf6",
-    localCmd: 'cd ~/research-agents && python research_team.py "theme"',
-    pestle: 'cd ~/research-agents && python pestle_team.py "theme"',
-    badge: "cli", badgeType: "local"
-  },
-  // Local Tools
-  {
-    category: "Local Tools",
-    name: "Expense Checker",
-    desc: "CSV expense review with auto-flagging",
-    icon: "EC", color: "#d97706",
-    localCmd: "open ~/expense-checker/src/index.html",
-    badge: "local", badgeType: "local"
-  },
-  {
-    category: "Local Tools",
-    name: "Press Release Generator (Streamlit)",
-    desc: "Original PR Times generator prototype",
-    icon: "PG", color: "#9333ea",
-    localCmd: "cd ~/press-release-generator && streamlit run app.py",
-    localUrl: "http://localhost:8501",
-    badge: "local", badgeType: "local"
-  },
-  {
-    category: "Local Tools",
-    name: "Genesia TRL App",
-    desc: "Business-researcher matching with TRL scoring",
-    icon: "GT", color: "#dc2626",
-    localCmd: "cd ~/genesia-trl-app && streamlit run app.py",
-    localUrl: "http://localhost:8501",
-    badge: "local", badgeType: "local"
-  },
-  {
-    category: "Local Tools",
+    category: "ローカル Web アプリ",
+    sectionType: "local",
     name: "Mail Contacts Manager",
-    desc: "Extract contacts from macOS Mail.app (20,000+ emails)",
+    desc: "macOS Mail.app から連絡先を抽出（20,000件以上対応）",
     icon: "MC", color: "#ea580c",
     url: "http://localhost:5050",
-    localNote: "Auto-starts via launchd",
-    badge: "local", badgeType: "local"
+    localNote: "launchd で自動起動",
+    hosting: "Flask",
+    badge: "ローカル", badgeType: "local"
   },
   {
-    category: "Local Tools",
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Newsletter App",
+    desc: "メルマガ管理・配信ツール（LibSQL）",
+    icon: "NL", color: "#0284c7",
+    localCmd: "cd ~/projects/apps/newsletter-app && npm run dev",
+    localUrl: "http://localhost:5051",
+    hosting: "Next.js",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Expense Checker",
+    desc: "CSV 経費チェッカー（自動フラグ付き）",
+    icon: "EC", color: "#d97706",
+    localCmd: "open ~/projects/apps/expense-checker/src/index.html",
+    hosting: "静的 HTML",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Paper Explorer",
+    desc: "学術論文ビジュアライゼーション（D3）",
+    icon: "PE", color: "#8b5cf6",
+    localCmd: "cd ~/projects/research/paper-explorer && npm run dev",
+    localUrl: "http://localhost:5173",
+    hosting: "React + Vite",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Press Release Generator (Streamlit)",
+    desc: "PR Times プレスリリース生成の初期プロトタイプ",
+    icon: "PG", color: "#9333ea",
+    localCmd: "cd ~/projects/apps/press-release-generator && streamlit run app.py",
+    localUrl: "http://localhost:8501",
+    hosting: "Streamlit",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Genesia TRL App",
+    desc: "事業テーマ x 研究者マッチング + TRL スコアリング",
+    icon: "GT", color: "#dc2626",
+    localCmd: "cd ~/projects/utils/genesia-trl-app && streamlit run app.py",
+    localUrl: "http://localhost:8501",
+    hosting: "Streamlit",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "CxO Team",
+    desc: "AI CxO 経営チーム議論（CEO/CFO/COO/CMO/CTO/CHRO）",
+    icon: "CX", color: "#b91c1c",
+    localCmd: "cd ~/projects/utils/cxo-team && streamlit run app.py",
+    localUrl: "http://localhost:8501",
+    hosting: "Streamlit",
+    badge: "ローカル", badgeType: "local"
+  },
+
+  // --- CLI ツール ---
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Research Agents",
+    desc: "5エージェント AI リサーチチーム + 8エージェント PESTLE モード",
+    icon: "RA", color: "#8b5cf6",
+    localCmd: 'cd ~/projects/research/research-agents && python research_team.py "theme"',
+    pestle: 'cd ~/projects/research/research-agents && python pestle_team.py "theme"',
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Paper Database",
+    desc: "学術論文 DB（OpenAlex / Semantic Scholar / CiNii クローリング）",
+    icon: "PD", color: "#4f46e5",
+    localCmd: "cd ~/projects/research/paper-database && python main.py",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
     name: "Contract Generator",
-    desc: "Auto-generate contracts from Google Sheets data",
+    desc: "Google Sheets データから契約書を自動生成",
     icon: "CG", color: "#78716c",
-    localCmd: "cd ~/contract-generator && python main.py",
-    badge: "cli", badgeType: "local"
+    localCmd: "cd ~/projects/apps/contract-generator && python main.py",
+    badge: "CLI", badgeType: "cli"
   },
-  // Shared Infrastructure
+
+  // --- 共有インフラ ---
   {
-    category: "Shared Infrastructure",
+    category: "共有インフラ",
+    sectionType: "infra",
     name: "Email System",
-    desc: "Shared email delivery (SendGrid) for CRM + Mail Contacts",
+    desc: "CRM + Mail Contacts 用の共有メール配信基盤（SendGrid）",
     icon: "ES", color: "#475569",
-    localCmd: "code ~/email-system",
-    badge: "infra", badgeType: "local"
+    localCmd: "code ~/projects/apps/email-system",
+    badge: "基盤", badgeType: "infra"
   },
   {
-    category: "Shared Infrastructure",
+    category: "共有インフラ",
+    sectionType: "infra",
     name: "Stripe Payment Kit",
-    desc: "Reusable Stripe templates (subscription / one-time / portal)",
+    desc: "再利用可能な Stripe テンプレート（サブスク / 単発 / ポータル）",
     icon: "SK", color: "#635bff",
-    localCmd: "code ~/stripe-payment-kit",
+    localCmd: "code ~/projects/apps/stripe-payment-kit",
     stripeTest: "4242 4242 4242 4242",
-    badge: "infra", badgeType: "local"
+    badge: "基盤", badgeType: "infra"
   },
 ];
 
@@ -354,9 +498,9 @@ function showToast(msg) {
 function copyCmd(cmd, btn) {
   navigator.clipboard.writeText(cmd).then(() => {
     btn.classList.add('copied');
-    btn.textContent = 'Copied';
-    showToast('Copied: ' + cmd);
-    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = 'Copy'; }, 2000);
+    btn.textContent = 'コピー済';
+    showToast('コピー済: ' + cmd);
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = 'コピー'; }, 2000);
   });
 }
 
@@ -365,41 +509,49 @@ function renderApps(filter = '') {
   container.innerHTML = '';
   const lf = filter.toLowerCase();
   const categories = {};
+  const categoryMeta = {};
 
   apps.forEach(app => {
     if (lf && !app.name.toLowerCase().includes(lf) && !app.desc.toLowerCase().includes(lf) && !app.category.toLowerCase().includes(lf)) return;
-    if (!categories[app.category]) categories[app.category] = [];
+    if (!categories[app.category]) {
+      categories[app.category] = [];
+      categoryMeta[app.category] = app.sectionType;
+    }
     categories[app.category].push(app);
   });
 
   Object.entries(categories).forEach(([cat, items]) => {
     const section = document.createElement('div');
     section.className = 'section';
-    section.innerHTML = `<div class="section-title">${cat}</div>`;
+    const sectionType = categoryMeta[cat] || '';
+    const count = items.length;
+    section.innerHTML = `<div class="section-title ${sectionType}"><span class="section-indicator"></span>${cat} <span style="font-weight:400;opacity:0.6">(${count})</span></div>`;
 
     items.forEach(app => {
       const card = document.createElement('div');
       card.className = 'app-card';
 
-      const badgeClass = app.badgeType === 'local' ? 'local' : app.badgeType === 'dev' ? 'dev' : '';
       let credHtml = '';
       if (app.adminPw) credHtml += `<div class="cred-row">PW: <span>${app.adminPw}</span></div>`;
       if (app.adminNote) credHtml += `<div class="cred-row">${app.adminNote}</div>`;
-      if (app.stripeTest) credHtml += `<div class="cred-row">Test card: <span>${app.stripeTest}</span></div>`;
+      if (app.stripeTest) credHtml += `<div class="cred-row">テストカード: <span>${app.stripeTest}</span></div>`;
       if (app.localNote) credHtml += `<div class="cred-row">${app.localNote}</div>`;
+
+      let metaHtml = '';
+      if (app.hosting) metaHtml = `<div class="app-meta">${app.hosting}</div>`;
 
       let actionsHtml = '';
       if (app.url) {
-        actionsHtml += `<a href="${app.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">Open</a>`;
+        actionsHtml += `<a href="${app.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
       }
       if (app.localUrl && !app.url) {
-        actionsHtml += `<a href="${app.localUrl}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">Open</a>`;
+        actionsHtml += `<a href="${app.localUrl}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
       }
       if (app.admin) {
-        actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()">Admin</a>`;
+        actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()">管理</a>`;
       }
       if (app.localCmd) {
-        actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">Copy</button>`;
+        actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
       }
       if (app.pestle) {
         actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.pestle.replace(/'/g, "\\'")}', this)" title="PESTLE mode">PESTLE</button>`;
@@ -408,20 +560,20 @@ function renderApps(filter = '') {
       card.innerHTML = `
         <div class="app-icon" style="background:${app.color}">${app.icon}</div>
         <div class="app-info">
-          <div class="app-name">${app.name} <span class="badge ${badgeClass}">${app.badge}</span></div>
+          <div class="app-name">${app.name} <span class="badge ${app.badgeType}">${app.badge}</span></div>
           <div class="app-desc">${app.desc}</div>
+          ${metaHtml}
           ${credHtml}
         </div>
         <div class="app-actions">${actionsHtml}</div>
       `;
 
-      // Click entire card to open
       card.addEventListener('click', () => {
         if (app.url) window.open(app.url, '_blank');
         else if (app.localUrl) window.open(app.localUrl, '_blank');
         else if (app.localCmd) {
           navigator.clipboard.writeText(app.localCmd);
-          showToast('Copied: ' + app.localCmd);
+          showToast('コピー済: ' + app.localCmd);
         }
       });
 
@@ -432,19 +584,17 @@ function renderApps(filter = '') {
   });
 
   if (Object.keys(categories).length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#666;padding:40px">No apps found</p>';
+    container.innerHTML = '<p style="text-align:center;color:#666;padding:40px">該当するアプリが見つかりません</p>';
   }
 }
 
 document.getElementById('search').addEventListener('input', e => renderApps(e.target.value));
 
-// Keyboard shortcut: Cmd+K to focus search
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     document.getElementById('search').focus();
   }
-  // Escape to clear search
   if (e.key === 'Escape') {
     document.getElementById('search').value = '';
     renderApps();
