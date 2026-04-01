@@ -275,7 +275,6 @@ const apps = [
     icon: "PR", color: "#7c3aed",
     url: "https://pr-generator-public.vercel.app",
     admin: "https://pr-generator-public.vercel.app/admin",
-    adminPw: "essense2026",
     hosting: "Vercel",
     badge: "公開", badgeType: "released"
   },
@@ -287,7 +286,6 @@ const apps = [
     icon: "CR", color: "#2563eb",
     url: "https://essence-crm.vercel.app",
     admin: "https://essence-crm.vercel.app/login",
-    adminNote: "メール/パスワード認証（初回で管理者作成）",
     hosting: "Vercel",
     badge: "公開", badgeType: "released"
   },
@@ -332,8 +330,6 @@ const apps = [
     localCmd: "cd ~/projects/apps/miratuku-membership && npm run dev",
     localUrl: "http://localhost:3000",
     admin: "http://localhost:3000/admin/login",
-    adminPw: "miratuku2026",
-    stripeTest: "4242 4242 4242 4242",
     hosting: "Next.js + better-sqlite3",
     badge: "開発中", badgeType: "dev"
   },
@@ -503,7 +499,6 @@ const apps = [
     desc: "再利用可能な Stripe テンプレート（サブスク / 単発 / ポータル）",
     icon: "SK", color: "#635bff",
     localCmd: "code ~/projects/apps/stripe-payment-kit",
-    stripeTest: "4242 4242 4242 4242",
     badge: "基盤", badgeType: "infra"
   },
 ];
@@ -552,9 +547,6 @@ function renderApps(filter = '') {
       card.className = 'app-card';
 
       let credHtml = '';
-      if (app.adminPw) credHtml += `<div class="cred-row">PW: <span>${app.adminPw}</span></div>`;
-      if (app.adminNote) credHtml += `<div class="cred-row">${app.adminNote}</div>`;
-      if (app.stripeTest) credHtml += `<div class="cred-row">テストカード: <span>${app.stripeTest}</span></div>`;
       if (app.localNote) credHtml += `<div class="cred-row">${app.localNote}</div>`;
 
       let metaHtml = '';
