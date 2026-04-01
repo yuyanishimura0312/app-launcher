@@ -315,7 +315,7 @@ const apps = [
     category: "公開中の Web アプリ",
     sectionType: "released",
     name: "Research Dashboard",
-    desc: "リサーチ結果ダッシュボード（セマンティック検索付き）",
+    desc: "Mira Tuku Research Magazine（セマンティック検索付き）",
     icon: "RD", color: "#6366f1",
     url: "https://yuyanishimura0312.github.io/research-dashboard/",
     hosting: "GitHub Pages",
@@ -327,25 +327,25 @@ const apps = [
     category: "ローカル Web アプリ",
     sectionType: "local",
     name: "Miratuku Membership",
-    desc: "メンバーシップサイト + CRM（Stripe 決済対応）",
+    desc: "メンバーシップサイト + CRM（Stripe 決済 + SQLite）",
     icon: "MM", color: "#059669",
     localCmd: "cd ~/projects/apps/miratuku-membership && npm run dev",
     localUrl: "http://localhost:3000",
     admin: "http://localhost:3000/admin/login",
     adminPw: "miratuku2026",
     stripeTest: "4242 4242 4242 4242",
-    hosting: "Next.js（Vercel デプロイ可）",
+    hosting: "Next.js + better-sqlite3",
     badge: "開発中", badgeType: "dev"
   },
   {
     category: "ローカル Web アプリ",
     sectionType: "local",
     name: "Organization App",
-    desc: "AI 組織運営ダッシュボード - 5チーム + CxO 会議",
+    desc: "AI 組織運営ダッシュボード - 5チーム + CxO 会議（Claude API + LibSQL）",
     icon: "OA", color: "#0d9488",
     localCmd: "cd ~/projects/apps/organization-app && npm run dev",
     localUrl: "http://localhost:5200",
-    hosting: "Next.js",
+    hosting: "Next.js + Claude API + LibSQL",
     badge: "ローカル", badgeType: "local"
   },
   {
@@ -408,9 +408,9 @@ const apps = [
     name: "Press Release Generator (Streamlit)",
     desc: "PR Times プレスリリース生成の初期プロトタイプ",
     icon: "PG", color: "#9333ea",
-    localCmd: "cd ~/projects/apps/press-release-generator && streamlit run app.py",
+    localCmd: "cd ~/projects/apps/press-release-generator && streamlit run app.py --server.port 8501",
     localUrl: "http://localhost:8501",
-    hosting: "Streamlit",
+    hosting: "Streamlit :8501",
     badge: "ローカル", badgeType: "local"
   },
   {
@@ -419,9 +419,9 @@ const apps = [
     name: "Genesia TRL App",
     desc: "事業テーマ x 研究者マッチング + TRL スコアリング",
     icon: "GT", color: "#dc2626",
-    localCmd: "cd ~/projects/utils/genesia-trl-app && streamlit run app.py",
-    localUrl: "http://localhost:8501",
-    hosting: "Streamlit",
+    localCmd: "cd ~/projects/utils/genesia-trl-app && streamlit run app.py --server.port 8502",
+    localUrl: "http://localhost:8502",
+    hosting: "Streamlit :8502",
     badge: "ローカル", badgeType: "local"
   },
   {
@@ -430,9 +430,20 @@ const apps = [
     name: "CxO Team",
     desc: "AI CxO 経営チーム議論（CEO/CFO/COO/CMO/CTO/CHRO）",
     icon: "CX", color: "#b91c1c",
-    localCmd: "cd ~/projects/utils/cxo-team && streamlit run app.py",
-    localUrl: "http://localhost:8501",
-    hosting: "Streamlit",
+    localCmd: "cd ~/projects/utils/cxo-team && streamlit run app.py --server.port 8503",
+    localUrl: "http://localhost:8503",
+    hosting: "Streamlit :8503",
+    badge: "ローカル", badgeType: "local"
+  },
+
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Essence Sales List",
+    desc: "営業パイプライン管理（フォーラムスポンサー / コンサル / DB）",
+    icon: "SL", color: "#2563eb",
+    localCmd: "cd ~/projects/apps/essence-sales-list && python main.py",
+    hosting: "Python + Google Sheets API",
     badge: "ローカル", badgeType: "local"
   },
 
@@ -474,6 +485,15 @@ const apps = [
     desc: "CRM + Mail Contacts 用の共有メール配信基盤（SendGrid）",
     icon: "ES", color: "#475569",
     localCmd: "code ~/projects/apps/email-system",
+    badge: "基盤", badgeType: "infra"
+  },
+  {
+    category: "共有インフラ",
+    sectionType: "infra",
+    name: "Notion Proxy",
+    desc: "Notion API プロキシ（Vercel サーバーレス）",
+    icon: "NP", color: "#1e293b",
+    localCmd: "code ~/projects/utils/notion-proxy",
     badge: "基盤", badgeType: "infra"
   },
   {
