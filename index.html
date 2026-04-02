@@ -307,6 +307,7 @@ const apps = [
     icon: "FW", color: "#0e7490",
     url: "https://yuyanishimura0312.github.io/future-insight-workspace/app.html",
     admin: "https://yuyanishimura0312.github.io/future-insight-workspace/admin-login.html",
+    setup: "https://yuyanishimura0312.github.io/future-insight-workspace/admin-setup.html",
     hosting: "GitHub Pages",
     badge: "公開", badgeType: "released"
   },
@@ -552,6 +553,9 @@ function renderApps(filter = '') {
       }
       if (app.admin) {
         actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()">管理</a>`;
+      }
+      if (app.setup) {
+        actionsHtml += `<a href="${app.setup}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()" style="background:#5a6b7a">Setup</a>`;
       }
       if (app.localCmd) {
         actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
