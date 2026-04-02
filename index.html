@@ -514,6 +514,38 @@ const apps = [
     badge: "CLI", badgeType: "cli"
   },
 
+  // --- その他のツール ---
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Expense Checker",
+    desc: "ブラウザベースの経費チェックツール（個人利用フラグ付き）",
+    icon: "EC", color: "#ef4444",
+    localCmd: "cd ~/projects/apps/expense-checker && open index.html",
+    hosting: "HTML",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Claude Agent Share",
+    desc: "再利用可能なエージェントチームカタログ（公開版）",
+    icon: "CA", color: "#7c3aed",
+    url: "https://yuyanishimura0312.github.io/claude-agent-share/",
+    localCmd: "code ~/projects/utils/claude-agent-share",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Email Inquiry Extractor",
+    desc: "Gmail から問い合わせメールを抽出・分析するツール",
+    icon: "EI", color: "#ea580c",
+    localCmd: "cd ~/projects/utils/email-inquiry-extractor && python main.py",
+    badge: "CLI", badgeType: "cli"
+  },
+
   // --- 共有インフラ ---
   {
     category: "共有インフラ",
@@ -543,128 +575,244 @@ const apps = [
     badge: "基盤", badgeType: "infra"
   },
 
-  // --- エージェントチーム ---
+  // --- エージェントチーム: コアチーム ---
   {
-    category: "エージェントチーム",
+    category: "コアチーム",
+    sectionType: "agent",
+    name: "Design Team",
+    desc: "UI/UX・ビジュアル・資料デザインの専門チーム。Don Norman / Steve Krug / Robin Williams の原則に基づき、「機能するデザイン」を設計。ブランドの一貫性とアクセシビリティを重視",
+    icon: "DT", color: "#e91e63",
+    localCmd: '/design 依頼内容',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "コアチーム",
+    sectionType: "agent",
+    name: "Engineer Team",
+    desc: "開発・技術課題を解決するエンジニアリングチーム。Clean Code / Pragmatic Programmer の原則に基づき、動くだけでなく使われるプロダクトを構築。技術選定の根拠も明確に説明",
+    icon: "ET", color: "#00897b",
+    localCmd: '/engineer 依頼内容',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "コアチーム",
+    sectionType: "agent",
+    name: "Execution Team",
+    desc: "タスク完遂のプロフェッショナル実務部隊。GTD / Checklist Manifesto に基づき、曖昧な指示を具体的アクションに変換し、保存・報告まで完遂。反復作業の仕組み化も担当",
+    icon: "EX", color: "#f57c00",
+    localCmd: '/execution 依頼内容',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "コアチーム",
+    sectionType: "agent",
+    name: "Management Team",
+    desc: "経営判断・戦略立案を支えるアドバイザー。Good Strategy Bad Strategy / Competitive Strategy に基づき、課題診断・シナリオ分析・リスク評価を実施。小組織のニッチ集中戦略を重視",
+    icon: "MT", color: "#1565c0",
+    localCmd: '/management 依頼内容',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "コアチーム",
+    sectionType: "agent",
+    name: "Secretary Team",
+    desc: "スケジュール・連絡・情報管理の秘書チーム。GTD / Effective Executive に基づき、カレンダー操作・Slack/メール整理・会議準備・ブリーフィングを先回りで実行",
+    icon: "ST", color: "#0d9488",
+    localCmd: '/secretary 依頼内容',
+    badge: "エージェント", badgeType: "agent"
+  },
+
+  // --- エージェントチーム: リサーチ ---
+  {
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "Research Team",
-    desc: "5エージェント並列 Web 調査チーム → Dashboard 自動登録",
+    desc: "5エージェント並列の Web 調査チーム。テーマに対して多角的に Web 検索・情報収集し、構造化レポートを生成。結果は Research Dashboard に自動登録・公開される",
     icon: "RT", color: "#7c3aed",
     localCmd: '/research テーマ',
     badge: "エージェント", badgeType: "agent",
     integratedIn: ["Research Dashboard"]
   },
   {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "Deep Research Team",
-    desc: "学術論文 + Web 横断の多層調査（Phase 1-5 パイプライン）",
+    desc: "学術論文 + Web を横断する多層調査パイプライン（Phase 1-5）。スコープ定義 → 情報収集 → 三角検証 → 統合分析 → レポート生成の5段階で、信頼性の高い調査レポートを作成",
     icon: "DR", color: "#6d28d9",
     localCmd: '/deep-research テーマ',
     badge: "エージェント", badgeType: "agent",
     integratedIn: ["Secretary App"]
   },
   {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "Academic Search Team",
-    desc: "Semantic Scholar / arXiv 論文検索・文献マップ作成",
+    desc: "Semantic Scholar / arXiv / PubMed 等を横断して学術論文を検索。文献マップ・引用ネットワークの可視化、研究トレンドの分析、主要論文の要約を提供",
     icon: "AS", color: "#4f46e5",
     localCmd: '/academic-search テーマ',
     badge: "エージェント", badgeType: "agent"
   },
   {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "Best Practice Team",
-    desc: "CMO + GRADE フレームワークによるベストプラクティス構造解析（3並列エージェント）",
+    desc: "3並列エージェント（Web/学術/事例）による包括的ベストプラクティス調査。CMO + GRADE フレームワークで調査結果の信頼性を構造的に評価し、実践的な推奨事項を策定",
     icon: "BP", color: "#2563eb",
     localCmd: '/best-practice テーマ',
     badge: "エージェント", badgeType: "agent"
   },
   {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "Parallel Report Team",
-    desc: "複数エージェント並列による高速レポート生成",
+    desc: "複数エージェントが各セクションを並列執筆し、高速にレポートを生成（5,000-10,000語）。調査・執筆・統合を分担し、通常の数倍の速度で構造化レポートを完成させる",
     icon: "PR", color: "#0891b2",
     localCmd: '/parallel-report テーマ',
     badge: "エージェント", badgeType: "agent"
   },
   {
-    category: "エージェントチーム",
-    sectionType: "agent",
-    name: "CxO Meeting",
-    desc: "7人の CxO エージェントによる経営会議シミュレーション",
-    icon: "CX", color: "#dc2626",
-    localCmd: '/cxo-meeting 議題',
-    badge: "エージェント", badgeType: "agent",
-    integratedIn: ["Organization App", "Secretary App"]
-  },
-  {
-    category: "エージェントチーム",
-    sectionType: "agent",
-    name: "QA Review Team",
-    desc: "5人の QA 専門エージェントによるアプリ品質レビュー",
-    icon: "QA", color: "#059669",
-    localCmd: '/qa-review 対象アプリ',
-    badge: "エージェント", badgeType: "agent"
-  },
-  {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "Competitor Scan",
-    desc: "Playwright + Web 検索による競合調査",
+    desc: "Playwright によるブラウザ操作 + Web 検索で競合企業を多角的に調査。基本情報・サービス・ポジショニング・オンラインプレゼンス・最新動向を収集し、比較分析レポートを作成",
     icon: "CS", color: "#ea580c",
     localCmd: '/competitor-scan 対象',
     badge: "エージェント", badgeType: "agent"
   },
   {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
     name: "PESTLE Agents",
-    desc: "8エージェント PESTLE モード（政治/経済/社会/技術/法律/環境/産業/学術）",
+    desc: "8エージェントが政治/経済/社会/技術/法律/環境/産業/学術の各領域を並列調査する PESTLE 分析チーム。フューチャーインサイト・シナリオプランニングの基礎データを収集",
     icon: "PE", color: "#8b5cf6",
     localCmd: 'cd ~/projects/research/research-agents && python pestle_team.py "theme"',
     badge: "エージェント", badgeType: "agent",
     integratedIn: ["Future Insight Workspace", "Secretary App"]
   },
   {
-    category: "エージェントチーム",
+    category: "リサーチエージェント",
     sectionType: "agent",
-    name: "esse-sense Report",
-    desc: "esse-sense スタイルのコンテンツ・レポート作成",
-    icon: "ER", color: "#783c28",
-    localCmd: '/esse-report テーマ',
+    name: "Claude Code News",
+    desc: "5チーム並列で Claude Code の最新ベストプラクティスを調査。CLAUDE.md / Hooks・Skills / エージェントチーム / MCP / コミュニティの各領域を網羅し、定期ニュースレポートを生成",
+    icon: "CN", color: "#6366f1",
+    localCmd: '/claude-code-news',
     badge: "エージェント", badgeType: "agent"
   },
+
+  // --- エージェントチーム: 経営・コミュニケーション ---
   {
-    category: "エージェントチーム",
+    category: "経営・コミュニケーション",
     sectionType: "agent",
-    name: "Translate Academic",
-    desc: "人類学・社会科学対応の学術英語翻訳",
-    icon: "TA", color: "#475569",
-    localCmd: '/translate-academic テキスト',
+    name: "CxO Meeting",
+    desc: "CEO/CFO/COO/CMO/CTO/CHRO/CSO の7人の CxO エージェントが議題について討議する経営会議シミュレーション。各役職の専門視点から多角的に分析し、Go/No-Go 判断を下す",
+    icon: "CX", color: "#dc2626",
+    localCmd: '/cxo-meeting 議題',
     badge: "エージェント", badgeType: "agent",
-    integratedIn: ["PR Generator"]
+    integratedIn: ["Organization App", "Secretary App"]
   },
   {
-    category: "エージェントチーム",
+    category: "経営・コミュニケーション",
     sectionType: "agent",
     name: "Morning Briefing",
-    desc: "カレンダー + Slack + タスクの朝ブリーフィング",
+    desc: "カレンダー（今日の予定）・Slack（重要メッセージ）・タスクを統合した朝のブリーフィング。優先度付きで一日の行動指針を提示し、対応が必要な項目をハイライト",
     icon: "BR", color: "#0d9488",
     localCmd: '/briefing',
     badge: "エージェント", badgeType: "agent",
     integratedIn: ["Organization App", "Secretary App"]
   },
   {
-    category: "エージェントチーム",
+    category: "経営・コミュニケーション",
     sectionType: "agent",
     name: "Slack Catchup",
-    desc: "Slack 主要チャンネルの未読キャッチアップ・要約",
+    desc: "Slack の主要チャンネル（general / ざつだん / 事務 / 会計 / 事業推進 等）の最新メッセージを一括取得し、優先度別に要約。対応が必要な項目を明確に区別して報告",
     icon: "SC", color: "#e11d48",
     localCmd: '/slack-catchup',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "経営・コミュニケーション",
+    sectionType: "agent",
+    name: "esse-sense Report",
+    desc: "esse-sense のトーン（知的だがアクセシブル）でコンテンツ・レポートを作成。ストーリーから行動へ導く記事構成で、探究的・対話的な文体を維持",
+    icon: "ER", color: "#783c28",
+    localCmd: '/esse-report テーマ',
+    badge: "エージェント", badgeType: "agent"
+  },
+
+  // --- エージェントチーム: 品質・開発 ---
+  {
+    category: "品質・開発エージェント",
+    sectionType: "agent",
+    name: "QA Review Team",
+    desc: "5人の QA 専門エージェント（リード / UI テスター / 機能テスター / コードレビューア / バグ修正者）がアプリの品質を多角的にレビュー。発見した問題は優先度付きで報告し、修正まで実施",
+    icon: "QA", color: "#059669",
+    localCmd: '/qa-review 対象アプリ',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "品質・開発エージェント",
+    sectionType: "agent",
+    name: "UX Review Team",
+    desc: "5人の UX 専門エージェント（リード / ビジュアルデザイナー / インタラクションデザイナー / アクセシビリティ専門家 / コンテンツレビューア）がUI/UXを評価。100点満点のスコアと具体的な改善コード付き",
+    icon: "UX", color: "#d946ef",
+    localCmd: '/ux-review 対象アプリ',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "品質・開発エージェント",
+    sectionType: "agent",
+    name: "Usage Guide Builder",
+    desc: "3並列エージェント（App Analyst / Content Writer / Page Builder）でアプリの使い方ガイドページを自動構築。アプリの機能を分析し、ユーザー向けのわかりやすいガイドを生成",
+    icon: "UG", color: "#0ea5e9",
+    localCmd: '/usage-guide URL/パス',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "品質・開発エージェント",
+    sectionType: "agent",
+    name: "Fix Issue",
+    desc: "GitHub Issue を分析し、関連コードを検索して修正を実装。テスト実行による検証後、コミット・PR 作成まで自動で完遂",
+    icon: "FI", color: "#475569",
+    localCmd: '/fix-issue Issue番号',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "品質・開発エージェント",
+    sectionType: "agent",
+    name: "Code Review",
+    desc: "現在のブランチの変更を正確性・セキュリティ・可読性・ロジックの観点でレビュー。問題があればファイルパスと行番号を示して具体的に指摘",
+    icon: "CR", color: "#64748b",
+    localCmd: '/review',
+    badge: "エージェント", badgeType: "agent"
+  },
+
+  // --- エージェントチーム: ユーティリティ ---
+  {
+    category: "ユーティリティエージェント",
+    sectionType: "agent",
+    name: "Translate Academic",
+    desc: "人類学・社会科学の専門用語に対応した学術英語翻訳。日本語固有の概念の適切な英訳、翻訳ノートの付記、学術的文体の維持を担当",
+    icon: "TA", color: "#475569",
+    localCmd: '/translate-academic テキスト',
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["PR Generator"]
+  },
+  {
+    category: "ユーティリティエージェント",
+    sectionType: "agent",
+    name: "New App",
+    desc: "新規アプリプロジェクトのフルセットアップ。ディレクトリ作成 / README / .gitignore / git init / GitHub リポジトリ作成 / Notion 登録を自動実行",
+    icon: "NA", color: "#10b981",
+    localCmd: '/new-app アプリ名',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "ユーティリティエージェント",
+    sectionType: "agent",
+    name: "New Report",
+    desc: "新規レポートプロジェクトのセットアップと執筆。テンプレート作成 / レポート執筆 / git 保存 / Research Dashboard 登録 / Notion 保存を一括実行",
+    icon: "NR", color: "#8b5cf6",
+    localCmd: '/new-report タイトル',
     badge: "エージェント", badgeType: "agent"
   },
 ];
