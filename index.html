@@ -807,10 +807,113 @@ const apps = [
   {
     category: "コンテンツ・ユーティリティ",
     sectionType: "agent",
+    name: "Proposal Draft",
+    desc: "Minto Pyramid + SCQA フレームワークで提案書・企画書を構造化。結論ファーストのエグゼクティブサマリー → 背景・課題 → 提案内容 → 実施計画の順で、クライアント提出品質のドラフトを生成",
+    icon: "PD", color: "#9333ea",
+    localCmd: '/proposal 概要',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "コンテンツ・ユーティリティ",
+    sectionType: "agent",
+    name: "New App",
+    desc: "新規アプリプロジェクトのフルセットアップ。ディレクトリ作成 / README / .gitignore / git init / GitHub リポジトリ作成 / Notion 登録を自動実行",
+    icon: "NA", color: "#10b981",
+    localCmd: '/new-app アプリ名',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "コンテンツ・ユーティリティ",
+    sectionType: "agent",
     name: "New Report",
     desc: "新規レポートプロジェクトのセットアップと執筆。テンプレート作成 / レポート執筆 / git 保存 / Research Dashboard 登録 / Notion 保存を一括実行",
     icon: "NR", color: "#8b5cf6",
     localCmd: '/new-report タイトル',
+    badge: "エージェント", badgeType: "agent"
+  },
+
+  // --- 経営・日常業務（追加分） ---
+  {
+    category: "経営・日常業務",
+    sectionType: "agent",
+    name: "Meeting Prep",
+    desc: "カレンダー予定から参加者情報（Notion/Slack/Web）・過去の経緯・議題の最新情報を収集し、1ページのミーティングブリーフを自動生成。Drucker / Fisher / McCormack の原則に基づく",
+    icon: "MP", color: "#7c3aed",
+    localCmd: '/meeting-prep 会議名',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "経営・日常業務",
+    sectionType: "agent",
+    name: "Weekly Review",
+    desc: "GTD ウィークリーレビューの AI 自動化。カレンダー/Slack/Git 活動から今週を振り返り、来週の重点3項目を策定。Drucker / Covey / McKeown の原則で「戦略と日常の接続」を維持",
+    icon: "WR", color: "#2563eb",
+    localCmd: '/weekly-review',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "経営・日常業務",
+    sectionType: "agent",
+    name: "Retro (AAR)",
+    desc: "After-Action Review エージェント。「何をしようとした → 何が起きた → なぜ差が生じた → 教訓」の4問で構造化。Kahneman / Senge / Syed の原則で判断プロセスを検証し、教訓を Notion に蓄積",
+    icon: "RE", color: "#dc2626",
+    localCmd: '/retro 対象',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "経営・日常業務",
+    sectionType: "agent",
+    name: "Finance Check",
+    desc: "月次財務ヘルスチェック。Slack 会計チャンネル + Notion から情報収集し、キャッシュポジション・予算消化率・3シナリオ予測を生成。Profit First / Antifragile の原則",
+    icon: "FC", color: "#059669",
+    localCmd: '/finance-check',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "経営・日常業務",
+    sectionType: "agent",
+    name: "Stakeholder Map",
+    desc: "Power/Interest Grid + RACI マトリクスでステークホルダーを分析。Slack/カレンダーから最終接触日を自動取得し、30日以上未接触のキーパーソンをアラート",
+    icon: "SM", color: "#ea580c",
+    localCmd: '/stakeholder-map プロジェクト',
+    badge: "エージェント", badgeType: "agent"
+  },
+
+  // --- 研究エージェント ---
+  {
+    category: "研究エージェント",
+    sectionType: "agent",
+    name: "Field Note",
+    desc: "人類学フィールドノート記録。Geertz の Thick Description + Spradley の9次元（空間/行為者/活動/物/行為/出来事/時間/目的/感情）で観察を構造化。事実と解釈を分離し Research Dashboard に保存",
+    icon: "FN", color: "#b45309",
+    localCmd: '/field-note 記録',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "研究エージェント",
+    sectionType: "agent",
+    name: "Concept Bridge",
+    desc: "人類学⇄ビジネスの概念翻訳・フレームワーク接続。Gentner の構造的マッピング理論で領域間の構造的対応を発見し、三軸（経営/コンサル/研究）の交差から独自の洞察を生産",
+    icon: "CB", color: "#6d28d9",
+    localCmd: '/concept-bridge 概念',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "研究エージェント",
+    sectionType: "agent",
+    name: "Knowledge Search",
+    desc: "Notion / Slack / Research Dashboard / ローカルファイル / Web を並列横断検索する「セカンドブレイン」。テーマに関する過去の調査・判断・やりとりを統合提示",
+    icon: "KS", color: "#4f46e5",
+    localCmd: '/knowledge テーマ',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "研究エージェント",
+    sectionType: "agent",
+    name: "Weekly Digest",
+    desc: "専門テーマ（社会イノベーション/組織人類学/対話型リーダーシップ/フォーサイト/AI等）の最新動向を Web + Semantic Scholar から収集し、パーソナルダイジェストを生成",
+    icon: "WD", color: "#0891b2",
+    localCmd: '/digest',
     badge: "エージェント", badgeType: "agent"
   },
 ];
