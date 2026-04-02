@@ -264,6 +264,20 @@
     border-radius: 3px;
     user-select: all;
   }
+  .integrated-in {
+    font-size: 11px;
+    color: #7c3aed;
+    margin-top: 2px;
+  }
+  .integrated-in .app-tag {
+    display: inline-block;
+    background: #ede9fe;
+    color: #6d28d9;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    margin-right: 4px;
+  }
   .archive-toggle {
     display: flex;
     align-items: center;
@@ -537,7 +551,8 @@ const apps = [
     desc: "5エージェント並列 Web 調査チーム → Dashboard 自動登録",
     icon: "RT", color: "#7c3aed",
     localCmd: '/research テーマ',
-    badge: "エージェント", badgeType: "agent"
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["Research Dashboard"]
   },
   {
     category: "エージェントチーム",
@@ -546,7 +561,8 @@ const apps = [
     desc: "学術論文 + Web 横断の多層調査（Phase 1-5 パイプライン）",
     icon: "DR", color: "#6d28d9",
     localCmd: '/deep-research テーマ',
-    badge: "エージェント", badgeType: "agent"
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["Secretary App"]
   },
   {
     category: "エージェントチーム",
@@ -582,7 +598,8 @@ const apps = [
     desc: "7人の CxO エージェントによる経営会議シミュレーション",
     icon: "CX", color: "#dc2626",
     localCmd: '/cxo-meeting 議題',
-    badge: "エージェント", badgeType: "agent"
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["Organization App", "Secretary App"]
   },
   {
     category: "エージェントチーム",
@@ -609,7 +626,8 @@ const apps = [
     desc: "8エージェント PESTLE モード（政治/経済/社会/技術/法律/環境/産業/学術）",
     icon: "PE", color: "#8b5cf6",
     localCmd: 'cd ~/projects/research/research-agents && python pestle_team.py "theme"',
-    badge: "エージェント", badgeType: "agent"
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["Future Insight Workspace", "Secretary App"]
   },
   {
     category: "エージェントチーム",
@@ -627,7 +645,8 @@ const apps = [
     desc: "人類学・社会科学対応の学術英語翻訳",
     icon: "TA", color: "#475569",
     localCmd: '/translate-academic テキスト',
-    badge: "エージェント", badgeType: "agent"
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["PR Generator"]
   },
   {
     category: "エージェントチーム",
@@ -636,7 +655,8 @@ const apps = [
     desc: "カレンダー + Slack + タスクの朝ブリーフィング",
     icon: "BR", color: "#0d9488",
     localCmd: '/briefing',
-    badge: "エージェント", badgeType: "agent"
+    badge: "エージェント", badgeType: "agent",
+    integratedIn: ["Organization App", "Secretary App"]
   },
   {
     category: "エージェントチーム",
@@ -782,12 +802,19 @@ function buildCard(app, isArchived) {
     ? `<span class="badge archived-badge">アーカイブ</span>`
     : `<span class="badge ${app.badgeType}">${app.badge}</span>`;
 
+  let integratedHtml = '';
+  if (app.integratedIn && app.integratedIn.length > 0) {
+    const tags = app.integratedIn.map(a => `<span class="app-tag">${a}</span>`).join('');
+    integratedHtml = `<div class="integrated-in">組込先: ${tags}</div>`;
+  }
+
   card.innerHTML = `
     <div class="app-icon" style="background:${app.color}">${app.icon}</div>
     <div class="app-info">
       <div class="app-name">${app.name} ${badgeHtml}</div>
       <div class="app-desc">${app.desc}</div>
       ${metaHtml}
+      ${integratedHtml}
       ${credHtml}
     </div>
     <div class="app-actions">${actionsHtml}</div>
