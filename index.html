@@ -98,6 +98,8 @@
   .section-title.cli .section-indicator { background: #78716c; }
   .section-title.infra { color: #475569; }
   .section-title.infra .section-indicator { background: #475569; }
+  .section-title.archived { color: #9a918a; }
+  .section-title.archived .section-indicator { background: #bbb; }
   .app-card {
     display: flex;
     align-items: center;
@@ -110,6 +112,8 @@
     color: inherit;
   }
   .app-card:hover { background: #f3efe9; }
+  .app-card.archived-card { opacity: 0.55; }
+  .app-card.archived-card:hover { opacity: 0.75; }
   .app-icon {
     width: 40px;
     height: 40px;
@@ -156,6 +160,10 @@
   .badge.dev {
     background: #fce4ec;
     color: #c62828;
+  }
+  .badge.archived-badge {
+    background: #f0ede8;
+    color: #9a918a;
   }
   .app-desc {
     font-size: 12px;
@@ -209,6 +217,14 @@
     color: #2e7d32;
     border-color: #a5d6a7;
   }
+  .btn-archive {
+    background: #fff;
+    color: #9a918a;
+    border: 1px solid #e8e2da;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  .btn-archive:hover { background: #f3efe9; color: #5c534b; }
   .toast {
     position: fixed;
     bottom: 24px;
@@ -242,6 +258,17 @@
     border-radius: 3px;
     user-select: all;
   }
+  .archive-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 400;
+    color: #9a918a;
+    cursor: pointer;
+  }
+  .archive-toggle:hover { color: #5c534b; }
 </style>
 </head>
 <body>
@@ -254,6 +281,7 @@
     <div class="stat"><span class="stat-dot" style="background:#e65100"></span> ローカル</div>
     <div class="stat"><span class="stat-dot" style="background:#78716c"></span> CLI</div>
     <div class="stat"><span class="stat-dot" style="background:#475569"></span> 基盤</div>
+    <div class="stat"><span class="stat-dot" style="background:#bbb"></span> アーカイブ</div>
   </div>
 </div>
 
@@ -297,7 +325,8 @@ const apps = [
     icon: "FI", color: "#0891b2",
     url: "https://yuyanishimura0312.github.io/future-insight-app/",
     hosting: "GitHub Pages",
-    badge: "公開", badgeType: "released"
+    badge: "公開", badgeType: "released",
+    defaultArchived: true
   },
   {
     category: "公開中の Web アプリ",
@@ -423,7 +452,6 @@ const apps = [
     hosting: "Streamlit :8503",
     badge: "ローカル", badgeType: "local"
   },
-
   {
     category: "ローカル Web アプリ",
     sectionType: "local",
@@ -495,6 +523,36 @@ const apps = [
   },
 ];
 
+// --- Archive state persistence ---
+const STORAGE_KEY = 'app-launcher-archived';
+
+function loadArchivedSet() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return new Set(JSON.parse(saved));
+  } catch (e) {}
+  // Initialize with default archived apps
+  const defaults = new Set();
+  apps.forEach(app => { if (app.defaultArchived) defaults.add(app.name); });
+  return defaults;
+}
+
+function saveArchivedSet(set) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
+}
+
+let archivedSet = loadArchivedSet();
+
+function toggleArchive(appName) {
+  if (archivedSet.has(appName)) {
+    archivedSet.delete(appName);
+  } else {
+    archivedSet.add(appName);
+  }
+  saveArchivedSet(archivedSet);
+  renderApps(document.getElementById('search').value);
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -515,84 +573,110 @@ function renderApps(filter = '') {
   const container = document.getElementById('app-list');
   container.innerHTML = '';
   const lf = filter.toLowerCase();
-  const categories = {};
-  const categoryMeta = {};
+
+  // Split apps into active and archived
+  const activeCategories = {};
+  const activeCategoryMeta = {};
+  const archivedApps = [];
 
   apps.forEach(app => {
     if (lf && !app.name.toLowerCase().includes(lf) && !app.desc.toLowerCase().includes(lf) && !app.category.toLowerCase().includes(lf)) return;
-    if (!categories[app.category]) {
-      categories[app.category] = [];
-      categoryMeta[app.category] = app.sectionType;
+
+    if (archivedSet.has(app.name)) {
+      archivedApps.push(app);
+    } else {
+      if (!activeCategories[app.category]) {
+        activeCategories[app.category] = [];
+        activeCategoryMeta[app.category] = app.sectionType;
+      }
+      activeCategories[app.category].push(app);
     }
-    categories[app.category].push(app);
   });
 
-  Object.entries(categories).forEach(([cat, items]) => {
+  // Render active categories
+  Object.entries(activeCategories).forEach(([cat, items]) => {
     const section = document.createElement('div');
     section.className = 'section';
-    const sectionType = categoryMeta[cat] || '';
+    const sectionType = activeCategoryMeta[cat] || '';
     const count = items.length;
     section.innerHTML = `<div class="section-title ${sectionType}"><span class="section-indicator"></span>${cat} <span style="font-weight:400;opacity:0.6">(${count})</span></div>`;
-
-    items.forEach(app => {
-      const card = document.createElement('div');
-      card.className = 'app-card';
-
-      let credHtml = '';
-      if (app.localNote) credHtml += `<div class="cred-row">${app.localNote}</div>`;
-
-      let metaHtml = '';
-      if (app.hosting) metaHtml = `<div class="app-meta">${app.hosting}</div>`;
-
-      let actionsHtml = '';
-      if (app.url) {
-        actionsHtml += `<a href="${app.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
-      }
-      if (app.localUrl && !app.url) {
-        actionsHtml += `<a href="${app.localUrl}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
-      }
-      if (app.admin) {
-        actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()">管理</a>`;
-      }
-      if (app.setup) {
-        actionsHtml += `<a href="${app.setup}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()" style="background:#5a6b7a">Setup</a>`;
-      }
-      if (app.localCmd) {
-        actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
-      }
-      if (app.pestle) {
-        actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.pestle.replace(/'/g, "\\'")}', this)" title="PESTLE mode">PESTLE</button>`;
-      }
-
-      card.innerHTML = `
-        <div class="app-icon" style="background:${app.color}">${app.icon}</div>
-        <div class="app-info">
-          <div class="app-name">${app.name} <span class="badge ${app.badgeType}">${app.badge}</span></div>
-          <div class="app-desc">${app.desc}</div>
-          ${metaHtml}
-          ${credHtml}
-        </div>
-        <div class="app-actions">${actionsHtml}</div>
-      `;
-
-      card.addEventListener('click', () => {
-        if (app.url) window.open(app.url, '_blank');
-        else if (app.localUrl) window.open(app.localUrl, '_blank');
-        else if (app.localCmd) {
-          navigator.clipboard.writeText(app.localCmd);
-          showToast('コピー済: ' + app.localCmd);
-        }
-      });
-
-      section.appendChild(card);
-    });
-
+    items.forEach(app => section.appendChild(buildCard(app, false)));
     container.appendChild(section);
   });
 
-  if (Object.keys(categories).length === 0) {
+  // Render archived section
+  if (archivedApps.length > 0) {
+    const section = document.createElement('div');
+    section.className = 'section';
+    section.innerHTML = `<div class="section-title archived"><span class="section-indicator"></span>アーカイブ済み <span style="font-weight:400;opacity:0.6">(${archivedApps.length})</span></div>`;
+    archivedApps.forEach(app => section.appendChild(buildCard(app, true)));
+    container.appendChild(section);
+  }
+
+  if (Object.keys(activeCategories).length === 0 && archivedApps.length === 0) {
     container.innerHTML = '<p style="text-align:center;color:#666;padding:40px">該当するアプリが見つかりません</p>';
   }
+}
+
+function buildCard(app, isArchived) {
+  const card = document.createElement('div');
+  card.className = isArchived ? 'app-card archived-card' : 'app-card';
+
+  let credHtml = '';
+  if (app.localNote) credHtml += `<div class="cred-row">${app.localNote}</div>`;
+
+  let metaHtml = '';
+  if (app.hosting) metaHtml = `<div class="app-meta">${app.hosting}</div>`;
+
+  let actionsHtml = '';
+  if (app.url) {
+    actionsHtml += `<a href="${app.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
+  }
+  if (app.localUrl && !app.url) {
+    actionsHtml += `<a href="${app.localUrl}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
+  }
+  if (app.admin) {
+    actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()">管理</a>`;
+  }
+  if (app.setup) {
+    actionsHtml += `<a href="${app.setup}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()" style="background:#5a6b7a">Setup</a>`;
+  }
+  if (app.localCmd) {
+    actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
+  }
+  if (app.pestle) {
+    actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.pestle.replace(/'/g, "\\'")}', this)" title="PESTLE mode">PESTLE</button>`;
+  }
+
+  // Archive/restore toggle
+  const archiveBtnLabel = isArchived ? '復元' : 'アーカイブ';
+  actionsHtml += `<button class="btn btn-archive" onclick="event.stopPropagation(); toggleArchive('${app.name.replace(/'/g, "\\'")}')">${archiveBtnLabel}</button>`;
+
+  const badgeHtml = isArchived
+    ? `<span class="badge archived-badge">アーカイブ</span>`
+    : `<span class="badge ${app.badgeType}">${app.badge}</span>`;
+
+  card.innerHTML = `
+    <div class="app-icon" style="background:${app.color}">${app.icon}</div>
+    <div class="app-info">
+      <div class="app-name">${app.name} ${badgeHtml}</div>
+      <div class="app-desc">${app.desc}</div>
+      ${metaHtml}
+      ${credHtml}
+    </div>
+    <div class="app-actions">${actionsHtml}</div>
+  `;
+
+  card.addEventListener('click', () => {
+    if (app.url) window.open(app.url, '_blank');
+    else if (app.localUrl) window.open(app.localUrl, '_blank');
+    else if (app.localCmd) {
+      navigator.clipboard.writeText(app.localCmd);
+      showToast('コピー済: ' + app.localCmd);
+    }
+  });
+
+  return card;
 }
 
 document.getElementById('search').addEventListener('input', e => renderApps(e.target.value));
