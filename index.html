@@ -14,6 +14,7 @@
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .header {
     padding: 32px 24px 16px;
@@ -28,7 +29,7 @@
   }
   .header p {
     font-size: 13px;
-    color: #9a918a;
+    color: #6b635b;
     margin-top: 4px;
   }
   .stats {
@@ -117,6 +118,8 @@
     color: inherit;
   }
   .app-card:hover { background: #f3efe9; }
+  .app-card:active { background: #ece6dd; }
+  .btn:active { transform: scale(0.96); }
   .app-card.archived-card { opacity: 0.55; }
   .app-card.archived-card:hover { opacity: 0.75; }
   .app-icon {
@@ -148,7 +151,7 @@
   }
   .badge.released {
     background: #e6f4e6;
-    color: #2e7d32;
+    color: #1b5e20;
   }
   .badge.local {
     background: #fff3e0;
@@ -156,7 +159,7 @@
   }
   .badge.cli {
     background: #f3efe9;
-    color: #78716c;
+    color: #57534e;
   }
   .badge.infra {
     background: #e3f2fd;
@@ -176,7 +179,7 @@
   }
   .app-desc {
     font-size: 12px;
-    color: #5c534b;
+    color: #44403c;
     margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -184,7 +187,7 @@
   }
   .app-meta {
     font-size: 11px;
-    color: #9a918a;
+    color: #6b635b;
     margin-top: 2px;
   }
   .app-actions {
@@ -264,7 +267,7 @@
   .hidden { display: none !important; }
   .cred-row {
     font-size: 11px;
-    color: #9a918a;
+    color: #6b635b;
     margin-top: 2px;
   }
   .cred-row span {
@@ -456,7 +459,7 @@
 
     /* Toast at bottom, avoid overlap with thumb zone */
     .toast {
-      bottom: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
       font-size: 12px;
       padding: 8px 16px;
       max-width: calc(100vw - 32px);
@@ -470,19 +473,20 @@
     .container { padding: 0 8px 24px; }
 
     .app-card {
-      padding: 10px 8px 10px 48px;
+      padding: 10px 10px 10px 44px;
     }
     .app-icon {
       left: 8px;
       top: 10px;
-      width: 32px;
-      height: 32px;
-      font-size: 14px;
+      width: 30px;
+      height: 30px;
+      font-size: 13px;
     }
     .app-name { font-size: 12px; }
-    .app-desc { font-size: 10px; -webkit-line-clamp: 2; }
-    .btn { padding: 6px 8px; font-size: 11px; min-height: 32px; }
-    .btn-archive { padding: 5px 8px; font-size: 10px; min-height: 32px; }
+    .app-desc { font-size: 11px; -webkit-line-clamp: 1; }
+    .app-meta { display: none; }
+    .btn { padding: 6px 8px; font-size: 11px; min-height: 34px; min-width: 36px; }
+    .btn-archive { padding: 5px 8px; font-size: 10px; min-height: 30px; }
   }
 </style>
 </head>
