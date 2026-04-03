@@ -74,6 +74,7 @@
   }
   .section {
     margin-bottom: 28px;
+    scroll-margin-top: 52px;
   }
   .section-title {
     font-size: 12px;
@@ -202,7 +203,15 @@
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
+    white-space: nowrap;
+    min-width: 44px;
+    min-height: 36px;
+  }
+  .btn:focus-visible {
+    outline: 2px solid #783c28;
+    outline-offset: 2px;
   }
   .btn-open {
     background: #783c28;
@@ -292,6 +301,49 @@
   }
   .archive-toggle:hover { color: #5c534b; }
 
+  /* Category jump nav - mobile only */
+  .category-nav {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .category-nav {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250, 248, 245, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e8e2da;
+      scrollbar-width: none;
+    }
+    .category-nav::-webkit-scrollbar { display: none; }
+    .category-nav button {
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 16px;
+      border: 1px solid #e8e2da;
+      background: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      color: #5c534b;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s;
+      min-height: 32px;
+    }
+    .category-nav button:active,
+    .category-nav button.active {
+      background: #783c28;
+      color: #fff;
+      border-color: #783c28;
+    }
+  }
+
   /* ============================================
      Responsive Design
      ============================================ */
@@ -345,6 +397,8 @@
       padding: 12px 12px 12px 54px;
       gap: 6px;
       border-radius: 8px;
+      cursor: default;
+      -webkit-tap-highlight-color: transparent;
     }
     .app-icon {
       position: absolute;
@@ -387,9 +441,12 @@
       border-radius: 6px;
     }
     .btn-archive {
-      font-size: 11px;
-      padding: 6px 10px;
-      min-height: 36px;
+      font-size: 10px;
+      padding: 5px 8px;
+      min-height: 30px;
+      min-width: auto;
+      opacity: 0.5;
+      margin-left: auto;
     }
 
     /* Extra info rows */
@@ -447,6 +504,8 @@
 <div class="search-bar">
   <input type="text" id="search" placeholder="アプリを検索...">
 </div>
+
+<div class="category-nav" id="category-nav"></div>
 
 <div class="container" id="app-list"></div>
 <div class="toast" id="toast"></div>
@@ -1190,10 +1249,37 @@ function renderApps(filter = '') {
     }
   });
 
+  // Build category nav for mobile
+  const nav = document.getElementById('category-nav');
+  nav.innerHTML = '';
+  const catKeys = Object.keys(activeCategories);
+  catKeys.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    // Short labels for nav
+    const shortLabels = {
+      '公開中の Web アプリ': '公開中',
+      'ローカル Web アプリ': 'ローカル',
+      'CLI ツール': 'CLI',
+      '共有インフラ': '基盤',
+      '調査・リサーチ': '調査',
+      '経営・日常業務': '経営',
+      '開発・品質・デザイン': '開発',
+      'コンテンツ・ユーティリティ': 'コンテンツ',
+      '研究エージェント': '研究'
+    };
+    btn.textContent = shortLabels[cat] || cat;
+    btn.addEventListener('click', () => {
+      const target = document.getElementById('section-' + i);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    nav.appendChild(btn);
+  });
+
   // Render active categories
-  Object.entries(activeCategories).forEach(([cat, items]) => {
+  Object.entries(activeCategories).forEach(([cat, items], i) => {
     const section = document.createElement('div');
     section.className = 'section';
+    section.id = 'section-' + i;
     const sectionType = activeCategoryMeta[cat] || '';
     const count = items.length;
     const shareLink = sectionType === 'agent'
@@ -1228,29 +1314,30 @@ function buildCard(app, isArchived) {
   let metaHtml = '';
   if (app.hosting) metaHtml = `<div class="app-meta">${app.hosting}</div>`;
 
+  const esc = app.name.replace(/"/g, '&quot;');
   let actionsHtml = '';
   if (app.url) {
-    actionsHtml += `<a href="${app.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
+    actionsHtml += `<a href="${app.url}" target="_blank" class="btn btn-open" aria-label="${esc} を開く" onclick="event.stopPropagation()">開く</a>`;
   }
   if (app.localUrl && !app.url) {
-    actionsHtml += `<a href="${app.localUrl}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>`;
+    actionsHtml += `<a href="${app.localUrl}" target="_blank" class="btn btn-open" aria-label="${esc} を開く" onclick="event.stopPropagation()">開く</a>`;
   }
   if (app.admin) {
-    actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()">管理</a>`;
+    actionsHtml += `<a href="${app.admin}" target="_blank" class="btn btn-admin" aria-label="${esc} の管理画面" onclick="event.stopPropagation()">管理</a>`;
   }
   if (app.setup) {
-    actionsHtml += `<a href="${app.setup}" target="_blank" class="btn btn-admin" onclick="event.stopPropagation()" style="background:#5a6b7a">Setup</a>`;
+    actionsHtml += `<a href="${app.setup}" target="_blank" class="btn btn-admin" aria-label="${esc} のセットアップ" onclick="event.stopPropagation()" style="background:#5a6b7a">Setup</a>`;
   }
   if (app.localCmd) {
-    actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
+    actionsHtml += `<button class="btn btn-copy" aria-label="${esc} のコマンドをコピー" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
   }
   if (app.pestle) {
-    actionsHtml += `<button class="btn btn-copy" onclick="event.stopPropagation(); copyCmd('${app.pestle.replace(/'/g, "\\'")}', this)" title="PESTLE mode">PESTLE</button>`;
+    actionsHtml += `<button class="btn btn-copy" aria-label="${esc} のPESTLEコマンドをコピー" onclick="event.stopPropagation(); copyCmd('${app.pestle.replace(/'/g, "\\'")}', this)" title="PESTLE mode">PESTLE</button>`;
   }
 
   // Archive/restore toggle
   const archiveBtnLabel = isArchived ? '復元' : 'アーカイブ';
-  actionsHtml += `<button class="btn btn-archive" onclick="event.stopPropagation(); toggleArchive('${app.name.replace(/'/g, "\\'")}')">${archiveBtnLabel}</button>`;
+  actionsHtml += `<button class="btn btn-archive" aria-label="${esc} を${archiveBtnLabel}" onclick="event.stopPropagation(); toggleArchive('${app.name.replace(/'/g, "\\'")}')">${archiveBtnLabel}</button>`;
 
   const badgeHtml = isArchived
     ? `<span class="badge archived-badge">アーカイブ</span>`
@@ -1262,8 +1349,11 @@ function buildCard(app, isArchived) {
     integratedHtml = `<div class="integrated-in">組込先: ${tags}</div>`;
   }
 
+  card.setAttribute('role', 'article');
+  card.setAttribute('aria-label', app.name);
+
   card.innerHTML = `
-    <div class="app-icon" style="background:${app.color}">${app.icon}</div>
+    <div class="app-icon" style="background:${app.color}" aria-hidden="true">${app.icon}</div>
     <div class="app-info">
       <div class="app-name">${app.name} ${badgeHtml}</div>
       <div class="app-desc">${app.desc}</div>
@@ -1275,6 +1365,8 @@ function buildCard(app, isArchived) {
   `;
 
   card.addEventListener('click', () => {
+    // Disable card-level click on mobile to avoid conflicts with action buttons
+    if (window.innerWidth <= 640) return;
     if (app.url) window.open(app.url, '_blank');
     else if (app.localUrl) window.open(app.localUrl, '_blank');
     else if (app.localCmd) {
