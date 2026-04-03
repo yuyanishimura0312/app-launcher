@@ -290,21 +290,45 @@
   }
   .archive-toggle:hover { color: #5c534b; }
 
-  /* --- Mobile optimization --- */
+  /* --- Responsive: tablet (641-768px) --- */
+  @media (max-width: 768px) {
+    .app-desc {
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .app-actions { flex-wrap: wrap; }
+  }
+
+  /* --- Responsive: mobile (max 640px) --- */
   @media (max-width: 640px) {
     .header { padding: 20px 16px 12px; }
     .header h1 { font-size: 18px; }
-    .stats { flex-wrap: wrap; gap: 10px; }
+    .stats { flex-wrap: wrap; gap: 8px 14px; }
     .search-bar { padding: 8px 16px 12px; }
     .search-bar input { font-size: 16px; /* prevent iOS zoom */ }
-    .container { padding: 0 16px 32px; }
+    .container { padding: 0 12px 32px; }
 
     .app-card {
-      flex-wrap: wrap;
-      padding: 12px;
-      gap: 10px;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 14px 12px;
+      gap: 8px;
     }
-    .app-info { min-width: 0; width: calc(100% - 54px); }
+    .app-card > .app-icon {
+      position: absolute;
+    }
+    .app-card {
+      position: relative;
+      padding-left: 56px;
+    }
+    .app-card > .app-icon {
+      left: 12px;
+      top: 14px;
+    }
+    .app-info { width: 100%; min-width: 0; }
     .app-desc {
       white-space: normal;
       display: -webkit-box;
@@ -313,21 +337,36 @@
       overflow: hidden;
     }
     .app-actions {
-      width: 100%;
-      padding-left: 50px;
+      display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
+      width: 100%;
     }
     .btn {
-      padding: 8px 14px;
-      font-size: 13px;
-      min-height: 36px;
+      padding: 7px 12px;
+      font-size: 12px;
+      min-height: 34px;
     }
     .btn-archive {
-      font-size: 12px;
+      font-size: 11px;
       padding: 6px 10px;
-      min-height: 36px;
+      min-height: 34px;
     }
+    .section-title { font-size: 11px; }
+  }
+
+  /* --- Responsive: narrow mobile (max 380px) --- */
+  @media (max-width: 380px) {
+    .container { padding: 0 8px 24px; }
+    .header { padding: 16px 12px 10px; }
+    .search-bar { padding: 6px 12px 10px; }
+    .app-card { padding-left: 50px; padding-right: 8px; }
+    .app-card > .app-icon {
+      width: 34px; height: 34px; font-size: 15px;
+      left: 8px; top: 14px;
+    }
+    .app-name { font-size: 13px; }
+    .btn { padding: 6px 10px; font-size: 11px; }
   }
 </style>
 </head>
