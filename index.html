@@ -381,6 +381,16 @@ const apps = [
     hosting: "Vercel",
     badge: "公開", badgeType: "released"
   },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Foresight Board",
+    desc: "AI CxO 経営会議シミュレーター（7名の仮想CxO + 5つの会議モード + レポート生成）",
+    icon: "FB", color: "#0f766e",
+    url: "https://yuyanishimura0312.github.io/foresight-board/",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
 
   // --- ローカル Web アプリ ---
   {
@@ -492,6 +502,38 @@ const apps = [
     localCmd: "cd ~/projects/apps/essence-sales-list && python main.py",
     hosting: "Python + Google Sheets API",
     badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Book Agent",
+    desc: "AI 司書エージェント - 書籍検索・レコメンド（Google Books API + Claude）",
+    icon: "BA", color: "#92400e",
+    localCmd: "cd ~/projects/apps/book-agent && python app.py",
+    localUrl: "http://localhost:5300",
+    hosting: "Flask",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Expense Checker",
+    desc: "CSV 経費チェッカー - 個人利用フラグ・承認ワークフロー・CSV エクスポート",
+    icon: "EC", color: "#b45309",
+    localCmd: "open ~/projects/apps/expense-checker/src/index.html",
+    hosting: "Static HTML",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Miratuku Research",
+    desc: "ミラツクリサーチマガジン（セマンティック検索 + Supabase）",
+    icon: "MR", color: "#4338ca",
+    localCmd: "cd ~/projects/apps/miratuku-research && npm run dev",
+    localUrl: "http://localhost:3000",
+    hosting: "Next.js + Supabase",
+    badge: "開発中", badgeType: "dev"
   },
 
   // --- CLI ツール ---
