@@ -619,15 +619,16 @@ const apps = [
     badge: "開発中", badgeType: "dev"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Organization App",
     desc: "AI 組織運営ダッシュボード - 5チーム + CxO 会議（Claude API + LibSQL）",
     icon: "OA", color: "#0d9488",
+    url: "https://organization-app-liard.vercel.app",
     localCmd: "cd ~/projects/apps/organization-app && npm run dev",
     localUrl: "http://localhost:5200",
-    hosting: "Next.js + Claude API + LibSQL",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
   },
   {
     category: "ローカル Web アプリ",
@@ -696,15 +697,16 @@ const apps = [
     badge: "ローカル", badgeType: "local"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "CxO Team",
     desc: "AI CxO 経営チーム議論（CEO/CFO/COO/CMO/CTO/CHRO）",
     icon: "CX", color: "#b91c1c",
+    url: "https://cxo-team.vercel.app",
     localCmd: "cd ~/projects/utils/cxo-team && streamlit run app.py --server.port 8503",
     localUrl: "http://localhost:8503",
-    hosting: "Streamlit :8503",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
   },
   {
     category: "ローカル Web アプリ",
@@ -738,15 +740,16 @@ const apps = [
     badge: "ローカル", badgeType: "local"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Miratuku Research",
     desc: "ミラツクリサーチマガジン（セマンティック検索 + Supabase）",
     icon: "MR", color: "#4338ca",
+    url: "https://miratuku-research.vercel.app",
     localCmd: "cd ~/projects/apps/miratuku-research && npm run dev",
     localUrl: "http://localhost:3000",
-    hosting: "Next.js + Supabase",
-    badge: "開発中", badgeType: "dev"
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
   },
 
   // --- CLI ツール ---
@@ -827,7 +830,9 @@ const apps = [
     name: "Notion Proxy",
     desc: "Notion API プロキシ（Vercel サーバーレス）",
     icon: "NP", color: "#1e293b",
+    url: "https://notion-proxy-ecru.vercel.app",
     localCmd: "code ~/projects/utils/notion-proxy",
+    hosting: "Vercel",
     badge: "基盤", badgeType: "infra"
   },
   {
