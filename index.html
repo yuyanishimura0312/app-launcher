@@ -618,11 +618,11 @@ const apps = [
   {
     category: "公開中の Web アプリ",
     sectionType: "released",
-    name: "司書エージェント (Librarian)",
-    desc: "AI 司書が5分野横断で10冊の書籍を推薦（書影付き・Google Books + Semantic Scholar）",
-    icon: "LB", color: "#92400e",
+    name: "Libry（リブリー）",
+    desc: "AI司書リブリーさんが5分野横断で10冊を推薦。レポート生成・PDF共有・研究者紹介・履歴管理。7日間無料お試し付き",
+    icon: "Lb", color: "#8c6248",
     url: "https://librarian-chi.vercel.app",
-    hosting: "Vercel",
+    hosting: "Vercel + Supabase",
     badge: "公開", badgeType: "released"
   },
 
@@ -753,8 +753,8 @@ const apps = [
   {
     category: "ローカル Web アプリ",
     sectionType: "local",
-    name: "Book Agent",
-    desc: "AI 司書エージェント - 書籍検索・レコメンド（Google Books API + Claude）",
+    name: "Book Agent (旧版)",
+    desc: "AI司書エージェント旧版 — 現在はLibry（リブリー）に統合済み",
     icon: "BA", color: "#92400e",
     localCmd: "cd ~/projects/apps/book-agent && python app.py",
     localUrl: "http://localhost:5300",
