@@ -666,11 +666,11 @@ const apps = [
     category: "ローカル Web アプリ",
     sectionType: "local",
     name: "Slide Generator",
-    desc: "AI スライド自動生成（メモ→構造化→図解→PDF/PPTX、105パターンDB）",
+    desc: "AI スライド自動生成（5段階パイプライン、HTML画像レンダリング、PPTEval品質評価、余白デザインシステム）",
     icon: "SG", color: "#7A4033",
     localCmd: "cd ~/projects/apps/slide-generator && ANTHROPIC_API_KEY=$(security find-generic-password -s ANTHROPIC_API_KEY -w) node server.js",
     localUrl: "http://localhost:5400",
-    hosting: "Express + Marp CLI",
+    hosting: "Express + Puppeteer",
     badge: "ローカル", badgeType: "local"
   },
   {
