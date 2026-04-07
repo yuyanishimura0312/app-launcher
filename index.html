@@ -1042,6 +1042,69 @@ const apps = [
   {
     category: "開発・品質・デザイン",
     sectionType: "agent",
+    name: "Process Orchestrator",
+    desc: "7段階循環モデル（Spec→Design→Implementation→QA→Refinement→Deploy→Observe）の中央オーケストレータ。新規アプリ・新機能・複雑なバグ修正を受け取り、適切なStageから専門エージェント群を順次起動し、Sentinel承認まで一貫管理する",
+    icon: "PO", color: "#7c3aed",
+    localCmd: '/engineer または開発依頼で自動起動',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
+    name: "Spec Writer",
+    desc: "Stage 0（仕様策定）専任。曖昧なユーザー要望を、開発エージェント群が実装できる明確な仕様書に変換する。Must/Should/Won't/Futureでスコープを明示し、完了基準（DoD）を定義。Read-only権限",
+    icon: "SW", color: "#3b82f6",
+    localCmd: 'spec-writerエージェント',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
+    name: "Sentinel",
+    desc: "最終ゲートキーパー。Stage 3/4/5で必ず起動し、Devil's Advocateスタンスで成果物を独立検証。APPROVE/CONDITIONAL/REJECTの3値判定で拒否権を行使。Opus + Read-only権限で確実性を担保",
+    icon: "SE", color: "#dc2626",
+    localCmd: 'sentinelエージェント',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
+    name: "Security Auditor",
+    desc: "OWASP Top 10準拠のセキュリティ監査専任エージェント。SQLインジェクション・XSS・認証認可の不備・依存パッケージの脆弱性・パッケージハルシネーション（AI生成コード特有）を検出。Stage 2/3で起動",
+    icon: "SA", color: "#b91c1c",
+    localCmd: 'security-auditorエージェント',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
+    name: "Refinement Coordinator",
+    desc: "Stage 4（改善）専任。QA/Sentinel指摘事項を体系的に処理し、Critical→Major→Minor順に修正。最大3ラウンドのイテレーション上限を厳守し、4ラウンド目は禁止。失敗時は根本原因（Spec/Design/Implementation）を分類して差し戻し",
+    icon: "RC", color: "#2563eb",
+    localCmd: 'refinement-coordinatorエージェント',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
+    name: "Deploy Manager",
+    desc: "Stage 5（承認・デプロイ）専任。Sentinel承認後にcommit→push→デプロイ確認→使い方ガイド更新→Notion記録→Research Dashboard登録までを一貫実行。Conventional Commit形式で英語コミット",
+    icon: "DM", color: "#059669",
+    localCmd: 'deploy-managerエージェント',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
+    name: "Monitor Observer",
+    desc: "Stage 6（観測・学習）専任。デプロイ後のエラー率・パフォーマンス・使用状況・技術的負債を観測し、次サイクルのStage 0/1へフィードバック。Haiku + Read-only権限で軽量に動作",
+    icon: "MO", color: "#eab308",
+    localCmd: 'monitor-observerエージェント',
+    badge: "エージェント", badgeType: "agent"
+  },
+  {
+    category: "開発・品質・デザイン",
+    sectionType: "agent",
     name: "Engineer Team",
     desc: "開発・技術課題を解決するエンジニアリングチーム。Clean Code / Pragmatic Programmer の原則に基づき、動くだけでなく使われるプロダクトを構築。技術選定の根拠も明確に説明",
     icon: "ET", color: "#00897b",
