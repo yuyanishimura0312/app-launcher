@@ -494,7 +494,7 @@
 
 <div class="header">
   <h1>App Launcher</h1>
-  <p>Claude Code で作成したアプリ一覧</p>
+  <p>Claude Code で作成したアプリ・エージェント一覧 — 7段階循環開発プロセスで運用</p>
   <div class="stats">
     <div class="stat"><span class="stat-dot" style="background:#2e7d32"></span> 公開中</div>
     <div class="stat"><span class="stat-dot" style="background:#e65100"></span> ローカル</div>
@@ -517,6 +517,17 @@
 <script>
 const apps = [
   // --- 公開中の Web アプリ ---
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "App Launcher",
+    desc: "Claude Code で作成した全アプリ・エージェントの統合ランチャー（このページ自体）",
+    icon: "AL", color: "#783c28",
+    url: "https://yuyanishimura0312.github.io/app-launcher/",
+    localCmd: "code ~/projects/apps/app-launcher",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
   {
     category: "公開中の Web アプリ",
     sectionType: "released",
@@ -636,6 +647,28 @@ const apps = [
     hosting: "Vercel",
     badge: "公開", badgeType: "released"
   },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Miratuku Events",
+    desc: "Peatix上位互換のイベント管理+オンデマンド学習プラットフォーム（Phase 1構築済み）",
+    icon: "ME", color: "#0891b2",
+    url: "https://miratuku-events.vercel.app",
+    localCmd: "cd ~/projects/apps/miratuku-events && npm run dev",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Miratuku Community",
+    desc: "ミラツクコミュニティサイト",
+    icon: "MC", color: "#059669",
+    url: "https://miratuku-community.vercel.app",
+    localCmd: "cd ~/projects/apps/miratuku-community && npm run dev",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
+  },
 
   // --- ローカル Web アプリ ---
   {
@@ -732,12 +765,13 @@ const apps = [
     category: "ローカル Web アプリ",
     sectionType: "local",
     name: "Press Release Generator (Streamlit)",
-    desc: "PR Times プレスリリース生成の初期プロトタイプ",
+    desc: "PR Times プレスリリース生成の初期プロトタイプ — PR Generator に統合済み",
     icon: "PG", color: "#9333ea",
     localCmd: "cd ~/projects/apps/press-release-generator && streamlit run app.py --server.port 8501",
     localUrl: "http://localhost:8501",
     hosting: "Streamlit :8501",
-    badge: "ローカル", badgeType: "local"
+    badge: "ローカル", badgeType: "local",
+    defaultArchived: true
   },
   {
     category: "ローカル Web アプリ",
@@ -781,7 +815,8 @@ const apps = [
     localCmd: "cd ~/projects/apps/book-agent && python app.py",
     localUrl: "http://localhost:5300",
     hosting: "Flask",
-    badge: "ローカル", badgeType: "local"
+    badge: "ローカル", badgeType: "local",
+    defaultArchived: true
   },
   {
     category: "ローカル Web アプリ",
@@ -810,12 +845,62 @@ const apps = [
     category: "ローカル Web アプリ",
     sectionType: "local",
     name: "Lecture Video Editor",
-    desc: "講義動画自動編集システム（無音カット・字幕生成・スライド同期）",
+    desc: "講義動画自動編集システム（無音カット・字幕生成・スライド同期）Phase 1-4実装済み",
     icon: "LV", color: "#b45309",
     url: "https://ensures-independently-speed-yard.trycloudflare.com",
     localCmd: "cd ~/projects/apps/lecture-video-editor && python app.py",
     localNote: "PW: miratuku2026",
     hosting: "Cloudflare Tunnel",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Meeting Scheduler",
+    desc: "MTG日程確定後にZoom会議を自動発行し、参加者にカレンダー招待メールを送信",
+    icon: "MS", color: "#0d9488",
+    localCmd: "cd ~/projects/apps/meeting-scheduler && python app.py",
+    hosting: "Python",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Email Attachment Finder",
+    desc: "Mac Mailの添付ファイルを検索するWebアプリ",
+    icon: "EA", color: "#f59e0b",
+    localCmd: "cd ~/projects/apps/email-attachment-finder && npm run dev",
+    hosting: "Next.js",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Mail Reply Assistant",
+    desc: "Mac Mailの受信メールを自動で優先度判定し、ワンクリックで返信ドラフトを生成",
+    icon: "MR", color: "#7c3aed",
+    localCmd: "cd ~/projects/apps/mail-reply-assistant && npm run dev",
+    hosting: "Next.js",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Keyword Analyzer",
+    desc: "esse-sense.com の検索キーワードを分析するダッシュボード",
+    icon: "KA", color: "#0891b2",
+    localCmd: "cd ~/projects/apps/keyword-analyzer && npm run dev",
+    hosting: "Next.js",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Researcher Career Analyzer",
+    desc: "esse-sense研究者DBから論文情報を取得し、研究者のキャリアを前期・中期・後期で分析",
+    icon: "RC", color: "#475569",
+    localCmd: "cd ~/projects/apps/researcher-career-analyzer && python app.py",
+    hosting: "Python",
     badge: "ローカル", badgeType: "local"
   },
 
@@ -848,18 +933,44 @@ const apps = [
     localCmd: "cd ~/projects/apps/contract-generator && python main.py",
     badge: "CLI", badgeType: "cli"
   },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Calendar Tools",
+    desc: "iCalカレンダー読み書きのSwiftスクリプト群（cal-read / cal-write / cal-list / cal-free / cal-delete）",
+    icon: "CT", color: "#0d9488",
+    localCmd: "~/tools/cal-list",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Plaud Integration",
+    desc: "Plaud録音デバイスAPI接続。一覧取得・文字起こし・要約取得",
+    icon: "PL", color: "#dc2626",
+    localCmd: "python ~/tools/plaud.py",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Google Books Search",
+    desc: "Google Books APIを使った書籍検索・書誌情報取得",
+    icon: "GB", color: "#2563eb",
+    localCmd: "python ~/tools/google-books.py",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Deep Research Script",
+    desc: "ディープリサーチを実行するシェルスクリプト",
+    icon: "DR", color: "#6d28d9",
+    localCmd: "~/tools/deep-research.sh",
+    badge: "CLI", badgeType: "cli"
+  },
 
   // --- その他のツール ---
-  {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
-    name: "Expense Checker",
-    desc: "ブラウザベースの経費チェックツール（個人利用フラグ付き）",
-    icon: "EC", color: "#ef4444",
-    localCmd: "cd ~/projects/apps/expense-checker && open index.html",
-    hosting: "HTML",
-    badge: "ローカル", badgeType: "local"
-  },
   {
     category: "CLI ツール",
     sectionType: "cli",
@@ -1211,15 +1322,6 @@ const apps = [
     desc: "Minto Pyramid + SCQA フレームワークで提案書・企画書を構造化。結論ファーストのエグゼクティブサマリー → 背景・課題 → 提案内容 → 実施計画の順で、クライアント提出品質のドラフトを生成",
     icon: "PD", color: "#9333ea",
     localCmd: '/proposal 概要',
-    badge: "エージェント", badgeType: "agent"
-  },
-  {
-    category: "コンテンツ・ユーティリティ",
-    sectionType: "agent",
-    name: "New App",
-    desc: "新規アプリプロジェクトのフルセットアップ。ディレクトリ作成 / README / .gitignore / git init / GitHub リポジトリ作成 / Notion 登録を自動実行",
-    icon: "NA", color: "#10b981",
-    localCmd: '/new-app アプリ名',
     badge: "エージェント", badgeType: "agent"
   },
   {
