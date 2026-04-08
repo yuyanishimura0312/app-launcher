@@ -1240,14 +1240,15 @@ const apps = [
   },
 
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Qualitative Research Tool",
     desc: "質的研究のためのコーディング・分析支援ツール（GTA対応：オープン/軸足/選択コーディング）",
     icon: "QR", color: "#6d28d9",
+    url: "https://qualitative-research-tool.vercel.app",
     localCmd: "cd ~/projects/apps/qualitative-research-tool && npm run dev",
-    hosting: "Next.js 15 + Drizzle ORM + TipTap",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel + Turso",
+    badge: "公開", badgeType: "released"
   },
   {
     category: "ローカル Web アプリ",
