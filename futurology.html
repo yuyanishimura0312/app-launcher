@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来学データ — App Launcher</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #faf8f5;
+    --panel: #fff;
+    --text: #1a1a1a;
+    --text-muted: #6b635b;
+    --text-secondary: #44403c;
+    --border: #e8e2da;
+    --accent: #783c28;
+    --accent-light: #c87864;
+    --warm: #f3efe9;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .header {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px 24px 16px;
+  }
+  .breadcrumb {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  .lead {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    max-width: 820px;
+  }
+  .stats {
+    display: flex;
+    gap: 18px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .stat strong {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  /* Section card */
+  .section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .section p {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .section p + p { margin-top: 8px; }
+
+  /* Download bar */
+  .downloads {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background 0.15s;
+    border: none;
+    cursor: pointer;
+  }
+  .dl-btn:hover { background: #4a2418; }
+  .dl-btn.secondary {
+    background: #fff;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+  .dl-btn.secondary:hover { background: var(--warm); }
+  .dl-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.85;
+    margin-left: 4px;
+  }
+
+  /* 18大項目 grid */
+  .dai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .dai-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .dai-card:hover {
+    background: var(--warm);
+    border-left-color: var(--accent-light);
+    transform: translateX(2px);
+  }
+  .dai-no {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .dai-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .dai-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    display: flex;
+    gap: 12px;
+  }
+  .dai-meta .badge {
+    background: var(--warm);
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  /* Detail panel (modal) */
+  .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.45);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 760px;
+    width: 100%;
+    max-height: calc(100vh - 64px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 48px rgba(26,26,26,0.18);
+  }
+  .modal-header {
+    padding: 18px 22px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm);
+  }
+  .modal-no {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 2px;
+  }
+  .modal-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .modal-close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.06); }
+  .modal-body {
+    padding: 18px 22px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .chu-block {
+    margin-bottom: 18px;
+  }
+  .chu-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+  }
+  .chu-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .sho-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+  }
+  .sho-list li {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 2px 0 2px 14px;
+    position: relative;
+  }
+  .sho-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--accent-light);
+    font-weight: 700;
+  }
+  .card-list {
+    margin-top: 8px;
+  }
+  .card-row {
+    background: var(--warm);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+  .card-row .nen {
+    display: inline-block;
+    background: #fff;
+    color: var(--text-muted);
+    padding: 0 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .card-row .src {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .empty-msg {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+    padding: 24px;
+  }
+
+  /* Theme color band for dai-card */
+  .theme-band {
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent-light);
+    padding: 1px 6px;
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .header { padding: 18px 14px 12px; }
+    h1 { font-size: 18px; }
+    .lead { font-size: 12px; }
+    .container { padding: 0 14px 32px; }
+    .section { padding: 16px; }
+    .dai-grid { grid-template-columns: 1fr; }
+    .modal-bg { padding: 12px 8px; }
+    .modal-title { font-size: 16px; }
+    .modal-body { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="breadcrumb"><a href="index.html">App Launcher</a> &rsaquo; 未来学データ</div>
+  <h1>未来学データ・未来学エージェント</h1>
+  <p class="lead">
+    一般社団法人ミラツクが約30冊の未来予測・未来学関連書籍を読書会形式で読み解き、個別予測を「カード」として抽出。
+    18の大項目と10のマップテーマに整理した成果（2018-2020年）。本ページは原データを格納し、ダウンロード可能にする。
+    Claude Code から <code style="background:#eee;padding:1px 5px;border-radius:3px">/futurology</code>
+    で未来学エージェントを呼び出すと、本データを参照した質疑応答ができる。
+  </p>
+  <div class="stats">
+    <div class="stat"><strong>10</strong>マップテーマ</div>
+    <div class="stat"><strong>18</strong>大項目</div>
+    <div class="stat"><strong id="card-count">…</strong>カード</div>
+    <div class="stat"><strong id="book-count">…</strong>書籍</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- データダウンロード -->
+  <div class="section">
+    <div class="section-title">未来学データ（格納済）</div>
+    <p>
+      ミラツクの原データを app-launcher リポジトリに格納し、JSON / テキスト形式でダウンロード可能。
+      JSON は18大項目の階層構造を完全保持しており、未来学エージェント・分析スクリプト・他のアプリから参照可能。
+      テキストファイルは人間可読の整形版で、各カードの原文と出典書籍コードを併記。
+    </p>
+    <div class="downloads">
+      <a href="data/futurology/futurology_data.json" download class="dl-btn">
+        JSON ダウンロード <span class="dl-meta">構造化データ</span>
+      </a>
+      <a href="data/futurology/futurology_data.txt" download class="dl-btn secondary">
+        テキスト ダウンロード <span class="dl-meta">人間可読</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 未来学エージェント -->
+  <div class="section">
+    <div class="section-title">未来学エージェント（Claude Code スキル）</div>
+    <p>
+      Claude Code から <code style="background:var(--warm);padding:1px 6px;border-radius:3px;font-family:monospace">/futurology</code>
+      コマンドで起動。本ページに格納されている JSON データを読み込んだ上で、未来予測カードに基づく質問応答・分析・引用ができる。
+      たとえば「2030年代の人口動態に関する予測を整理して」「ロボット関連のカードと出典書籍を一覧化して」といった依頼に対し、
+      原典のカード本文と書籍コードを示しながら答える。
+    </p>
+    <p style="margin-top:10px">
+      スキル定義: <code style="background:var(--warm);padding:1px 6px;border-radius:3px;font-family:monospace">~/.claude/skills/futurology/</code><br>
+      データソース: <code style="background:var(--warm);padding:1px 6px;border-radius:3px;font-family:monospace">~/projects/apps/app-launcher/data/futurology/futurology_data.json</code>
+    </p>
+  </div>
+
+  <!-- 18大項目 -->
+  <div class="section">
+    <div class="section-title">18大項目（クリックで詳細）</div>
+    <p>各大項目はマップテーマ・中項目・個別予測カード・出典書籍に紐づく。クリックで展開。</p>
+    <div id="dai-grid" class="dai-grid"></div>
+  </div>
+
+  <!-- 出典書籍 -->
+  <div class="section">
+    <div class="section-title">主な出典書籍</div>
+    <p>抽出元の主要書籍と各書籍に紐づくカード件数。書籍コードはカード詳細にも表示される。</p>
+    <div id="book-list" style="margin-top:14px;font-size:12px;color:var(--text-secondary);line-height:1.9"></div>
+  </div>
+
+</div>
+
+<!-- 詳細モーダル -->
+<div id="modal-bg" class="modal-bg" onclick="if(event.target.id==='modal-bg')closeModal()">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closeModal()" aria-label="閉じる">&times;</button>
+    <div class="modal-header">
+      <div class="modal-no" id="m-no"></div>
+      <div class="modal-title" id="m-title"></div>
+      <div class="modal-meta" id="m-meta"></div>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+let DATA = null;
+
+async function loadData() {
+  try {
+    const res = await fetch('data/futurology/futurology_data.json?v=' + Date.now());
+    DATA = await res.json();
+    document.getElementById('card-count').textContent = DATA.stats.cards_count;
+    // Count distinct primary book codes (1A-10A + 1D-7D = 17)
+    document.getElementById('book-count').textContent = DATA.stats.books_count || Object.keys(DATA.books || {}).length;
+    renderDaiGrid();
+    renderBookList();
+  } catch (e) {
+    document.getElementById('dai-grid').innerHTML =
+      '<p style="color:var(--text-muted);font-size:12px">データ読み込み失敗: ' + e.message + '</p>';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderDaiGrid() {
+  const grid = document.getElementById('dai-grid');
+  grid.innerHTML = '';
+  DATA.dai_items.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'dai-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `第${d.no}項 ${d.name} の詳細を開く`);
+    card.innerHTML = `
+      <div class="dai-no">第${d.no}項</div>
+      <div class="dai-name">${escapeHtml(d.name)}</div>
+      <div class="dai-meta">
+        <span class="theme-band">${escapeHtml(d.mapTheme)}</span>
+        <span class="badge">${d.cardCount} カード</span>
+        <span class="badge">${(d.chuFromYosoSheet || []).length} 中項目</span>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(d));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal(d);
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+function renderBookList() {
+  // Hardcoded mapping for clean display
+  const phase1 = [
+    ['1A', '2100年の科学ライフ', 'ミチオ・カク'],
+    ['2A', 'LIFE SHIFT', 'リンダ・グラットン'],
+    ['3A', 'ワーク・シフト', 'リンダ・グラットン'],
+    ['4A', '楽観主義者の未来予測 上', 'ピーター・ディアマンディス'],
+    ['5A', '楽観主義者の未来予測 下', 'ピーター・ディアマンディス'],
+    ['6A', '100年予測', 'ジョージ・フリードマン'],
+    ['7A', 'シンギュラリティは近い', 'レイ・カーツワイル'],
+    ['8A', '未来化する社会', 'アレック・ロス'],
+    ['9A', '未来企業', 'リンダ・ヒル他'],
+    ['10A', '地球に残された時間', 'レスター・ブラウン'],
+  ];
+  const phase2 = [
+    ['1D', 'シャルマの未来予測', 'ルチル・シャルマ'],
+    ['2D', 'ザ・セカンド・マシン・エイジ', 'ブリニョルフソン他'],
+    ['3D', 'サイエンス・ネクスト', 'NPR'],
+    ['4D', '拡張の世紀', 'ブレット・キング'],
+    ['5D', '未来の食卓 2035', 'ジョシュ・シェフナー'],
+    ['6D', 'デジタルエイプ', 'ナイジェル・シャドボルト'],
+    ['7D', 'フューチャー・オブ・マインド', 'ミチオ・カク'],
+  ];
+  const counts = DATA.book_card_counts || {};
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px">';
+  [...phase1, ...phase2].forEach(([code, title, author]) => {
+    const n = counts[code] || 0;
+    html += `<div style="padding:6px 10px;background:var(--warm);border-radius:5px">
+      <strong style="color:var(--accent)">${code}</strong>
+      <span style="margin-left:8px">${escapeHtml(title)}</span>
+      <span style="color:var(--text-muted);margin-left:4px">/ ${escapeHtml(author)}</span>
+      <span style="float:right;color:var(--text-muted);font-size:11px">${n}件</span>
+    </div>`;
+  });
+  html += '</div>';
+  document.getElementById('book-list').innerHTML = html;
+}
+
+function openModal(d) {
+  document.getElementById('m-no').textContent = `第${d.no}項`;
+  document.getElementById('m-title').textContent = d.name;
+  document.getElementById('m-meta').innerHTML = `
+    <span class="theme-band" style="background:var(--accent)">${escapeHtml(d.mapTheme)}</span>
+    <span>カード ${d.cardCount}件</span>
+    <span>中項目 ${(d.chuFromYosoSheet || []).length}件</span>
+  `;
+  let body = '';
+  // 中項目構造
+  if (d.chuFromYosoSheet && d.chuFromYosoSheet.length > 0) {
+    body += '<div style="margin-bottom:18px"><div class="section-title" style="font-size:11px;margin-bottom:10px">中項目構造（未来予想シート由来）</div>';
+    d.chuFromYosoSheet.forEach(c => {
+      body += `<div class="chu-block">
+        <div class="chu-label">${escapeHtml(c.label)}</div>
+        <div class="chu-name">${escapeHtml(c.chuKomoku)}</div>`;
+      if (c.shoKomoku && c.shoKomoku.length > 0) {
+        body += '<ul class="sho-list">';
+        c.shoKomoku.forEach(s => { body += `<li>${escapeHtml(s)}</li>`; });
+        body += '</ul>';
+      }
+      body += '</div>';
+    });
+    body += '</div>';
+  }
+
+  // カード一覧
+  if (d.cardsByChu && Object.keys(d.cardsByChu).length > 0) {
+    body += '<div><div class="section-title" style="font-size:11px;margin-bottom:10px">個別予測カード</div>';
+    Object.entries(d.cardsByChu).forEach(([chu, cards]) => {
+      body += `<div style="margin-bottom:14px">
+        <div class="chu-label">${escapeHtml(chu)} (${cards.length}件)</div>
+        <div class="card-list">`;
+      cards.forEach(card => {
+        body += `<div class="card-row">`;
+        if (card.nen) body += `<span class="nen">${escapeHtml(card.nen)}</span>`;
+        body += escapeHtml(card.summary);
+        if (card.sources && card.sources.length > 0) {
+          card.sources.forEach(src => {
+            if (src.text) {
+              body += `<span class="src">└ <strong>${escapeHtml(src.book || '?')}</strong> ${escapeHtml(src.text)}</span>`;
+            }
+          });
+        }
+        body += '</div>';
+      });
+      body += '</div></div>';
+    });
+    body += '</div>';
+  } else {
+    body += '<p class="empty-msg">カードデータがありません</p>';
+  }
+
+  document.getElementById('m-body').innerHTML = body;
+  document.getElementById('m-body').scrollTop = 0;
+  document.getElementById('modal-bg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+loadData();
+</script>
+</body>
+</html>
