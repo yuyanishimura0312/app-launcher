@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開発環境 — App Launcher</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #faf8f5;
+    color: #1a1a1a;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    line-height: 1.6;
+  }
+  .header {
+    padding: 32px 24px 16px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .header .breadcrumb {
+    font-size: 12px;
+    color: #9a918a;
+    margin-bottom: 8px;
+  }
+  .header .breadcrumb a {
+    color: #783c28;
+    text-decoration: none;
+  }
+  .header .breadcrumb a:hover { text-decoration: underline; }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #783c28;
+    letter-spacing: -0.3px;
+  }
+  .header p {
+    font-size: 13px;
+    color: #6b635b;
+    margin-top: 6px;
+  }
+  .meta-bar {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 12px;
+    color: #5c534b;
+  }
+  .meta-bar .meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meta-bar .meta-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2e7d32;
+  }
+  .nav-tabs {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 8px 24px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .nav-tabs a {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #e8e2da;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #5c534b;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .nav-tabs a:hover {
+    border-color: #c87864;
+    color: #783c28;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+  }
+  .section {
+    margin-bottom: 32px;
+    scroll-margin-top: 16px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #783c28;
+    letter-spacing: 0.3px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #e8e2da;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .num {
+    color: #c87864;
+    font-weight: 600;
+  }
+  .section-desc {
+    font-size: 12px;
+    color: #6b635b;
+    margin-bottom: 14px;
+    margin-top: -8px;
+  }
+
+  /* Card list */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e8e2da;
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: all 0.15s;
+  }
+  .card:hover {
+    border-color: #d4c8bb;
+    box-shadow: 0 1px 4px rgba(120, 60, 40, 0.05);
+  }
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .card-version, .card-port {
+    font-size: 11px;
+    color: #9a918a;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: #6b635b;
+    margin-top: 2px;
+  }
+  .card-meta {
+    font-size: 11px;
+    color: #9a918a;
+    margin-top: 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    word-break: break-all;
+  }
+  .card a {
+    color: #783c28;
+    text-decoration: none;
+  }
+  .card a:hover { text-decoration: underline; }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #e8e2da;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0eae3;
+    vertical-align: top;
+  }
+  th {
+    background: #f8f4ee;
+    font-size: 11px;
+    font-weight: 600;
+    color: #5c534b;
+    letter-spacing: 0.3px;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; color: #6b635b; }
+  td a { color: #783c28; text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+
+  .badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .badge-running { background: #e8f5e9; color: #2e7d32; }
+  .badge-cloud { background: #e3f2fd; color: #0277bd; }
+  .badge-local { background: #fff3e0; color: #e65100; }
+  .badge-cli { background: #f5f5f4; color: #5c534b; }
+
+  @media (max-width: 600px) {
+    .header { padding: 20px 16px 12px; }
+    .container { padding: 0 16px 32px; }
+    .nav-tabs { padding: 4px 16px 12px; }
+    .meta-bar { padding: 0 16px 8px; }
+    table { font-size: 12px; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="breadcrumb"><a href="./">← App Launcher</a></div>
+  <h1>開発環境</h1>
+  <p>Claude Code で運用している開発環境・サーバー・サービスの全体像</p>
+</div>
+
+<div class="meta-bar">
+  <div class="meta"><span class="meta-dot"></span> 最終更新: 2026-04-08</div>
+  <div class="meta">マシン: MacBook Air M2 (Apple Silicon)</div>
+  <div class="meta">OS: macOS 26.2</div>
+</div>
+
+<div class="nav-tabs">
+  <a href="#hardware">ハードウェア・OS</a>
+  <a href="#runtime">言語・ランタイム</a>
+  <a href="#cli">開発CLI</a>
+  <a href="#services">開発サービス</a>
+  <a href="#local-servers">ローカルサーバー</a>
+  <a href="#cloud">クラウド本番</a>
+  <a href="#datastore">データストア</a>
+  <a href="#external-api">外部API</a>
+  <a href="#mcp">MCPサーバー</a>
+  <a href="#claude">Claude Code環境</a>
+</div>
+
+<div class="container">
+
+  <!-- 1. ハードウェア・OS -->
+  <section class="section" id="hardware">
+    <div class="section-title"><span class="num">01</span> ハードウェア・OS</div>
+    <table>
+      <tbody>
+        <tr><th>マシン</th><td>MacBook Air M2 (Apple Silicon, arm64)</td></tr>
+        <tr><th>OS</th><td>macOS 26.2 (Build 25C56)</td></tr>
+        <tr><th>シェル</th><td>bash 3.2.57 (Apple既定)</td></tr>
+        <tr><th>パッケージ管理</th><td>Homebrew 5.1.5</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2. 言語・ランタイム -->
+  <section class="section" id="runtime">
+    <div class="section-title"><span class="num">02</span> 言語・ランタイム</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><span class="card-name">Node.js</span><span class="card-version">v25.8.2</span></div>
+        <div class="card-desc">Next.js, TypeScript, slide-generator 等</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Python</span><span class="card-version">3.13.12</span></div>
+        <div class="card-desc">Flask アプリ全般、データ収集スクリプト</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Git</span><span class="card-version">2.50.1</span></div>
+        <div class="card-desc">バージョン管理 (Apple Git-155)</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Swift</span><span class="card-version">macOS同梱</span></div>
+        <div class="card-desc">~/tools/ のカレンダーCLI (cal-read/write/list)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 開発CLI -->
+  <section class="section" id="cli">
+    <div class="section-title"><span class="num">03</span> 開発CLI・ターミナルツール</div>
+    <table>
+      <thead><tr><th>ツール</th><th>バージョン</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>GitHub CLI (<code>gh</code>)</td><td class="mono">2.89.0</td><td>リポジトリ作成・PR・issue管理</td></tr>
+        <tr><td>Claude Code</td><td class="mono">CLI</td><td>本環境のメインドライバ</td></tr>
+        <tr><td>tmux workspace</td><td class="mono">~/tools/tmux-workspace.sh</td><td>4セッション並列 (research/writing/admin/dev)</td></tr>
+        <tr><td>Plaud CLI</td><td class="mono">~/tools/plaud</td><td>録音文字起こし・要約取得</td></tr>
+        <tr><td>cal-read/write/list</td><td class="mono">Swift</td><td>iCalイベント操作</td></tr>
+        <tr><td>AWS CLI</td><td class="mono">profile: esse-sense</td><td>東京リージョン (ap-northeast-1)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 開発サービス -->
+  <section class="section" id="services">
+    <div class="section-title"><span class="num">04</span> 開発に使っているサービス・SaaS</div>
+    <p class="section-desc">ホスティング、CI/CD、認証・課金、コラボレーションに使う外部サービス。</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><span class="card-name">GitHub</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">ソースコードホスティング・Pages配信</div>
+        <div class="card-meta">user: yuyanishimura0312</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">GitHub Pages</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">App Launcher / Research Dashboard 配信</div>
+        <div class="card-meta">yuyanishimura0312.github.io</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Vercel</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">Next.js 本番ホスティング (miratuku-team-hub等)</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">AWS</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">esse-sense.com 本番 (ALB + ASG + EC2)</div>
+        <div class="card-meta">account: 825855501245 / ap-northeast-1</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Cloudflare</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">Workers / DNS / Future Insight Workspace</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Turso (libSQL)</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">miratuku-team-hub の本番DB</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Firebase</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">Future Insight Workspace のバックエンド</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Notion</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">アプリ一覧マスター・レポート保管 (「Claude code」配下)</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Slack (ミラツク)</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">通知・レビュー・進捗共有</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Google Workspace</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">Drive / Docs / Sheets / Calendar / Gmail</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">SendGrid</span><span class="badge badge-cloud">クラウド</span></div>
+        <div class="card-desc">メルマガ・トランザクションメール配信</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Local by Flywheel</span><span class="badge badge-local">ローカル</span></div>
+        <div class="card-desc">WordPress 開発環境 (nginx + mysql + mailpit)</div>
+        <div class="card-meta">port: 4000, 10000-10004</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-name">Dropbox</span><span class="badge badge-local">同期</span></div>
+        <div class="card-desc">バックアップ・ファイル共有</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. ローカルサーバー -->
+  <section class="section" id="local-servers">
+    <div class="section-title"><span class="num">05</span> ローカル開発サーバー（実行中ポート）</div>
+    <p class="section-desc">この Mac 上で常駐している Web アプリ。すべて 127.0.0.1 限定。</p>
+    <table>
+      <thead><tr><th>Port</th><th>アプリ</th><th>スタック</th><th>ステータス</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">4000</td><td>Local by Flywheel</td><td>WordPress 開発</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">5065</td><td><a href="http://localhost:5065" target="_blank">mail-reply-assistant</a></td><td>Next.js 16.2.2</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">5200</td><td><a href="http://localhost:5200" target="_blank">miratuku-team-hub</a></td><td>Next.js 16.2.2</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">5210</td><td><a href="http://localhost:5210" target="_blank">researcher-profiler</a></td><td>Flask + SQLite</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">5300</td><td><a href="http://localhost:5300" target="_blank">dev-status</a></td><td>Python</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">5400</td><td><a href="http://localhost:5400" target="_blank">slide-generator</a></td><td>Node.js</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">5410</td><td><a href="http://localhost:5410" target="_blank">meeting-scheduler</a></td><td>Python</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">8080</td><td><a href="http://localhost:8080" target="_blank">lecture-video-editor</a></td><td>Python</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">8891</td><td><a href="http://localhost:8891" target="_blank">miraian-guide</a></td><td>Python</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">8899</td><td><a href="http://localhost:8899" target="_blank">emerging-future-landing</a></td><td>Python</td><td><span class="badge badge-running">稼働</span></td></tr>
+        <tr><td class="mono">8900</td><td><a href="http://localhost:8900" target="_blank">miraian-guide (別)</a></td><td>Python</td><td><span class="badge badge-running">稼働</span></td></tr>
+      </tbody>
+    </table>
+    <p class="section-desc" style="margin-top:10px;">セキュリティ: すべてのローカルFlaskアプリは <code>restrict_to_localhost</code> ミドルウェアで非ループバックを 403 拒否。SSRFガード・2MB上限・HTTPS強制を実装。</p>
+  </section>
+
+  <!-- 6. クラウド本番 -->
+  <section class="section" id="cloud">
+    <div class="section-title"><span class="num">06</span> クラウド本番環境</div>
+    <table>
+      <thead><tr><th>ホスト</th><th>サービス</th><th>URL / 場所</th></tr></thead>
+      <tbody>
+        <tr><td>GitHub Pages</td><td>App Launcher</td><td><a href="https://yuyanishimura0312.github.io/app-launcher/" target="_blank">yuyanishimura0312.github.io/app-launcher/</a></td></tr>
+        <tr><td>GitHub Pages</td><td>Research Dashboard</td><td><a href="https://yuyanishimura0312.github.io/research-dashboard/" target="_blank">yuyanishimura0312.github.io/research-dashboard/</a></td></tr>
+        <tr><td>Vercel</td><td>miratuku-team-hub</td><td><a href="https://miratuku-team-hub.vercel.app" target="_blank">miratuku-team-hub.vercel.app</a></td></tr>
+        <tr><td>AWS</td><td>esse-sense.com</td><td>ALB + ASG + EC2 (account 825855501245, ap-northeast-1)</td></tr>
+        <tr><td>Cloudflare Workers</td><td>Future Insight Workspace</td><td>FIW Worker</td></tr>
+        <tr><td>その他</td><td>各種Webアプリ</td><td>app-launcher の「公開中」セクション参照</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 7. データストア -->
+  <section class="section" id="datastore">
+    <div class="section-title"><span class="num">07</span> データストア</div>
+    <table>
+      <thead><tr><th>種別</th><th>用途</th><th>場所</th></tr></thead>
+      <tbody>
+        <tr><td>SQLite</td><td>各 Flask アプリのローカル蓄積</td><td>各プロジェクト直下 (researcher.db 等)</td></tr>
+        <tr><td>Turso (libSQL)</td><td>miratuku-team-hub 本番DB</td><td>クラウド</td></tr>
+        <tr><td>MySQL</td><td>WordPress 開発</td><td>Local by Flywheel 同梱</td></tr>
+        <tr><td>Firebase Firestore</td><td>Future Insight Workspace</td><td>クラウド</td></tr>
+        <tr><td>Notion API</td><td>ナレッジベース・アプリ一覧マスター</td><td>クラウド</td></tr>
+        <tr><td>JSON ファイル</td><td>PESTLE日次収集データ等</td><td>future-insight-app/data/</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 8. 外部API -->
+  <section class="section" id="external-api">
+    <div class="section-title"><span class="num">08</span> 外部API・連携</div>
+    <p class="section-desc">認証情報はすべて macOS キーチェーン保管。コミットされる .env ファイルには含めない。</p>
+    <table>
+      <thead><tr><th>サービス</th><th>キーチェーン名</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>Anthropic Claude API</td><td class="mono">ANTHROPIC_API_KEY</td><td>全 Claude 呼び出し</td></tr>
+        <tr><td>Brave Search</td><td class="mono">BRAVE_API_KEY</td><td>Web 検索 (フォールバック: DuckDuckGo)</td></tr>
+        <tr><td>Google Books</td><td class="mono">GOOGLE_BOOKS_API_KEY</td><td>書誌情報取得</td></tr>
+        <tr><td>SendGrid</td><td class="mono">(キーチェーン)</td><td>メール配信</td></tr>
+        <tr><td>Plaud</td><td class="mono">(plaud設定)</td><td>録音文字起こしAPI</td></tr>
+        <tr><td>Semantic Scholar</td><td>不要</td><td>論文・著者・引用</td></tr>
+        <tr><td>researchmap</td><td>不要</td><td>研究者プロファイル</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9. MCP -->
+  <section class="section" id="mcp">
+    <div class="section-title"><span class="num">09</span> MCP サーバー</div>
+    <p class="section-desc">Claude Code から呼び出せるツール群（Model Context Protocol）。</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-name">filesystem</div>
+        <div class="card-desc">ファイル操作・ディレクトリ走査</div>
+      </div>
+      <div class="card">
+        <div class="card-name">github</div>
+        <div class="card-desc">issue / PR / コード検索 / リポジトリ管理</div>
+      </div>
+      <div class="card">
+        <div class="card-name">notion</div>
+        <div class="card-desc">ページ作成・検索・更新</div>
+      </div>
+      <div class="card">
+        <div class="card-name">slack</div>
+        <div class="card-desc">メッセージ送受信・チャンネル検索</div>
+      </div>
+      <div class="card">
+        <div class="card-name">playwright</div>
+        <div class="card-desc">ブラウザ操作・スクレイピング・スクリーンショット</div>
+      </div>
+      <div class="card">
+        <div class="card-name">fetch</div>
+        <div class="card-desc">HTTP / HTML / JSON / Markdown / YouTube字幕</div>
+      </div>
+      <div class="card">
+        <div class="card-name">semantic-scholar</div>
+        <div class="card-desc">学術論文・著者・引用関係</div>
+      </div>
+      <div class="card">
+        <div class="card-name">paper-search</div>
+        <div class="card-desc">arXiv / PubMed / bioRxiv / Crossref 横断</div>
+      </div>
+      <div class="card">
+        <div class="card-name">google-workspace</div>
+        <div class="card-desc">Drive / Gmail / Calendar / Sheets / Docs / Forms / Tasks</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Claude Code -->
+  <section class="section" id="claude">
+    <div class="section-title"><span class="num">10</span> Claude Code 環境</div>
+    <table>
+      <tbody>
+        <tr><th>モデル</th><td>Claude Opus 4.6 (1M context) — <code>claude-opus-4-6[1m]</code></td></tr>
+        <tr><th>知識カットオフ</th><td>2025年5月</td></tr>
+        <tr><th>カスタムサブエージェント</th><td>19種 (process-orchestrator / spec-writer / sentinel / qa-* / ux-* / security-auditor 等)</td></tr>
+        <tr><th>カスタムスラッシュコマンド</th><td>42種 (/research, /engineer, /design, /qa-review, /ux-review, /best-practice 等)</td></tr>
+        <tr><th>永続記憶</th><td>36件のメモリ (~/.claude/projects/-Users-nishimura-/memory/)</td></tr>
+        <tr><th>開発プロセス</th><td>7段階循環モデル (Spec → Design → Impl → QA → Refine → Deploy → Observe)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  // Smooth scroll for nav links
+  document.querySelectorAll('.nav-tabs a').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
