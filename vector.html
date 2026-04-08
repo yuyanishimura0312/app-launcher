@@ -331,18 +331,22 @@ function renderChart() {
   }
 
   // Build one trace per group for legend & color
-  const traces = groups.map((grp, gi) => {
+  const traces = [];
+  groups.forEach((grp, gi) => {
     const color = colors[gi % colors.length];
-    const opacity = (currentFilter !== "all" && currentFilter !== grp) ? 0.06 : 0.88;
+    const isFiltered = currentFilter !== "all" && currentFilter !== grp;
+    const opacity = isFiltered ? 0.06 : 0.88;
 
-    const grpPts = (currentFilter !== "all" && currentFilter !== grp)
+    const grpPts = isFiltered
       ? allPoints.filter(p => p[field] === grp)
       : points.filter(p => p[field] === grp);
 
-    return {
+    // Marker trace
+    traces.push({
       type: "scatter3d",
       mode: "markers",
       name: grp,
+      legendgroup: grp,
       x: grpPts.map(p => p.x),
       y: grpPts.map(p => p.y),
       z: grpPts.map(p => p.z),
@@ -365,7 +369,37 @@ function renderChart() {
         opacity: opacity,
         line: { width: 0.3, color: "rgba(255,255,255,0.3)" }
       },
-    };
+    });
+
+    // Line trace: connect points to group centroid
+    if (grpPts.length > 1) {
+      const cx = grpPts.reduce((s, p) => s + p.x, 0) / grpPts.length;
+      const cy = grpPts.reduce((s, p) => s + p.y, 0) / grpPts.length;
+      const cz = grpPts.reduce((s, p) => s + p.z, 0) / grpPts.length;
+
+      // Build line segments: centroid → point → null (to break line)
+      const lx = [], ly = [], lz = [];
+      grpPts.forEach(p => {
+        lx.push(cx, p.x, null);
+        ly.push(cy, p.y, null);
+        lz.push(cz, p.z, null);
+      });
+
+      traces.push({
+        type: "scatter3d",
+        mode: "lines",
+        name: grp,
+        legendgroup: grp,
+        showlegend: false,
+        x: lx, y: ly, z: lz,
+        hoverinfo: "skip",
+        line: {
+          color: color,
+          width: 1.5,
+        },
+        opacity: isFiltered ? 0.03 : 0.25,
+      });
+    }
   });
 
   const axisStyle = {
