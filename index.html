@@ -1239,6 +1239,47 @@ const apps = [
     badge: "ローカル", badgeType: "local"
   },
 
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Qualitative Research Tool",
+    desc: "質的研究のためのコーディング・分析支援ツール（GTA対応：オープン/軸足/選択コーディング）",
+    icon: "QR", color: "#6d28d9",
+    localCmd: "cd ~/projects/apps/qualitative-research-tool && npm run dev",
+    hosting: "Next.js 15 + Drizzle ORM + TipTap",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Schedule Checker",
+    desc: "日程候補テキストをmacOSカレンダーと照合し、空き状況を一覧表示",
+    icon: "SC", color: "#0891b2",
+    localCmd: "cd ~/projects/apps/schedule-checker && npm run dev",
+    hosting: "ローカルWebアプリ",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "IR Collector",
+    desc: "EDINET APIから上場企業約4,000社のIR情報（有報・四半期報告書）を自動収集",
+    icon: "IR", color: "#1e40af",
+    localCmd: "cd ~/projects/apps/ir-collector && python main.py",
+    hosting: "Python + EDINET API v2 + SQLite",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Sangaku Matcher",
+    desc: "大学技術シーズと企業IR情報からバックキャストで産学連携候補を推定（Stage 0完了）",
+    icon: "SM", color: "#92400e",
+    localCmd: "cd ~/projects/apps/sangaku-matcher",
+    hosting: "設計段階",
+    badge: "開発中", badgeType: "dev"
+  },
+
   // --- CLI ツール ---
   {
     category: "CLI ツール",
