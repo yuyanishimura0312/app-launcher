@@ -459,7 +459,8 @@ function renderChart() {
 
   const chartEl = document.getElementById("chart");
 
-  Plotly.react(chartEl, traces, layout, config).then(() => {
+  Plotly.purge(chartEl);
+  Plotly.newPlot(chartEl, traces, layout, config).then(() => {
     chartEl.on("plotly_click", function(eventData) {
       if (!eventData || !eventData.points.length) return;
       const pt = eventData.points[0];
