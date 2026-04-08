@@ -488,6 +488,282 @@
     .btn { padding: 6px 8px; font-size: 11px; min-height: 34px; min-width: 36px; }
     .btn-archive { padding: 5px 8px; font-size: 10px; min-height: 30px; }
   }
+
+  /* ============================================
+     Dev State (Next Action + RAG) - 開発リマインダー機能
+     ============================================ */
+  .dev-state {
+    margin-top: 6px;
+    padding: 6px 0 0;
+    border-top: 1px dashed #ece6dd;
+    font-size: 12px;
+    color: #44403c;
+    line-height: 1.4;
+  }
+  .dev-state-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .dev-rag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  .dev-rag-green { background: #2e7d32; }
+  .dev-rag-amber { background: #e69500; }
+  .dev-rag-red { background: #c5463a; }
+  .dev-rag-gray { background: #c4bdb3; }
+  .dev-next-action {
+    flex: 1;
+    min-width: 0;
+    color: #1a1a1a;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dev-next-action:hover { background: #f3efe9; }
+  .dev-next-action.empty {
+    color: #6b635b;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .dev-last-touched {
+    font-size: 11px;
+    color: #6b635b;
+    flex-shrink: 0;
+  }
+  .dev-status-pill {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background: #f3efe9;
+    color: #6b635b;
+  }
+  .dev-status-pill.paused { background: #fff3e0; color: #e65100; }
+
+  /* Focus section - 注目（再開すべきアプリ） */
+  .focus-section {
+    max-width: 960px;
+    margin: 0 auto 8px;
+    padding: 12px 24px;
+    background: #fdf6f3;
+    border: 1px solid #f0d7ce;
+    border-radius: 10px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  .focus-section.empty { display: none; }
+  .focus-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #783c28;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .focus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .focus-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 12px;
+    color: #1a1a1a;
+  }
+  .focus-item:hover { background: #f3efe9; }
+  .focus-item-name {
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .focus-item-action {
+    flex: 1;
+    min-width: 0;
+    color: #44403c;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .focus-item-meta {
+    font-size: 11px;
+    color: #6b635b;
+    flex-shrink: 0;
+  }
+
+  /* Settings bar (export/import) */
+  .settings-bar {
+    max-width: 960px;
+    margin: 8px auto 24px;
+    padding: 0 24px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 11px;
+    color: #6b635b;
+    flex-wrap: wrap;
+  }
+  .settings-bar button {
+    background: #fff;
+    border: 1px solid #e8e2da;
+    color: #5c534b;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .settings-bar button:hover { background: #f3efe9; color: #1a1a1a; }
+  .settings-bar .sep { color: #c4bdb3; }
+
+  /* Editor modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 16px;
+  }
+  .modal-backdrop.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 16px 48px rgba(26, 26, 26, 0.18);
+  }
+  .modal-header {
+    padding: 18px 20px 12px;
+    border-bottom: 1px solid #f0ede8;
+  }
+  .modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .modal-subtitle {
+    font-size: 11px;
+    color: #6b635b;
+    margin-top: 2px;
+  }
+  .modal-body {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .modal-field { display: flex; flex-direction: column; gap: 6px; }
+  .modal-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #44403c;
+    letter-spacing: 0.3px;
+  }
+  .modal-field input[type="text"],
+  .modal-field textarea {
+    padding: 8px 10px;
+    border: 1px solid #e8e2da;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1a1a1a;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+    background: #fff;
+  }
+  .modal-field textarea {
+    min-height: 70px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+  .modal-field input[type="text"]:focus,
+  .modal-field textarea:focus { border-color: #c87864; }
+  .modal-field .hint {
+    font-size: 10px;
+    color: #9a918a;
+  }
+  .status-radios {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .status-radio {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    border: 1px solid #e8e2da;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #5c534b;
+  }
+  .status-radio input { margin: 0; }
+  .status-radio.checked {
+    background: #fdf6f3;
+    border-color: #c87864;
+    color: #783c28;
+  }
+  .modal-footer {
+    padding: 12px 20px 18px;
+    border-top: 1px solid #f0ede8;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .modal-footer .btn {
+    min-width: 80px;
+  }
+  .btn-save {
+    background: #783c28;
+    color: #fff;
+    border: none;
+  }
+  .btn-save:hover { background: #4a2418; }
+  .btn-cancel {
+    background: #fff;
+    color: #5c534b;
+    border: 1px solid #e8e2da;
+  }
+  .btn-cancel:hover { background: #f3efe9; }
+  .btn-clear {
+    background: #fff;
+    color: #c5463a;
+    border: 1px solid #f0d7ce;
+    margin-right: auto;
+  }
+  .btn-clear:hover { background: #fef2f0; }
+
+  @media (max-width: 640px) {
+    .focus-section { margin-left: 12px; margin-right: 12px; padding: 10px 14px; }
+    .settings-bar { padding: 0 12px; }
+    .dev-state { font-size: 11px; }
+    .dev-next-action { font-size: 12px; }
+    .modal { max-width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -506,13 +782,64 @@
 </div>
 
 <div class="search-bar">
-  <input type="text" id="search" placeholder="アプリを検索...">
+  <input type="text" id="search" aria-label="アプリを検索" placeholder="アプリを検索...">
+</div>
+
+<div id="focus-section" class="focus-section empty">
+  <div class="focus-title"><span class="dev-rag-dot dev-rag-red"></span> 注目: 再開すべきアプリ</div>
+  <div id="focus-list" class="focus-list"></div>
 </div>
 
 <div class="category-nav" id="category-nav"></div>
 
 <div class="container" id="app-list"></div>
+
+<div class="settings-bar">
+  <span>開発リマインダー:</span>
+  <button id="btn-export">JSON エクスポート</button>
+  <button id="btn-import">JSON インポート</button>
+  <input type="file" id="file-import" accept="application/json" style="display:none">
+  <span class="sep">|</span>
+  <span id="dev-stats"></span>
+</div>
+
 <div class="toast" id="toast"></div>
+
+<div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">次のアクション</div>
+      <div class="modal-subtitle" id="modal-subtitle"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <label for="ed-next-action">次のアクション（1行）</label>
+        <input type="text" id="ed-next-action" maxlength="120" placeholder="例: ○○のバグを再現させる">
+        <div class="hint">物理的・可視的な「次の1手」を1つだけ。完了したらこの欄を更新するだけで OK。</div>
+      </div>
+      <div class="modal-field">
+        <label>ステータス</label>
+        <div class="status-radios" id="ed-status-radios">
+          <label class="status-radio"><input type="radio" name="ed-status" value="active"> 進行中</label>
+          <label class="status-radio"><input type="radio" name="ed-status" value="paused"> 一時停止</label>
+        </div>
+      </div>
+      <div class="modal-field" id="ed-paused-reason-field" style="display:none">
+        <label for="ed-paused-reason">一時停止の理由</label>
+        <input type="text" id="ed-paused-reason" maxlength="120" placeholder="例: クライアント返答待ち / Phase 2 まで凍結">
+      </div>
+      <div class="modal-field">
+        <label for="ed-notes">メモ（任意）</label>
+        <textarea id="ed-notes" placeholder="検討事項・参考リンク・気になったことなど"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-clear" id="ed-clear">クリア</button>
+      <button class="btn btn-cancel" id="ed-cancel">キャンセル</button>
+      <button class="btn btn-save" id="ed-save">保存</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const apps = [
@@ -1419,6 +1746,242 @@ const apps = [
   },
 ];
 
+// ============================================
+// Dev State (開発リマインダー) - Phase 1 MVP
+// データスキーマ: { version: 1, items: { [appName]: { nextAction, lastTouchedAt, status, pausedReason, notes } } }
+// 永続化: localStorage 'app-launcher:dev-state'
+// 設計根拠: /tmp/best-practice-report.md 参照
+// ============================================
+const DEV_STATE_KEY = 'app-launcher:dev-state';
+const DEV_STATE_VERSION = 1;
+const RAG_AMBER_DAYS = 7;
+const RAG_RED_DAYS = 30;
+const ACTIVE_SOFT_LIMIT = 7;
+
+let devState = loadDevState();
+let saveTimer = null;
+
+function loadDevState() {
+  try {
+    const raw = localStorage.getItem(DEV_STATE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.items) return parsed;
+    }
+  } catch (e) {}
+  return { version: DEV_STATE_VERSION, items: {} };
+}
+
+function saveDevState() {
+  // 500ms debounce per BP report
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(DEV_STATE_KEY, JSON.stringify(devState));
+    } catch (e) {
+      console.error('dev-state save failed', e);
+      showToast('保存に失敗しました');
+    }
+  }, 500);
+}
+
+function getDevItem(appName) {
+  return devState.items[appName] || null;
+}
+
+function setDevItem(appName, patch) {
+  const cur = devState.items[appName] || {};
+  const next = { ...cur, ...patch };
+  if (!next.status) next.status = 'active';
+  next.lastTouchedAt = new Date().toISOString();
+  devState.items[appName] = next;
+  saveDevState();
+}
+
+function clearDevItem(appName) {
+  delete devState.items[appName];
+  saveDevState();
+}
+
+function daysSince(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return null;
+  return Math.floor((Date.now() - d.getTime()) / 86400000);
+}
+
+function ragLevel(item) {
+  // returns: 'gray' (no data) / 'green' / 'amber' / 'red'
+  if (!item || !item.nextAction || !item.nextAction.trim()) return 'gray';
+  if (item.status === 'paused') return 'gray';
+  const d = daysSince(item.lastTouchedAt);
+  if (d === null) return 'gray';
+  if (d < RAG_AMBER_DAYS) return 'green';
+  if (d < RAG_RED_DAYS) return 'amber';
+  return 'red';
+}
+
+function formatRelative(iso) {
+  const d = daysSince(iso);
+  if (d === null) return '';
+  if (d === 0) return '今日';
+  if (d === 1) return '昨日';
+  if (d < 7) return `${d}日前`;
+  if (d < 30) return `${d}日前`;
+  if (d < 90) return `${Math.floor(d / 7)}週間前`;
+  return 'しばらく前';
+}
+
+// ---- Editor modal ----
+let editorTarget = null;
+
+function openEditor(appName) {
+  editorTarget = appName;
+  const item = getDevItem(appName) || {};
+  document.getElementById('modal-title').textContent = appName;
+  document.getElementById('modal-subtitle').textContent = '次にやることを1つだけ書いてください';
+  document.getElementById('ed-next-action').value = item.nextAction || '';
+  document.getElementById('ed-notes').value = item.notes || '';
+  document.getElementById('ed-paused-reason').value = item.pausedReason || '';
+  const status = item.status || 'active';
+  document.querySelectorAll('input[name="ed-status"]').forEach(r => {
+    r.checked = (r.value === status);
+    r.parentElement.classList.toggle('checked', r.checked);
+  });
+  document.getElementById('ed-paused-reason-field').style.display = (status === 'paused') ? 'flex' : 'none';
+  document.getElementById('modal-backdrop').classList.add('show');
+  setTimeout(() => document.getElementById('ed-next-action').focus(), 50);
+}
+
+function closeEditor() {
+  document.getElementById('modal-backdrop').classList.remove('show');
+  editorTarget = null;
+}
+
+function saveEditor() {
+  if (!editorTarget) return;
+  const nextAction = document.getElementById('ed-next-action').value.trim();
+  const status = document.querySelector('input[name="ed-status"]:checked')?.value || 'active';
+  const notes = document.getElementById('ed-notes').value.trim();
+  const pausedReason = document.getElementById('ed-paused-reason').value.trim();
+  if (!nextAction && !notes && status === 'active') {
+    // 全部空 → 削除
+    clearDevItem(editorTarget);
+  } else {
+    setDevItem(editorTarget, { nextAction, status, notes, pausedReason: status === 'paused' ? pausedReason : '' });
+  }
+  closeEditor();
+  renderApps(document.getElementById('search').value);
+  checkActiveLimit();
+}
+
+function clearEditor() {
+  if (!editorTarget) return;
+  if (!confirm(`「${editorTarget}」の開発メモを削除しますか？`)) return;
+  clearDevItem(editorTarget);
+  closeEditor();
+  renderApps(document.getElementById('search').value);
+}
+
+// ---- Focus section ----
+function renderFocusSection() {
+  const list = document.getElementById('focus-list');
+  const section = document.getElementById('focus-section');
+  list.innerHTML = '';
+  // Collect amber + red items, sort by oldest first
+  const focusable = [];
+  for (const [appName, item] of Object.entries(devState.items)) {
+    const level = ragLevel(item);
+    if (level === 'red' || level === 'amber') {
+      focusable.push({ appName, item, level, days: daysSince(item.lastTouchedAt) || 0 });
+    }
+  }
+  if (focusable.length === 0) {
+    section.classList.add('empty');
+    return;
+  }
+  focusable.sort((a, b) => b.days - a.days);
+  // Limit to top 5 (Zeigarnik moderation - BP report pattern 11)
+  focusable.slice(0, 5).forEach(({ appName, item, level, days }) => {
+    const div = document.createElement('div');
+    div.className = 'focus-item';
+    div.innerHTML = `
+      <span class="dev-rag-dot dev-rag-${level}"></span>
+      <span class="focus-item-name">${escapeHtml(appName)}</span>
+      <span class="focus-item-action">${escapeHtml(item.nextAction || '(次のアクション未定)')}</span>
+      <span class="focus-item-meta">${formatRelative(item.lastTouchedAt)}</span>
+    `;
+    div.addEventListener('click', () => openEditor(appName));
+    list.appendChild(div);
+  });
+  section.classList.remove('empty');
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ---- Stats & soft warning ----
+function renderDevStats() {
+  let active = 0, paused = 0, total = 0;
+  for (const item of Object.values(devState.items)) {
+    // Count if either has a nextAction or is explicitly paused
+    if (!item.nextAction && item.status !== 'paused') continue;
+    total++;
+    if (item.status === 'paused') paused++;
+    else active++;
+  }
+  const stats = document.getElementById('dev-stats');
+  if (total === 0) {
+    stats.textContent = 'メモなし — カードの「次のアクション」をクリックして開始';
+  } else {
+    stats.textContent = `進行中 ${active} / 一時停止 ${paused}`;
+  }
+}
+
+function checkActiveLimit() {
+  let active = 0;
+  for (const item of Object.values(devState.items)) {
+    if (item.nextAction && item.status !== 'paused') active++;
+  }
+  if (active > ACTIVE_SOFT_LIMIT) {
+    showToast(`進行中タスクが ${active} 件です。一時停止への退避を検討してください`);
+  }
+}
+
+// ---- JSON export / import ----
+function exportDevState() {
+  const blob = new Blob([JSON.stringify(devState, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const ts = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `app-launcher-dev-state-${ts}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('エクスポート完了');
+}
+
+function importDevState(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed || typeof parsed !== 'object' || !parsed.items) throw new Error('invalid format');
+      if (!confirm(`${Object.keys(parsed.items).length} 件の開発メモをインポートします。既存データは上書きされます。よろしいですか？`)) return;
+      devState = { version: DEV_STATE_VERSION, items: parsed.items };
+      saveDevState();
+      renderApps(document.getElementById('search').value);
+      showToast('インポート完了');
+    } catch (err) {
+      showToast('読み込み失敗: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
 // --- Archive state persistence ---
 const STORAGE_KEY = 'app-launcher-archived';
 
@@ -1542,6 +2105,10 @@ function renderApps(filter = '') {
   if (Object.keys(activeCategories).length === 0 && archivedApps.length === 0) {
     container.innerHTML = '<p style="text-align:center;color:#666;padding:40px">該当するアプリが見つかりません</p>';
   }
+
+  // Update focus section and stats after rendering
+  renderFocusSection();
+  renderDevStats();
 }
 
 function buildCard(app, isArchived) {
@@ -1589,6 +2156,29 @@ function buildCard(app, isArchived) {
     integratedHtml = `<div class="integrated-in">組込先: ${tags}</div>`;
   }
 
+  // Dev state (Next Action + RAG) - 開発リマインダー機能
+  const devItem = getDevItem(app.name);
+  const level = ragLevel(devItem);
+  const hasAction = devItem && devItem.nextAction && devItem.nextAction.trim();
+  const actionText = hasAction ? escapeHtml(devItem.nextAction) : '+ 次のアクションを記録';
+  const actionClass = hasAction ? 'dev-next-action' : 'dev-next-action empty';
+  const lastTouchedHtml = (devItem && devItem.lastTouchedAt && hasAction)
+    ? `<span class="dev-last-touched">${formatRelative(devItem.lastTouchedAt)}</span>`
+    : '';
+  const statusPillHtml = (devItem && devItem.status === 'paused')
+    ? `<span class="dev-status-pill paused">一時停止</span>`
+    : '';
+  const devStateHtml = `
+    <div class="dev-state">
+      <div class="dev-state-row">
+        <span class="dev-rag-dot dev-rag-${level}" title="${level === 'red' ? '30日以上未更新' : level === 'amber' ? '7-30日未更新' : level === 'green' ? '直近で更新済み' : 'メモなし'}"></span>
+        <span class="${actionClass}" data-app-name="${esc}" role="button" tabindex="0" aria-label="次のアクションを編集">${actionText}</span>
+        ${statusPillHtml}
+        ${lastTouchedHtml}
+      </div>
+    </div>
+  `;
+
   card.setAttribute('role', 'article');
   card.setAttribute('aria-label', app.name);
 
@@ -1600,9 +2190,26 @@ function buildCard(app, isArchived) {
       ${metaHtml}
       ${integratedHtml}
       ${credHtml}
+      ${devStateHtml}
     </div>
     <div class="app-actions">${actionsHtml}</div>
   `;
+
+  // Wire up next-action editor click
+  const naEl = card.querySelector('.dev-next-action');
+  if (naEl) {
+    naEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openEditor(app.name);
+    });
+    naEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        openEditor(app.name);
+      }
+    });
+  }
 
   card.addEventListener('click', () => {
     // Disable card-level click on mobile to avoid conflicts with action buttons
@@ -1637,6 +2244,54 @@ renderApps();
 if (window.innerWidth > 640) {
   document.getElementById('search').focus();
 }
+
+// ============================================
+// Dev State - イベントハンドラ初期化
+// ============================================
+document.getElementById('ed-save').addEventListener('click', saveEditor);
+document.getElementById('ed-cancel').addEventListener('click', closeEditor);
+document.getElementById('ed-clear').addEventListener('click', clearEditor);
+
+document.getElementById('modal-backdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-backdrop') closeEditor();
+});
+
+// Status radio: toggle paused-reason field & visual checked state
+document.querySelectorAll('input[name="ed-status"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.querySelectorAll('input[name="ed-status"]').forEach(rr => {
+      rr.parentElement.classList.toggle('checked', rr.checked);
+    });
+    document.getElementById('ed-paused-reason-field').style.display =
+      (r.value === 'paused' && r.checked) ? 'flex' : 'none';
+  });
+});
+
+// Enter to save in editor (when focused on next-action input)
+document.getElementById('ed-next-action').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    saveEditor();
+  }
+});
+
+// ESC to close modal (also reused by global handler)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('modal-backdrop').classList.contains('show')) {
+    closeEditor();
+  }
+});
+
+// Export / Import
+document.getElementById('btn-export').addEventListener('click', exportDevState);
+document.getElementById('btn-import').addEventListener('click', () => {
+  document.getElementById('file-import').click();
+});
+document.getElementById('file-import').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (f) importDevState(f);
+  e.target.value = '';
+});
 </script>
 </body>
 </html>
