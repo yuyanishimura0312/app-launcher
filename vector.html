@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来予測カード ベクトル空間 — App Launcher</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #faf8f5;
+    --panel: #fff;
+    --text: #1a1a1a;
+    --text-muted: #6b635b;
+    --text-secondary: #44403c;
+    --border: #e8e2da;
+    --accent: #783c28;
+    --accent-light: #c87864;
+    --warm: #f3efe9;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .header {
+    padding: 16px 24px 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .breadcrumb {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+    flex-shrink: 0;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .control-group label { font-weight: 500; white-space: nowrap; }
+  select {
+    font-family: inherit;
+    font-size: 12px;
+    padding: 4px 24px 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b635b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+  }
+  select:focus { outline: none; border-color: var(--accent-light); }
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .stats-row strong { color: var(--accent); font-weight: 700; }
+  #chart-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  #chart {
+    width: 100%;
+    height: 100%;
+  }
+  #loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .loading-bar {
+    width: 200px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 12px auto 0;
+    overflow: hidden;
+  }
+  .loading-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: loading 1.5s ease-in-out infinite;
+  }
+  @keyframes loading {
+    0% { width: 0%; margin-left: 0%; }
+    50% { width: 60%; margin-left: 20%; }
+    100% { width: 0%; margin-left: 100%; }
+  }
+  /* Card detail panel */
+  #detail-panel {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 280px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    display: none;
+    z-index: 10;
+    font-size: 12px;
+  }
+  #detail-panel.visible { display: block; }
+  #detail-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 2px;
+  }
+  #detail-close:hover { color: var(--text); }
+  .detail-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+    margin-top: 10px;
+  }
+  .detail-label:first-child { margin-top: 0; }
+  .detail-value {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .detail-value.summary {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .detail-tag {
+    display: inline-block;
+    background: var(--warm);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-right: 4px;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="breadcrumb">
+    <a href="index.html">App Launcher</a> / <a href="futurology.html">未来学データ</a> / ベクトル空間
+  </div>
+  <div class="header-row">
+    <h1>未来予測カード ベクトル空間</h1>
+    <div class="controls">
+      <div class="control-group">
+        <label for="color-mode">色分け</label>
+        <select id="color-mode">
+          <option value="dai">大項目（17分類）</option>
+          <option value="theme">マップテーマ（10分類）</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="filter-select">絞り込み</label>
+        <select id="filter-select">
+          <option value="all">すべて表示</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <span><strong id="stat-total">-</strong> 枚のカード</span>
+    <span><strong id="stat-groups">-</strong> 分類</span>
+    <span>multilingual-e5-small + UMAP | ズーム・パン対応</span>
+  </div>
+</div>
+
+<div id="chart-container">
+  <div id="loading">
+    <div>ベクトルデータを読み込み中...</div>
+    <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+  </div>
+  <div id="chart"></div>
+  <div id="detail-panel">
+    <button id="detail-close" title="閉じる">×</button>
+    <div class="detail-label">要約</div>
+    <div class="detail-value summary" id="d-summary"></div>
+    <div class="detail-label">大項目</div>
+    <div class="detail-value" id="d-dai"></div>
+    <div class="detail-label">マップテーマ</div>
+    <div class="detail-value" id="d-theme"></div>
+    <div class="detail-label">年号</div>
+    <div class="detail-value" id="d-nen"></div>
+    <div class="detail-label">中項目</div>
+    <div class="detail-value" id="d-chu"></div>
+    <div class="detail-label">出典書籍</div>
+    <div class="detail-value" id="d-books"></div>
+  </div>
+</div>
+
+<script>
+// ---- Color palettes ----
+// 17 colors for dai (large items) — visually distinct, esse-sense tonality
+const DAI_COLORS = [
+  "#783c28","#b05c3c","#d4845a","#5c8a6e","#3d7a5e",
+  "#2d6b8a","#4a89a8","#7ab8cc","#8c6ba8","#6b4f8c",
+  "#c4a832","#a88c24","#5a6b2e","#7a8a3e","#8c4a6b",
+  "#c86432","#4a7a9a"
+];
+
+// 10 colors for theme (map themes) — slightly more saturated for contrast
+const THEME_COLORS = [
+  "#783c28","#4a89a8","#5c8a6e","#8c6ba8","#c4a832",
+  "#2d6b8a","#c86432","#5a6b2e","#a84858","#6b4f8c"
+];
+
+let allPoints = [];
+let meta = {};
+let currentMode = "dai";
+let currentFilter = "all";
+
+// ---- Load data ----
+fetch("data/futurology/embeddings_2d.json")
+  .then(r => r.json())
+  .then(data => {
+    meta = data.meta;
+    allPoints = data.points;
+    document.getElementById("loading").style.display = "none";
+    initControls();
+    renderChart();
+  })
+  .catch(err => {
+    document.getElementById("loading").innerHTML = 
+      '<div style="color:#a83c28">データの読み込みに失敗しました。<br><small>' + err.message + '</small></div>';
+  });
+
+// ---- Init controls ----
+function initControls() {
+  document.getElementById("stat-total").textContent = meta.total_cards;
+  document.getElementById("stat-groups").textContent = meta.dai_list.length;
+
+  const colorMode = document.getElementById("color-mode");
+  colorMode.addEventListener("change", e => {
+    currentMode = e.target.value;
+    currentFilter = "all";
+    updateFilterOptions();
+    renderChart();
+  });
+
+  updateFilterOptions();
+
+  const filterSelect = document.getElementById("filter-select");
+  filterSelect.addEventListener("change", e => {
+    currentFilter = e.target.value;
+    renderChart();
+  });
+}
+
+function updateFilterOptions() {
+  const filterSelect = document.getElementById("filter-select");
+  const groups = currentMode === "dai" ? meta.dai_list : meta.theme_list;
+  filterSelect.innerHTML = '<option value="all">すべて表示</option>';
+  groups.forEach(g => {
+    const opt = document.createElement("option");
+    opt.value = g;
+    opt.textContent = g;
+    filterSelect.appendChild(opt);
+  });
+  document.getElementById("stat-groups").textContent = groups.length;
+}
+
+// ---- Render chart ----
+function renderChart() {
+  const groups = currentMode === "dai" ? meta.dai_list : meta.theme_list;
+  const colors = currentMode === "dai" ? DAI_COLORS : THEME_COLORS;
+  const field = currentMode === "dai" ? "dai" : "theme";
+
+  // Filter points
+  let points = allPoints;
+  if (currentFilter !== "all") {
+    points = allPoints.filter(p => p[field] === currentFilter);
+  }
+
+  // Build one trace per group for legend & color
+  const traces = groups.map((grp, gi) => {
+    const pts = points.filter(p => p[field] === grp);
+    const color = colors[gi % colors.length];
+    // Gray out when filter active and this group not selected
+    const opacity = (currentFilter !== "all" && currentFilter !== grp) ? 0.08 : 0.85;
+
+    // Include all points for non-selected groups but with opacity 0 if filter active
+    const allPts = currentFilter !== "all" && currentFilter !== grp
+      ? allPoints.filter(p => p[field] === grp)
+      : pts;
+
+    return {
+      type: "scatter",
+      mode: "markers",
+      name: grp,
+      x: allPts.map(p => p.x),
+      y: allPts.map(p => p.y),
+      customdata: allPts.map(p => ({
+        summary: p.summary,
+        dai: p.dai,
+        theme: p.theme,
+        nen: p.nen,
+        chu: p.chu,
+        books: [...new Set(p.books)].join("・")
+      })),
+      hovertemplate:
+        "<b>%{customdata.summary}</b><br>" +
+        "<span style='color:#6b635b;font-size:11px'>%{customdata.dai}</span><br>" +
+        "<span style='color:#6b635b;font-size:11px'>%{customdata.nen}</span>" +
+        "<extra></extra>",
+      marker: {
+        size: 7,
+        color: color,
+        opacity: opacity,
+        line: { width: 0.5, color: "rgba(255,255,255,0.4)" }
+      },
+    };
+  });
+
+  const layout = {
+    paper_bgcolor: "#faf8f5",
+    plot_bgcolor: "#faf8f5",
+    margin: { t: 10, b: 40, l: 40, r: 20 },
+    xaxis: {
+      title: "",
+      showgrid: true,
+      gridcolor: "#e8e2da",
+      gridwidth: 1,
+      zeroline: false,
+      showticklabels: false,
+    },
+    yaxis: {
+      title: "",
+      showgrid: true,
+      gridcolor: "#e8e2da",
+      gridwidth: 1,
+      zeroline: false,
+      showticklabels: false,
+      scaleanchor: "x",
+    },
+    legend: {
+      font: { family: "'Hiragino Sans', sans-serif", size: 11, color: "#44403c" },
+      bgcolor: "rgba(250,248,245,0.92)",
+      bordercolor: "#e8e2da",
+      borderwidth: 1,
+      x: 0,
+      y: 1,
+      xanchor: "left",
+      yanchor: "top",
+      tracegroupgap: 2,
+    },
+    hovermode: "closest",
+    dragmode: "pan",
+    font: { family: "'Hiragino Sans', sans-serif" },
+  };
+
+  const config = {
+    responsive: true,
+    scrollZoom: true,
+    displayModeBar: true,
+    modeBarButtonsToRemove: ["select2d", "lasso2d", "autoScale2d"],
+    displaylogo: false,
+    locale: "ja",
+    toImageButtonOptions: {
+      format: "png",
+      filename: "futurology_vector_space",
+      scale: 2,
+    },
+  };
+
+  const chartEl = document.getElementById("chart");
+
+  Plotly.react(chartEl, traces, layout, config).then(() => {
+    // Click handler for detail panel
+    chartEl.on("plotly_click", function(eventData) {
+      if (!eventData || !eventData.points.length) return;
+      const pt = eventData.points[0];
+      const cd = pt.customdata;
+      showDetail(cd);
+    });
+  });
+}
+
+function showDetail(cd) {
+  document.getElementById("d-summary").textContent = cd.summary;
+  document.getElementById("d-dai").textContent = cd.dai;
+  document.getElementById("d-theme").textContent = cd.theme;
+  document.getElementById("d-nen").textContent = cd.nen || "—";
+  document.getElementById("d-chu").textContent = cd.chu || "—";
+
+  const booksEl = document.getElementById("d-books");
+  booksEl.innerHTML = "";
+  if (cd.books) {
+    cd.books.split("・").forEach(b => {
+      const tag = document.createElement("span");
+      tag.className = "detail-tag";
+      tag.textContent = b;
+      booksEl.appendChild(tag);
+    });
+  } else {
+    booksEl.textContent = "—";
+  }
+
+  document.getElementById("detail-panel").classList.add("visible");
+}
+
+document.getElementById("detail-close").addEventListener("click", () => {
+  document.getElementById("detail-panel").classList.remove("visible");
+});
+</script>
+</body>
+</html>
