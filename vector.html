@@ -220,7 +220,7 @@
   <div class="stats-row">
     <span><strong id="stat-total">-</strong> 枚のカード</span>
     <span><strong id="stat-groups">-</strong> 分類</span>
-    <span>multilingual-e5-small + UMAP | ズーム・パン対応</span>
+    <span>multilingual-e5-small + UMAP 3D | ドラッグ回転・ズーム対応</span>
   </div>
 </div>
 
@@ -332,23 +332,21 @@ function renderChart() {
 
   // Build one trace per group for legend & color
   const traces = groups.map((grp, gi) => {
-    const pts = points.filter(p => p[field] === grp);
     const color = colors[gi % colors.length];
-    // Gray out when filter active and this group not selected
-    const opacity = (currentFilter !== "all" && currentFilter !== grp) ? 0.08 : 0.85;
+    const opacity = (currentFilter !== "all" && currentFilter !== grp) ? 0.06 : 0.88;
 
-    // Include all points for non-selected groups but with opacity 0 if filter active
-    const allPts = currentFilter !== "all" && currentFilter !== grp
+    const grpPts = (currentFilter !== "all" && currentFilter !== grp)
       ? allPoints.filter(p => p[field] === grp)
-      : pts;
+      : points.filter(p => p[field] === grp);
 
     return {
-      type: "scatter",
+      type: "scatter3d",
       mode: "markers",
       name: grp,
-      x: allPts.map(p => p.x),
-      y: allPts.map(p => p.y),
-      customdata: allPts.map(p => ({
+      x: grpPts.map(p => p.x),
+      y: grpPts.map(p => p.y),
+      z: grpPts.map(p => p.z),
+      customdata: grpPts.map(p => ({
         summary: p.summary,
         dai: p.dai,
         theme: p.theme,
@@ -358,41 +356,45 @@ function renderChart() {
       })),
       hovertemplate:
         "<b>%{customdata.summary}</b><br>" +
-        "<span style='color:#6b635b;font-size:11px'>%{customdata.dai}</span><br>" +
-        "<span style='color:#6b635b;font-size:11px'>%{customdata.nen}</span>" +
+        "<span style='color:#6b635b'>%{customdata.dai}</span><br>" +
+        "<span style='color:#6b635b'>%{customdata.nen}</span>" +
         "<extra></extra>",
       marker: {
-        size: 7,
+        size: 4,
         color: color,
         opacity: opacity,
-        line: { width: 0.5, color: "rgba(255,255,255,0.4)" }
+        line: { width: 0.3, color: "rgba(255,255,255,0.3)" }
       },
     };
   });
 
+  const axisStyle = {
+    showgrid: true,
+    gridcolor: "#e8e2da",
+    gridwidth: 1,
+    zeroline: false,
+    showticklabels: false,
+    title: "",
+    backgroundcolor: "#faf8f5",
+    showbackground: true,
+  };
+
   const layout = {
     paper_bgcolor: "#faf8f5",
-    plot_bgcolor: "#faf8f5",
-    margin: { t: 10, b: 40, l: 40, r: 20 },
-    xaxis: {
-      title: "",
-      showgrid: true,
-      gridcolor: "#e8e2da",
-      gridwidth: 1,
-      zeroline: false,
-      showticklabels: false,
-    },
-    yaxis: {
-      title: "",
-      showgrid: true,
-      gridcolor: "#e8e2da",
-      gridwidth: 1,
-      zeroline: false,
-      showticklabels: false,
-      scaleanchor: "x",
+    margin: { t: 10, b: 10, l: 10, r: 10 },
+    scene: {
+      xaxis: axisStyle,
+      yaxis: axisStyle,
+      zaxis: axisStyle,
+      camera: {
+        eye: { x: 1.6, y: 1.6, z: 1.2 },
+        up: { x: 0, y: 0, z: 1 },
+      },
+      dragmode: "orbit",
+      aspectmode: "data",
     },
     legend: {
-      font: { family: "'Hiragino Sans', sans-serif", size: 11, color: "#44403c" },
+      font: { family: "'Hiragino Sans', sans-serif", size: 10, color: "#44403c" },
       bgcolor: "rgba(250,248,245,0.92)",
       bordercolor: "#e8e2da",
       borderwidth: 1,
@@ -400,10 +402,10 @@ function renderChart() {
       y: 1,
       xanchor: "left",
       yanchor: "top",
-      tracegroupgap: 2,
+      tracegroupgap: 1,
+      itemsizing: "constant",
     },
     hovermode: "closest",
-    dragmode: "pan",
     font: { family: "'Hiragino Sans', sans-serif" },
   };
 
@@ -411,12 +413,12 @@ function renderChart() {
     responsive: true,
     scrollZoom: true,
     displayModeBar: true,
-    modeBarButtonsToRemove: ["select2d", "lasso2d", "autoScale2d"],
+    modeBarButtonsToRemove: ["select2d", "lasso2d"],
     displaylogo: false,
     locale: "ja",
     toImageButtonOptions: {
       format: "png",
-      filename: "futurology_vector_space",
+      filename: "futurology_vector_space_3d",
       scale: 2,
     },
   };
@@ -424,7 +426,6 @@ function renderChart() {
   const chartEl = document.getElementById("chart");
 
   Plotly.react(chartEl, traces, layout, config).then(() => {
-    // Click handler for detail panel
     chartEl.on("plotly_click", function(eventData) {
       if (!eventData || !eventData.points.length) return;
       const pt = eventData.points[0];
