@@ -335,11 +335,11 @@ function renderChart() {
   groups.forEach((grp, gi) => {
     const color = colors[gi % colors.length];
     const isFiltered = currentFilter !== "all" && currentFilter !== grp;
-    const opacity = isFiltered ? 0.06 : 0.88;
 
-    const grpPts = isFiltered
-      ? allPoints.filter(p => p[field] === grp)
-      : points.filter(p => p[field] === grp);
+    // Skip non-selected groups entirely when filtering
+    if (isFiltered) return;
+
+    const grpPts = points.filter(p => p[field] === grp);
 
     // Marker trace
     traces.push({
@@ -366,7 +366,7 @@ function renderChart() {
       marker: {
         size: 4,
         color: color,
-        opacity: opacity,
+        opacity: 0.88,
         line: { width: 0.3, color: "rgba(255,255,255,0.3)" }
       },
     });
@@ -397,7 +397,7 @@ function renderChart() {
           color: color,
           width: 1.5,
         },
-        opacity: isFiltered ? 0.03 : 0.25,
+        opacity: 0.25,
       });
     }
   });
