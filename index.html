@@ -1973,8 +1973,8 @@ function formatRelative(iso) {
   if (d === 0) return '今日';
   if (d === 1) return '昨日';
   if (d < 7) return `${d}日前`;
-  if (d < 30) return `${d}日前`;
-  if (d < 90) return `${Math.floor(d / 7)}週間前`;
+  if (d < 30) return `${Math.floor(d / 7)}週間前`;
+  if (d < 90) return `約${Math.floor(d / 30)}ヶ月前`;
   return 'しばらく前';
 }
 
@@ -2262,10 +2262,10 @@ function buildCard(app, isArchived) {
   card.className = isArchived ? 'app-card archived-card' : 'app-card';
 
   let credHtml = '';
-  if (app.localNote) credHtml += `<div class="cred-row">${app.localNote}</div>`;
+  if (app.localNote) credHtml += `<div class="cred-row">${escapeHtml(app.localNote)}</div>`;
 
   let metaHtml = '';
-  if (app.hosting) metaHtml = `<div class="app-meta">${app.hosting}</div>`;
+  if (app.hosting) metaHtml = `<div class="app-meta">${escapeHtml(app.hosting)}</div>`;
 
   const esc = app.name.replace(/"/g, '&quot;');
   let actionsHtml = '';
@@ -2282,15 +2282,15 @@ function buildCard(app, isArchived) {
     actionsHtml += `<a href="${app.setup}" target="_blank" class="btn btn-admin" aria-label="${esc} のセットアップ" onclick="event.stopPropagation()" style="background:#5a6b7a">Setup</a>`;
   }
   if (app.localCmd) {
-    actionsHtml += `<button class="btn btn-copy" aria-label="${esc} のコマンドをコピー" onclick="event.stopPropagation(); copyCmd('${app.localCmd.replace(/'/g, "\\'")}', this)">コピー</button>`;
+    actionsHtml += `<button class="btn btn-copy btn-cmd" aria-label="${esc} のコマンドをコピー" data-cmd="${escapeHtml(app.localCmd)}">コピー</button>`;
   }
   if (app.pestle) {
-    actionsHtml += `<button class="btn btn-copy" aria-label="${esc} のPESTLEコマンドをコピー" onclick="event.stopPropagation(); copyCmd('${app.pestle.replace(/'/g, "\\'")}', this)" title="PESTLE mode">PESTLE</button>`;
+    actionsHtml += `<button class="btn btn-copy btn-cmd" aria-label="${esc} のPESTLEコマンドをコピー" data-cmd="${escapeHtml(app.pestle)}" title="PESTLE mode">PESTLE</button>`;
   }
 
   // Archive/restore toggle
   const archiveBtnLabel = isArchived ? '復元' : 'アーカイブ';
-  actionsHtml += `<button class="btn btn-archive" aria-label="${esc} を${archiveBtnLabel}" onclick="event.stopPropagation(); toggleArchive('${app.name.replace(/'/g, "\\'")}')">${archiveBtnLabel}</button>`;
+  actionsHtml += `<button class="btn btn-archive btn-toggle-archive" aria-label="${esc} を${archiveBtnLabel}" data-app-name="${esc}">${archiveBtnLabel}</button>`;
 
   const badgeHtml = isArchived
     ? `<span class="badge archived-badge">アーカイブ</span>`
@@ -2298,7 +2298,7 @@ function buildCard(app, isArchived) {
 
   let integratedHtml = '';
   if (app.integratedIn && app.integratedIn.length > 0) {
-    const tags = app.integratedIn.map(a => `<span class="app-tag">${a}</span>`).join('');
+    const tags = app.integratedIn.map(a => `<span class="app-tag">${escapeHtml(a)}</span>`).join('');
     integratedHtml = `<div class="integrated-in">組込先: ${tags}</div>`;
   }
 
@@ -2332,7 +2332,7 @@ function buildCard(app, isArchived) {
     <div class="app-icon" style="background:${app.color}" aria-hidden="true">${app.icon}</div>
     <div class="app-info">
       <div class="app-name">${app.name} ${badgeHtml}</div>
-      <div class="app-desc">${app.desc}</div>
+      <div class="app-desc">${escapeHtml(app.desc)}</div>
       ${metaHtml}
       ${integratedHtml}
       ${credHtml}
@@ -2354,6 +2354,23 @@ function buildCard(app, isArchived) {
         e.stopPropagation();
         openEditor(app.name);
       }
+    });
+  }
+
+  // Wire up copy buttons via addEventListener (safer than inline onclick)
+  card.querySelectorAll('.btn-cmd').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyCmd(btn.dataset.cmd, btn);
+    });
+  });
+
+  // Wire up archive/restore button
+  const archiveBtn = card.querySelector('.btn-toggle-archive');
+  if (archiveBtn) {
+    archiveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleArchive(app.name);
     });
   }
 
@@ -2379,8 +2396,13 @@ document.addEventListener('keydown', e => {
     document.getElementById('search').focus();
   }
   if (e.key === 'Escape') {
-    document.getElementById('search').value = '';
-    renderApps();
+    // Close modal first if open, otherwise clear search
+    if (document.getElementById('modal-backdrop').classList.contains('show')) {
+      closeEditor();
+    } else {
+      document.getElementById('search').value = '';
+      renderApps();
+    }
   }
 });
 
@@ -2421,12 +2443,7 @@ document.getElementById('ed-next-action').addEventListener('keydown', (e) => {
   }
 });
 
-// ESC to close modal (also reused by global handler)
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && document.getElementById('modal-backdrop').classList.contains('show')) {
-    closeEditor();
-  }
-});
+// ESC to close modal is handled by the unified keydown handler above
 
 // Export / Import
 document.getElementById('btn-export').addEventListener('click', exportDevState);
