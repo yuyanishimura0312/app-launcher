@@ -948,7 +948,7 @@
   </nav>
   <div class="main-content">
     <div id="recent-section" class="recent-section empty">
-      <div class="recent-title">最近使ったアプリ</div>
+      <div class="recent-title">よく使うアプリ</div>
       <div id="recent-grid" class="recent-grid"></div>
     </div>
     <div class="container" id="app-list"></div>
@@ -2427,37 +2427,47 @@ function copyCmd(cmd, btn) {
   });
 }
 
-// --- Recent apps tracking ---
-const RECENT_KEY = 'app-launcher:recent';
-const RECENT_MAX = 5;
+// --- Usage frequency tracking ---
+const USAGE_KEY = 'app-launcher:usage';
+const FREQ_DISPLAY_MAX = 8;
+const FREQ_MIN_COUNT = 2; // show only apps used at least twice
 
-function getRecentApps() {
+function getUsageData() {
   try {
-    return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
-  } catch { return []; }
+    return JSON.parse(localStorage.getItem(USAGE_KEY) || '{}');
+  } catch { return {}; }
 }
 
-function recordRecentApp(appName) {
-  let recent = getRecentApps().filter(n => n !== appName);
-  recent.unshift(appName);
-  if (recent.length > RECENT_MAX) recent = recent.slice(0, RECENT_MAX);
-  localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
-  renderRecentApps();
+function recordAppUsage(appName) {
+  const usage = getUsageData();
+  if (!usage[appName]) usage[appName] = { count: 0, lastUsed: 0 };
+  usage[appName].count++;
+  usage[appName].lastUsed = Date.now();
+  localStorage.setItem(USAGE_KEY, JSON.stringify(usage));
 }
 
-function renderRecentApps() {
+function getFrequentApps() {
+  const usage = getUsageData();
+  return Object.entries(usage)
+    .filter(([, d]) => d.count >= FREQ_MIN_COUNT)
+    .sort((a, b) => b[1].count - a[1].count || b[1].lastUsed - a[1].lastUsed)
+    .slice(0, FREQ_DISPLAY_MAX)
+    .map(([name]) => name);
+}
+
+function renderFrequentApps() {
   const section = document.getElementById('recent-section');
   const grid = document.getElementById('recent-grid');
-  const recent = getRecentApps();
-  const recentApps = recent.map(name => apps.find(a => a.name === name)).filter(Boolean);
+  const freqNames = getFrequentApps();
+  const freqApps = freqNames.map(name => apps.find(a => a.name === name)).filter(Boolean);
 
-  if (recentApps.length === 0) {
+  if (freqApps.length === 0) {
     section.classList.add('empty');
     return;
   }
   section.classList.remove('empty');
   grid.innerHTML = '';
-  recentApps.forEach(app => {
+  freqApps.forEach(app => {
     const card = document.createElement('a');
     card.className = 'recent-card';
     card.href = app.url || app.localUrl || '#';
@@ -2471,7 +2481,7 @@ function renderRecentApps() {
           showToast('コピー済: ' + app.localCmd);
         }
       }
-      recordRecentApp(app.name);
+      recordAppUsage(app.name);
     });
     grid.appendChild(card);
   });
@@ -2645,7 +2655,7 @@ function renderApps(filter = '') {
   renderSidebar(sidebarData, archivedApps.length);
 
   // Render recent apps
-  renderRecentApps();
+  renderFrequentApps();
 
   // Init scroll spy for sidebar highlighting
   setTimeout(initScrollSpy, 100);
@@ -2775,13 +2785,13 @@ function buildCard(app, isArchived) {
 
   // Wire up open buttons to track recent usage
   card.querySelectorAll('.btn-open').forEach(btn => {
-    btn.addEventListener('click', () => recordRecentApp(app.name));
+    btn.addEventListener('click', () => recordAppUsage(app.name));
   });
 
   card.addEventListener('click', () => {
     // Disable card-level click on mobile to avoid conflicts with action buttons
     if (window.innerWidth <= 640) return;
-    recordRecentApp(app.name);
+    recordAppUsage(app.name);
     if (app.url) window.open(app.url, '_blank');
     else if (app.localUrl) window.open(app.localUrl, '_blank');
     else if (app.localCmd) {
