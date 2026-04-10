@@ -1010,6 +1010,17 @@ const apps = [
   {
     category: "ローカル Web アプリ",
     sectionType: "local",
+    name: "Miratuku Commons",
+    desc: "異分野メンバーシップサイト（対等な探究者のクローズド型コミュニティ、Next.js + Supabase）",
+    icon: "MC", color: "#6d28d9",
+    localCmd: "cd ~/projects/apps/miratuku-commons && npm run dev",
+    localUrl: "http://localhost:3000",
+    hosting: "Next.js + Supabase",
+    badge: "開発中", badgeType: "dev"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
     name: "Miratuku Membership",
     desc: "メンバーシップサイト + CRM（Stripe 決済 + SQLite）",
     icon: "MM", color: "#059669",
@@ -1059,10 +1070,9 @@ const apps = [
     name: "Researcher Profiler",
     desc: "esse-sense 研究者データ拡張リサーチ + レポート生成",
     icon: "RP", color: "#1e293b",
-    localCmd: "cd ~/projects/apps/researcher-profiler && python app.py",
-    localUrl: "http://localhost:5210",
-    hosting: "Flask + SQLite",
-    badge: "ローカル", badgeType: "local"
+    url: "http://127.0.0.1:5210",
+    hosting: "Flask + SQLite (launchd常駐)",
+    badge: "常駐", badgeType: "local"
   },
   {
     category: "ローカル Web アプリ",
@@ -1249,6 +1259,91 @@ const apps = [
     localCmd: "cd ~/projects/apps/qualitative-research-tool && npm run dev",
     hosting: "Vercel + Turso",
     badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "ScheduleSync",
+    desc: "日程調整プラットフォーム（Supabase + Google/Zoom OAuth対応）",
+    icon: "SS", color: "#0d9488",
+    url: "https://schedule-sync-ten.vercel.app",
+    localCmd: "cd ~/projects/apps/schedule-sync && npm run dev",
+    hosting: "Vercel + Supabase",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "TravelMeet",
+    desc: "旅行スケジュール連動型タイムゾーン会議時間検討ツール（Temporal API対応）",
+    icon: "TM", color: "#7c3aed",
+    url: "https://travel-meet.vercel.app",
+    localCmd: "cd ~/projects/apps/travel-meet && npm run dev",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Policy DB",
+    desc: "全中央省庁（23省庁）の行政事業レビューデータ横断検索データベース",
+    icon: "PD", color: "#1e40af",
+    url: "https://policy-db.vercel.app",
+    localCmd: "cd ~/projects/apps/policy-db && npm run dev",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Work Resume",
+    desc: "職務経歴書ビルダー（ドラッグ&ドロップ編集対応）",
+    icon: "WR", color: "#475569",
+    url: "https://work-resume.vercel.app",
+    localCmd: "cd ~/projects/apps/work-resume && npm run dev",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
+    name: "Miraian Guide",
+    desc: "京都・吉田の施設「Miraian」アクセスガイド（地図・ギャラリー付き）",
+    icon: "MG", color: "#059669",
+    url: "https://miraian.emerging-future.org",
+    localCmd: "code ~/projects/apps/miraian-guide",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Claude Code Manual",
+    desc: "Claude Code 活用マニュアル・運用ガイド",
+    icon: "CM", color: "#7c3aed",
+    localCmd: "open ~/projects/apps/claude-code-manual/index.html",
+    hosting: "Static HTML",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Emerging Future Landing",
+    desc: "Miraian ランディングページ",
+    icon: "EF", color: "#059669",
+    localCmd: "open ~/projects/apps/emerging-future-landing/index.html",
+    hosting: "Static HTML",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Emerging Future Renovation",
+    desc: "NPO法人ミラツク公式サイト（emerging-future.org）のモダン化改修プロジェクト",
+    icon: "ER", color: "#b45309",
+    localCmd: "code ~/projects/apps/emerging-future-renovation",
+    hosting: "WordPress子テーマ",
+    badge: "開発中", badgeType: "dev"
   },
   {
     category: "ローカル Web アプリ",
