@@ -68,10 +68,132 @@
   }
   .search-bar input:focus { border-color: #c87864; }
   .search-bar input::placeholder { color: #9a918a; }
-  .container {
-    max-width: 960px;
+  /* 2-column layout: sidebar + main */
+  .page-layout {
+    max-width: 1100px;
     margin: 0 auto;
+    display: flex;
+    gap: 0;
     padding: 0 24px 48px;
+  }
+  .sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 16px;
+    align-self: flex-start;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding-right: 20px;
+    scrollbar-width: thin;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #5c534b;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+    line-height: 1.3;
+  }
+  .sidebar-item:hover { background: #f3efe9; color: #1a1a1a; }
+  .sidebar-item.active { background: #783c28; color: #fff; }
+  .sidebar-item .sidebar-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .sidebar-item.active .sidebar-dot { background: #fff !important; }
+  .sidebar-item .sidebar-count {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.6;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #9a918a;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 12px 10px 4px;
+  }
+  .main-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .container {
+    width: 100%;
+  }
+
+  /* Recent apps section */
+  .recent-section {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #e8e2da;
+    border-radius: 10px;
+  }
+  .recent-section.empty { display: none; }
+  .recent-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b635b;
+    letter-spacing: 0.3px;
+    margin-bottom: 10px;
+  }
+  .recent-grid {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .recent-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #faf8f5;
+    border: 1px solid #f0ede8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    color: inherit;
+    min-width: 0;
+  }
+  .recent-card:hover { background: #f3efe9; border-color: #e8e2da; }
+  .recent-card .recent-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .recent-card .recent-name {
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .section {
     margin-bottom: 28px;
@@ -366,6 +488,16 @@
     }
   }
 
+  /* --- Tablet: hide sidebar, single column --- */
+  @media (max-width: 768px) {
+    .page-layout { padding: 0 16px 48px; }
+    .sidebar { display: none; }
+    .recent-grid { gap: 6px; }
+    .recent-card { padding: 6px 10px; }
+    .recent-card .recent-icon { width: 24px; height: 24px; font-size: 11px; }
+    .recent-card .recent-name { font-size: 11px; }
+  }
+
   /* --- Mobile (max 640px) --- */
   @media (max-width: 640px) {
     .header {
@@ -388,6 +520,8 @@
     .container {
       padding: 0 12px 32px;
     }
+    .page-layout { padding: 0 0 32px; }
+    .recent-section { margin-left: 12px; margin-right: 12px; padding: 10px 12px; }
     .section { margin-bottom: 20px; }
     .section-title { font-size: 11px; }
 
@@ -535,6 +669,13 @@
     color: #6b635b;
     font-style: italic;
     font-weight: 400;
+  }
+  /* Hide empty dev-state rows by default, show on card hover */
+  .dev-state.dev-state-empty {
+    display: none;
+  }
+  .app-card:hover .dev-state.dev-state-empty {
+    display: block;
   }
   .dev-last-touched {
     font-size: 11px;
@@ -801,7 +942,18 @@
 
 <div class="category-nav" id="category-nav"></div>
 
-<div class="container" id="app-list"></div>
+<div class="page-layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-nav" id="sidebar-nav"></div>
+  </nav>
+  <div class="main-content">
+    <div id="recent-section" class="recent-section empty">
+      <div class="recent-title">最近使ったアプリ</div>
+      <div id="recent-grid" class="recent-grid"></div>
+    </div>
+    <div class="container" id="app-list"></div>
+  </div>
+</div>
 
 <div class="settings-bar">
   <span>開発リマインダー:</span>
@@ -2275,6 +2427,137 @@ function copyCmd(cmd, btn) {
   });
 }
 
+// --- Recent apps tracking ---
+const RECENT_KEY = 'app-launcher:recent';
+const RECENT_MAX = 5;
+
+function getRecentApps() {
+  try {
+    return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+  } catch { return []; }
+}
+
+function recordRecentApp(appName) {
+  let recent = getRecentApps().filter(n => n !== appName);
+  recent.unshift(appName);
+  if (recent.length > RECENT_MAX) recent = recent.slice(0, RECENT_MAX);
+  localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+  renderRecentApps();
+}
+
+function renderRecentApps() {
+  const section = document.getElementById('recent-section');
+  const grid = document.getElementById('recent-grid');
+  const recent = getRecentApps();
+  const recentApps = recent.map(name => apps.find(a => a.name === name)).filter(Boolean);
+
+  if (recentApps.length === 0) {
+    section.classList.add('empty');
+    return;
+  }
+  section.classList.remove('empty');
+  grid.innerHTML = '';
+  recentApps.forEach(app => {
+    const card = document.createElement('a');
+    card.className = 'recent-card';
+    card.href = app.url || app.localUrl || '#';
+    if (app.url || app.localUrl) card.target = '_blank';
+    card.innerHTML = `<span class="recent-icon" style="background:${app.color}">${app.icon}</span><span class="recent-name">${escapeHtml(app.name)}</span>`;
+    card.addEventListener('click', (e) => {
+      if (!app.url && !app.localUrl) {
+        e.preventDefault();
+        if (app.localCmd) {
+          navigator.clipboard.writeText(app.localCmd);
+          showToast('コピー済: ' + app.localCmd);
+        }
+      }
+      recordRecentApp(app.name);
+    });
+    grid.appendChild(card);
+  });
+}
+
+// --- Sidebar rendering ---
+const SECTION_COLORS = {
+  released: '#2e7d32', local: '#e65100', cli: '#78716c',
+  infra: '#475569', agent: '#7c3aed', research: '#7c3aed', archived: '#bbb'
+};
+
+let _currentSidebarSection = null;
+
+function renderSidebar(categories, archivedCount) {
+  const nav = document.getElementById('sidebar-nav');
+  nav.innerHTML = '';
+  const catKeys = Object.keys(categories);
+
+  // App categories
+  const appLabel = document.createElement('div');
+  appLabel.className = 'sidebar-label';
+  appLabel.textContent = 'アプリ';
+  nav.appendChild(appLabel);
+
+  catKeys.forEach((cat, i) => {
+    const meta = categories[cat];
+    const isAgent = ['agent', 'research'].includes(meta.type) ||
+      ['調査・リサーチ', '経営・日常業務', '開発・品質・デザイン', 'コンテンツ・ユーティリティ', '研究エージェント'].includes(cat);
+
+    if (isAgent && !nav.querySelector('.sidebar-label-agent')) {
+      const agentLabel = document.createElement('div');
+      agentLabel.className = 'sidebar-label sidebar-label-agent';
+      agentLabel.textContent = 'エージェント';
+      nav.appendChild(agentLabel);
+    }
+
+    const btn = document.createElement('button');
+    btn.className = 'sidebar-item';
+    if (i === 0) btn.classList.add('active');
+    const color = SECTION_COLORS[meta.type] || '#78716c';
+    btn.innerHTML = `<span class="sidebar-dot" style="background:${color}"></span>${escapeHtml(cat)}<span class="sidebar-count">${meta.count}</span>`;
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById('section-' + i);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    nav.appendChild(btn);
+  });
+
+  // Archived
+  if (archivedCount > 0) {
+    const btn = document.createElement('button');
+    btn.className = 'sidebar-item';
+    btn.innerHTML = `<span class="sidebar-dot" style="background:#bbb"></span>アーカイブ<span class="sidebar-count">${archivedCount}</span>`;
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById('section-archived');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    nav.appendChild(btn);
+  }
+}
+
+// --- Scroll spy: highlight sidebar item based on scroll position ---
+function initScrollSpy() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        const nav = document.getElementById('sidebar-nav');
+        nav.querySelectorAll('.sidebar-item').forEach((btn, i) => {
+          btn.classList.toggle('active',
+            id === 'section-' + i || (id === 'section-archived' && btn.textContent.includes('アーカイブ'))
+          );
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  document.querySelectorAll('.section').forEach(section => {
+    observer.observe(section);
+  });
+}
+
 function renderApps(filter = '') {
   const container = document.getElementById('app-list');
   container.innerHTML = '';
@@ -2344,6 +2627,7 @@ function renderApps(filter = '') {
   if (archivedApps.length > 0) {
     const section = document.createElement('div');
     section.className = 'section';
+    section.id = 'section-archived';
     section.innerHTML = `<div class="section-title archived"><span class="section-indicator"></span>アーカイブ済み <span style="font-weight:400;opacity:0.6">(${archivedApps.length})</span></div>`;
     archivedApps.forEach(app => section.appendChild(buildCard(app, true)));
     container.appendChild(section);
@@ -2352,6 +2636,19 @@ function renderApps(filter = '') {
   if (Object.keys(activeCategories).length === 0 && archivedApps.length === 0) {
     container.innerHTML = '<p style="text-align:center;color:#666;padding:40px">該当するアプリが見つかりません</p>';
   }
+
+  // Render sidebar (desktop)
+  const sidebarData = {};
+  Object.entries(activeCategories).forEach(([cat, items]) => {
+    sidebarData[cat] = { type: activeCategoryMeta[cat] || '', count: items.length };
+  });
+  renderSidebar(sidebarData, archivedApps.length);
+
+  // Render recent apps
+  renderRecentApps();
+
+  // Init scroll spy for sidebar highlighting
+  setTimeout(initScrollSpy, 100);
 
   // Update focus section and stats after rendering
   renderFocusSection();
@@ -2415,8 +2712,9 @@ function buildCard(app, isArchived) {
   const statusPillHtml = (devItem && devItem.status === 'paused')
     ? `<span class="dev-status-pill paused">一時停止</span>`
     : '';
+  const devStateEmpty = !hasAction;
   const devStateHtml = `
-    <div class="dev-state">
+    <div class="dev-state${devStateEmpty ? ' dev-state-empty' : ''}">
       <div class="dev-state-row">
         <span class="dev-rag-dot dev-rag-${level}" title="${level === 'red' ? '30日以上未更新' : level === 'amber' ? '7-30日未更新' : level === 'green' ? '直近で更新済み' : 'メモなし'}"></span>
         <span class="${actionClass}" data-app-name="${esc}" role="button" tabindex="0" aria-label="次のアクションを編集">${actionText}</span>
@@ -2475,9 +2773,15 @@ function buildCard(app, isArchived) {
     });
   }
 
+  // Wire up open buttons to track recent usage
+  card.querySelectorAll('.btn-open').forEach(btn => {
+    btn.addEventListener('click', () => recordRecentApp(app.name));
+  });
+
   card.addEventListener('click', () => {
     // Disable card-level click on mobile to avoid conflicts with action buttons
     if (window.innerWidth <= 640) return;
+    recordRecentApp(app.name);
     if (app.url) window.open(app.url, '_blank');
     else if (app.localUrl) window.open(app.localUrl, '_blank');
     else if (app.localCmd) {
