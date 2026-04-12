@@ -341,6 +341,148 @@
     margin-bottom: 8px;
   }
 
+  /* Guide button */
+  .header-guide-btn {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: 1px solid #e7e0d9;
+    background: #fff;
+    color: #57534e;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .header-guide-btn:hover { background: #f5f0eb; color: #7A4033; border-color: #7A4033; }
+  .header-guide-btn.active { background: #7A4033; color: #fff; border-color: #7A4033; }
+
+  /* Guide overlay */
+  .guide-overlay {
+    display: none;
+    position: fixed;
+    top: 50px;
+    left: 0; right: 0; bottom: 0;
+    background: #f8f6f3;
+    z-index: 90;
+    overflow-y: auto;
+  }
+  .guide-overlay.show { display: block; }
+  .guide-content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+  .guide-content h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1c1917;
+  }
+  .guide-content h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 28px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e7e0d9;
+    color: #1c1917;
+  }
+  .guide-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 18px 0 6px;
+    color: #44403c;
+  }
+  .guide-content p {
+    font-size: 14px;
+    color: #44403c;
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+  .guide-content ul, .guide-content ol {
+    font-size: 14px;
+    color: #44403c;
+    margin: 0 0 12px 20px;
+    line-height: 1.7;
+  }
+  .guide-content li { margin-bottom: 4px; }
+  .guide-content code {
+    font-family: 'SF Mono', monospace;
+    font-size: 12px;
+    background: #f0ede8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #7A4033;
+  }
+  .guide-content pre {
+    background: #292524;
+    color: #e7e5e4;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'SF Mono', monospace;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 8px 0 16px;
+    cursor: pointer;
+    position: relative;
+  }
+  .guide-content pre:hover::after {
+    content: 'Click to copy';
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 10px;
+    color: #78716c;
+  }
+  .guide-step {
+    background: #fff;
+    border: 1px solid #e7e0d9;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .guide-step-num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: #7A4033;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .guide-step-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1c1917;
+  }
+  .guide-step p { margin-top: 6px; margin-bottom: 0; }
+  .guide-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 8px 0 16px;
+  }
+  .guide-table th {
+    background: #faf9f7;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid #e7e0d9;
+    color: #57534e;
+  }
+  .guide-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #f0ede8;
+    color: #44403c;
+  }
+  .guide-table code {
+    font-size: 11px;
+  }
+
   /* Responsive */
   @media (max-width: 768px) {
     .sidebar { display: none; }
@@ -355,6 +497,141 @@
 <div class="header">
   <a href="index.html" class="header-back">&larr; App Launcher</a>
   <div class="header-title"><span>DB</span> Explorer</div>
+  <button class="header-guide-btn" id="guide-toggle" onclick="toggleGuide()">使い方ガイド</button>
+</div>
+
+<div class="guide-overlay" id="guide-overlay">
+<div class="guide-content">
+  <h1>DB Explorer 使い方ガイド</h1>
+  <p>Claude Code で構築した18個の SQLite データベースを、開発やデータ分析に活用するための手順です。</p>
+
+  <h2>全体フロー</h2>
+  <div class="guide-step">
+    <span class="guide-step-num">1</span>
+    <span class="guide-step-title">DB Explorer でスキーマを確認する</span>
+    <p>左サイドバーからデータベースを選択し、Schema タブでテーブル構造、Queries タブで代表的なクエリの実行結果、Sample Data タブでサンプルレコードを確認します。SQL をクリックするとクリップボードにコピーされます。</p>
+  </div>
+  <div class="guide-step">
+    <span class="guide-step-num">2</span>
+    <span class="guide-step-title">ターミナルから直接アクセスする</span>
+    <p>各 DB カードの「コピー」ボタンで <code>sqlite3 ~/projects/...</code> コマンドをコピーし、ターミナルで実行します。対話モードで自由にクエリを試せます。</p>
+  </div>
+  <div class="guide-step">
+    <span class="guide-step-num">3</span>
+    <span class="guide-step-title">Claude Code から呼び出す</span>
+    <p>Claude Code のプロンプトでデータベースのパスとテーブル名を指定するだけで、データの読み取り・分析・加工が可能です。下記の具体例を参照してください。</p>
+  </div>
+
+  <h2>Claude Code からの呼び出し方</h2>
+
+  <h3>基本パターン: データの読み取り</h3>
+  <p>Claude Code に対してデータベースのパスを指定し、何をしたいか伝えます。</p>
+  <pre onclick="copyText(this.textContent)">Policy DB（~/projects/apps/policy-db/data/policy.db）から、
+厚生労働省の委員会を兼任数が多い有識者を調べて</pre>
+
+  <h3>基本パターン: 分析・集計</h3>
+  <pre onclick="copyText(this.textContent)">Sangaku Matcher（~/projects/apps/sangaku-matcher/data/matcher.db）で、
+特許数上位20社の業種分布をまとめて</pre>
+
+  <h3>基本パターン: 横断クエリ</h3>
+  <p>同じ SQLite ファイル内の複数テーブルを JOIN して分析できます。</p>
+  <pre onclick="copyText(this.textContent)">Policy DB で、GTA テーマ分類（gta_core_themes / council_themes）と
+有識者データ（persons / appointments）を組み合わせて、
+テーマ別の有識者ネットワークを分析して</pre>
+
+  <h3>応用パターン: 新しいテーブルの追加</h3>
+  <pre onclick="copyText(this.textContent)">Policy DB に、委員会の活動頻度を記録するテーブル
+council_activity_log を追加して。
+カラムは council_id, meeting_date, agenda_summary で。</pre>
+
+  <h3>応用パターン: DB 間のデータ連携</h3>
+  <pre onclick="copyText(this.textContent)">Researcher Profiler（~/projects/apps/researcher-profiler/researcher.db）の
+研究者リストと Policy DB の有識者（persons テーブル）を名寄せして、
+学術業績と政策関与の両方を持つ人物を特定して</pre>
+
+  <h3>応用パターン: スクリプト生成</h3>
+  <pre onclick="copyText(this.textContent)">Newsletter DB（~/projects/apps/newsletter-app/data/newsletter.db）の
+配信ログを集計して、開封率の月次推移グラフを生成する
+Python スクリプトを作って</pre>
+
+  <h2>ターミナルからの直接操作</h2>
+
+  <h3>対話モード</h3>
+  <pre onclick="copyText(this.textContent)"># DB を開く
+sqlite3 ~/projects/apps/policy-db/data/policy.db
+
+# よく使う設定
+.mode column
+.headers on
+
+# テーブル一覧
+.tables
+
+# スキーマ確認
+.schema councils
+
+# クエリ実行
+SELECT ministry_name, count(*) FROM councils GROUP BY ministry_name ORDER BY count(*) DESC;</pre>
+
+  <h3>ワンライナーでクエリ実行</h3>
+  <pre onclick="copyText(this.textContent)"># 省庁別委員会数
+sqlite3 -header -column ~/projects/apps/policy-db/data/policy.db \
+  "SELECT ministry_name, count(*) as cnt FROM councils GROUP BY ministry_name ORDER BY cnt DESC"
+
+# CSV エクスポート
+sqlite3 -header -csv ~/projects/apps/policy-db/data/policy.db \
+  "SELECT * FROM gta_core_themes ORDER BY council_count DESC" > ~/Desktop/themes.csv</pre>
+
+  <h3>Python から使う</h3>
+  <pre onclick="copyText(this.textContent)">import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect(os.path.expanduser("~/projects/apps/policy-db/data/policy.db"))
+df = pd.read_sql("SELECT * FROM gta_core_themes ORDER BY council_count DESC", conn)
+print(df.to_string())
+conn.close()</pre>
+
+  <h2>データベース一覧と主要テーブル</h2>
+  <table class="guide-table">
+    <thead>
+      <tr><th>DB</th><th>パス</th><th>主要テーブル</th><th>用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Policy DB</td><td><code>policy-db/data/policy.db</code></td><td>councils, persons, projects, gta_core_themes</td><td>政策・有識者分析</td></tr>
+      <tr><td>Sangaku Matcher</td><td><code>sangaku-matcher/data/matcher.db</code></td><td>companies, seeds, matches, patents_company</td><td>産学マッチング</td></tr>
+      <tr><td>Future Insight</td><td><code>future-insight-app/data/future_insight.db</code></td><td>articles, cla_analyses, trends</td><td>未来洞察・CLA分析</td></tr>
+      <tr><td>IR Collector</td><td><code>ir-collector/data/ir.db</code></td><td>documents, sections</td><td>上場企業IR情報</td></tr>
+      <tr><td>Mail Contacts</td><td><code>mail-contacts-app/emlx_index.db</code></td><td>idx</td><td>メール連絡先抽出</td></tr>
+      <tr><td>Plaud</td><td><code>secretary-app/data/plaud.db</code></td><td>recordings, analyses</td><td>音声録音・分析</td></tr>
+      <tr><td>Newsletter</td><td><code>newsletter-app/data/newsletter.db</code></td><td>contacts, campaigns, webhook_events</td><td>メルマガ配信管理</td></tr>
+      <tr><td>Paper DB</td><td><code>paper-database/papers.db</code></td><td>papers, crawl_log</td><td>学術論文検索</td></tr>
+      <tr><td>Essence CRM</td><td><code>essence-crm/data/essence.db</code></td><td>organizations, deals, contacts</td><td>営業管理</td></tr>
+      <tr><td>Researcher</td><td><code>researcher-profiler/researcher.db</code></td><td>researchers, papers, reports</td><td>研究者プロファイル</td></tr>
+      <tr><td>Keyword</td><td><code>keyword-analyzer/keywords.db</code></td><td>keywords, monthly_analyses</td><td>KW分析</td></tr>
+      <tr><td>Qualitative</td><td><code>qualitative-research-tool/data/qualitative.db</code></td><td>projects, codes, codings</td><td>質的研究GTA</td></tr>
+      <tr><td>Speaker</td><td><code>speaker-manager/data/speaker.db</code></td><td>speakers, events, invitations</td><td>登壇者管理</td></tr>
+      <tr><td>Org App</td><td><code>organization-app/data/org.db</code></td><td>cxo_minutes, pestle_articles</td><td>組織運営</td></tr>
+      <tr><td>Membership</td><td><code>miratuku-membership/data/miratuku.db</code></td><td>subscribers, reports, events</td><td>会員管理</td></tr>
+      <tr><td>Events</td><td><code>miratuku-events/data/local.db</code></td><td>events, registrations, recordings</td><td>イベント管理</td></tr>
+      <tr><td>Team Hub</td><td><code>miratuku-team-hub/data/local.db</code></td><td>projects, decisions, slack_messages</td><td>チーム連携</td></tr>
+      <tr><td>Video Editor</td><td><code>lecture-video-editor/data/jobs.db</code></td><td>jobs</td><td>動画編集ジョブ</td></tr>
+    </tbody>
+  </table>
+
+  <h2>メタデータの更新</h2>
+  <p>データベースの構造が変わった場合や新しいDBを追加した場合は、以下のスクリプトでメタデータを再生成してください。</p>
+  <pre onclick="copyText(this.textContent)">cd ~/projects/apps/app-launcher
+python3 scripts/export_db_metadata.py</pre>
+  <p>新しいDBを追加するには <code>scripts/export_db_metadata.py</code> の <code>DATABASES</code> リストにエントリを追加し、<code>index.html</code> の <code>databases</code> 配列にも追加します。</p>
+
+  <h2>注意事項</h2>
+  <ul>
+    <li>データベースファイルはローカルのみに存在します（.gitignore で除外済み）。Git には含まれません。</li>
+    <li>書き込み操作を行う場合は、事前にバックアップを取ることを推奨します: <code>cp db.db db_backup_$(date +%Y%m%d).db</code></li>
+    <li>複数プロセスから同時に書き込むと SQLite のロック競合が発生する場合があります。Web アプリが起動中のDBへの直接書き込みは注意してください。</li>
+    <li>DB Explorer に表示されるサンプルデータは <code>export_db_metadata.py</code> 実行時点のスナップショットです。最新データはターミナルや Claude Code で直接確認してください。</li>
+  </ul>
+</div>
 </div>
 
 <div class="layout">
@@ -371,6 +648,13 @@
 <script>
 let allDbs = [];
 let currentDb = null;
+
+function toggleGuide() {
+  const overlay = document.getElementById('guide-overlay');
+  const btn = document.getElementById('guide-toggle');
+  const isOpen = overlay.classList.toggle('show');
+  btn.classList.toggle('active', isOpen);
+}
 
 const DB_COLORS = {
   'policy-db': '#7A4033',
