@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DB Explorer - 構築済みデータベース</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    background: #f8f6f3;
+    color: #1c1917;
+    line-height: 1.5;
+  }
+  a { color: #7A4033; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header {
+    background: #fff;
+    border-bottom: 1px solid #e7e0d9;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c1917;
+  }
+  .header-title span { color: #7A4033; }
+  .header-back {
+    font-size: 13px;
+    color: #78716c;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .header-back:hover { color: #7A4033; }
+
+  /* Layout */
+  .layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 50px);
+  }
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #fff;
+    border-right: 1px solid #e7e0d9;
+    padding: 16px 0;
+    position: sticky;
+    top: 50px;
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    color: #44403c;
+    transition: background 0.15s;
+  }
+  .sidebar-item:hover { background: #f5f0eb; }
+  .sidebar-item.active { background: #f0ebe4; color: #7A4033; font-weight: 600; }
+  .sidebar-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .sidebar-size {
+    margin-left: auto;
+    font-size: 10px;
+    color: #a8a29e;
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    padding: 24px;
+    min-width: 0;
+  }
+
+  /* DB detail view */
+  .db-header {
+    margin-bottom: 24px;
+  }
+  .db-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .db-desc {
+    font-size: 14px;
+    color: #57534e;
+    margin-bottom: 12px;
+  }
+  .db-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .db-chip {
+    font-size: 12px;
+    background: #f0ede8;
+    color: #57534e;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-family: 'SF Mono', monospace;
+  }
+  .db-path {
+    font-size: 11px;
+    color: #a8a29e;
+    margin-top: 8px;
+    font-family: 'SF Mono', monospace;
+    cursor: pointer;
+  }
+  .db-path:hover { color: #7A4033; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #e7e0d9;
+    margin-bottom: 20px;
+  }
+  .tab {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #78716c;
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.15s;
+  }
+  .tab:hover { color: #44403c; }
+  .tab.active {
+    color: #7A4033;
+    border-bottom-color: #7A4033;
+    font-weight: 600;
+  }
+
+  /* Tables list */
+  .table-card {
+    background: #fff;
+    border: 1px solid #e7e0d9;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .table-header:hover { background: #faf9f7; }
+  .table-name {
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'SF Mono', monospace;
+  }
+  .table-meta {
+    font-size: 11px;
+    color: #a8a29e;
+    display: flex;
+    gap: 12px;
+  }
+  .table-body {
+    border-top: 1px solid #e7e0d9;
+    display: none;
+  }
+  .table-body.open { display: block; }
+
+  /* Columns */
+  .col-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: #e7e0d9;
+    padding: 1px;
+  }
+  .col-item {
+    background: #fff;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  .col-name {
+    font-weight: 600;
+    font-family: 'SF Mono', monospace;
+  }
+  .col-type {
+    color: #a8a29e;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+  .col-pk {
+    color: #7A4033;
+    font-size: 9px;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  /* Data table */
+  .data-table-wrap {
+    overflow-x: auto;
+    padding: 0;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .data-table th {
+    background: #faf9f7;
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-family: 'SF Mono', monospace;
+    font-size: 11px;
+    color: #57534e;
+    border-bottom: 1px solid #e7e0d9;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+  .data-table td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #f0ede8;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #44403c;
+  }
+  .data-table tr:hover td { background: #faf9f7; }
+  .null-val { color: #d4d4d4; font-style: italic; }
+
+  /* Query section */
+  .query-card {
+    background: #fff;
+    border: 1px solid #e7e0d9;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .query-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e7e0d9;
+  }
+  .query-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .query-sql {
+    background: #292524;
+    color: #e7e5e4;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-family: 'SF Mono', monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.6;
+    cursor: pointer;
+    position: relative;
+  }
+  .query-sql:hover::after {
+    content: 'Click to copy';
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    font-size: 10px;
+    color: #78716c;
+  }
+  .query-error {
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #c62828;
+    background: #fce4ec;
+  }
+
+  /* Copy toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #292524;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a8a29e;
+  }
+  .empty-state h2 {
+    font-size: 18px;
+    color: #57534e;
+    margin-bottom: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 16px; }
+    .db-name { font-size: 18px; }
+    .col-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="header-back">&larr; App Launcher</a>
+  <div class="header-title"><span>DB</span> Explorer</div>
+</div>
+
+<div class="layout">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main" id="main">
+    <div class="empty-state">
+      <h2>Loading...</h2>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let allDbs = [];
+let currentDb = null;
+
+const DB_COLORS = {
+  'policy-db': '#7A4033',
+  'sangaku-matcher': '#6d28d9',
+  'future-insight': '#b45309',
+  'ir-collector': '#0369a1',
+  'mail-contacts': '#4f46e5',
+  'secretary-plaud': '#059669',
+  'newsletter': '#dc2626',
+  'paper-database': '#7c3aed',
+  'essence-crm': '#2563eb',
+  'researcher-profiler': '#0891b2',
+  'keyword-analyzer': '#ea580c',
+  'qualitative-research': '#0d9488',
+  'speaker-manager': '#be185d',
+  'organization-app': '#475569',
+  'miratuku-membership': '#9333ea',
+  'miratuku-events': '#c2410c',
+  'miratuku-team-hub': '#1d4ed8',
+  'lecture-video-editor': '#e11d48',
+};
+
+const DB_ICONS = {
+  'policy-db': 'PD', 'sangaku-matcher': 'SM', 'future-insight': 'FI',
+  'ir-collector': 'IR', 'mail-contacts': 'MC', 'secretary-plaud': 'PL',
+  'newsletter': 'NL', 'paper-database': 'PA', 'essence-crm': 'CR',
+  'researcher-profiler': 'RP', 'keyword-analyzer': 'KA', 'qualitative-research': 'QR',
+  'speaker-manager': 'SP', 'organization-app': 'OA', 'miratuku-membership': 'MM',
+  'miratuku-events': 'ME', 'miratuku-team-hub': 'TH', 'lecture-video-editor': 'VE',
+};
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => showToast('Copied'));
+}
+
+function escapeHtml(s) {
+  if (s === null || s === undefined) return '<span class="null-val">NULL</span>';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderSidebar() {
+  const el = document.getElementById('sidebar');
+  el.innerHTML = allDbs.map(db => {
+    const color = DB_COLORS[db.id] || '#78716c';
+    const icon = DB_ICONS[db.id] || db.id.substring(0, 2).toUpperCase();
+    const active = currentDb && currentDb.id === db.id ? ' active' : '';
+    return `<button class="sidebar-item${active}" data-id="${db.id}">
+      <div class="sidebar-icon" style="background:${color}">${icon}</div>
+      ${escapeHtml(db.name)}
+      <span class="sidebar-size">${db.size_mb}MB</span>
+    </button>`;
+  }).join('');
+
+  el.querySelectorAll('.sidebar-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const db = allDbs.find(d => d.id === btn.dataset.id);
+      if (db) showDb(db);
+    });
+  });
+}
+
+function showDb(db) {
+  currentDb = db;
+  renderSidebar();
+
+  const totalRows = db.tables.reduce((a, t) => a + t.row_count, 0);
+  const main = document.getElementById('main');
+
+  main.innerHTML = `
+    <div class="db-header">
+      <div class="db-name">${escapeHtml(db.name)}</div>
+      <div class="db-desc">${escapeHtml(db.desc)}</div>
+      <div class="db-stats">
+        <span class="db-chip">${db.size_mb} MB</span>
+        <span class="db-chip">${db.tables.length} tables</span>
+        <span class="db-chip">${totalRows.toLocaleString()} rows</span>
+      </div>
+      <div class="db-path" onclick="copyText('sqlite3 ${db.path}')" title="Click to copy sqlite3 command">${db.path}</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="schema">Schema</button>
+      <button class="tab" data-tab="queries">Queries (${db.queries.length})</button>
+      <button class="tab" data-tab="data">Sample Data</button>
+    </div>
+    <div id="tab-content"></div>
+  `;
+
+  main.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      main.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderTab(tab.dataset.tab);
+    });
+  });
+
+  renderTab('schema');
+
+  // Update URL hash
+  history.replaceState(null, '', '#' + db.id);
+}
+
+function renderTab(tab) {
+  const el = document.getElementById('tab-content');
+  if (tab === 'schema') renderSchemaTab(el);
+  else if (tab === 'queries') renderQueriesTab(el);
+  else if (tab === 'data') renderDataTab(el);
+}
+
+function renderSchemaTab(el) {
+  const db = currentDb;
+  el.innerHTML = db.tables.map(t => `
+    <div class="table-card">
+      <div class="table-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="table-name">${escapeHtml(t.name)}</span>
+        <span class="table-meta">
+          <span>${t.columns.length} cols</span>
+          <span>${t.row_count.toLocaleString()} rows</span>
+        </span>
+      </div>
+      <div class="table-body">
+        <div class="col-grid">
+          ${t.columns.map(c => `
+            <div class="col-item">
+              <span class="col-name">${escapeHtml(c.name)}</span>
+              <span class="col-type">${escapeHtml(c.type || 'TEXT')}</span>
+              ${c.pk ? '<span class="col-pk">PK</span>' : ''}
+              ${c.notnull ? '<span class="col-type">NOT NULL</span>' : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderQueriesTab(el) {
+  const db = currentDb;
+  if (db.queries.length === 0) {
+    el.innerHTML = '<div class="empty-state"><p>No preset queries</p></div>';
+    return;
+  }
+  el.innerHTML = db.queries.map(q => {
+    if (q.error) {
+      return `<div class="query-card">
+        <div class="query-header"><span class="query-name">${escapeHtml(q.name)}</span></div>
+        <div class="query-sql" onclick="copyText(this.textContent)">${escapeHtml(q.sql)}</div>
+        <div class="query-error">${escapeHtml(q.error)}</div>
+      </div>`;
+    }
+    const hasRows = q.rows && q.rows.length > 0;
+    return `<div class="query-card">
+      <div class="query-header">
+        <span class="query-name">${escapeHtml(q.name)}</span>
+        <span style="font-size:11px;color:#a8a29e">${q.rows.length} rows</span>
+      </div>
+      <div class="query-sql" onclick="copyText(this.textContent)">${escapeHtml(q.sql)}</div>
+      ${hasRows ? `<div class="data-table-wrap">
+        <table class="data-table">
+          <thead><tr>${q.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+          <tbody>${q.rows.map(r => `<tr>${q.columns.map(c => `<td>${formatVal(r[c])}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderDataTab(el) {
+  const db = currentDb;
+  el.innerHTML = db.tables.filter(t => t.sample_rows.length > 0).map(t => {
+    const cols = t.columns.map(c => c.name);
+    return `<div class="table-card">
+      <div class="table-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="table-name">${escapeHtml(t.name)}</span>
+        <span class="table-meta"><span>${t.sample_rows.length} / ${t.row_count.toLocaleString()} rows</span></span>
+      </div>
+      <div class="table-body">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr>${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+            <tbody>${t.sample_rows.map(r => `<tr>${cols.map(c => `<td>${formatVal(r[c])}</td>`).join('')}</tr>`).join('')}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function formatVal(v) {
+  if (v === null || v === undefined) return '<span class="null-val">NULL</span>';
+  if (typeof v === 'number') return v.toLocaleString();
+  return escapeHtml(v);
+}
+
+// Load data
+fetch('data/db_metadata.json')
+  .then(r => r.json())
+  .then(data => {
+    allDbs = data;
+    renderSidebar();
+
+    // Check URL hash
+    const hash = location.hash.replace('#', '');
+    const target = hash ? allDbs.find(d => d.id === hash) : allDbs[0];
+    if (target) showDb(target);
+  })
+  .catch(e => {
+    document.getElementById('main').innerHTML = `<div class="empty-state"><h2>Error</h2><p>${e.message}</p></div>`;
+  });
+</script>
+</body>
+</html>

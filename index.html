@@ -2213,6 +2213,7 @@ const apps = [
 // ============================================
 const databases = [
   {
+    id: "policy-db",
     name: "Policy DB",
     desc: "全中央省庁の審議会・委員会・予算事業データベース（23省庁、30,000+事業）+ GTA テーマ分類",
     icon: "PD", color: "#7A4033",
@@ -2224,6 +2225,7 @@ const databases = [
     notable: "GTA分類（43コアテーマ・647サブテーマ）、FTS5全文検索、有識者ネットワーク"
   },
   {
+    id: "sangaku-matcher",
     name: "Sangaku Matcher",
     desc: "産学マッチャー（大学技術シーズ x 企業ニーズ、500社分析）",
     icon: "SM", color: "#6d28d9",
@@ -2234,6 +2236,7 @@ const databases = [
     notable: "特許データ、企業テーマ近接度、技術タクソノミー"
   },
   {
+    id: "future-insight",
     name: "Future Insight",
     desc: "CLA フレームワークによる未来洞察（論文・記事・トレンド・日次ダイジェスト）",
     icon: "FI", color: "#b45309",
@@ -2245,6 +2248,7 @@ const databases = [
     notable: "CLA因果階層分析、学術論文連携、自動トレンド検出"
   },
   {
+    id: "ir-collector",
     name: "IR Collector",
     desc: "上場企業約 4,000 社の IR 情報（EDINET API 経由、有価証券報告書メタデータ）",
     icon: "IR", color: "#0369a1",
@@ -2255,6 +2259,7 @@ const databases = [
     notable: "有価証券報告書・四半期報告書、セクション分割済み"
   },
   {
+    id: "mail-contacts",
     name: "Mail Contacts",
     desc: "macOS Mail.app メールから連絡先抽出・整理・CRM 候補レコメンド",
     icon: "MC", color: "#4f46e5",
@@ -2265,6 +2270,7 @@ const databases = [
     notable: "emlxメールインデックス、連絡先候補自動抽出"
   },
   {
+    id: "secretary-plaud",
     name: "Secretary App (Plaud)",
     desc: "音声録音・分析 DB（Plaud 連携、録音メタデータ・文字起こし）",
     icon: "PL", color: "#059669",
@@ -2275,6 +2281,7 @@ const databases = [
     notable: "Plaud録音デバイス連携、AI文字起こし・要約"
   },
   {
+    id: "newsletter",
     name: "Newsletter",
     desc: "ニュースレター配信管理（配信リスト・キャンペーン・Webhook・AI キャッシュ）",
     icon: "NL", color: "#dc2626",
@@ -2285,6 +2292,7 @@ const databases = [
     notable: "SendGrid連携、ウェルカムシリーズ、配信ログ"
   },
   {
+    id: "paper-database",
     name: "Paper Database",
     desc: "Open Access 学術論文 DB（OpenAlex / Semantic Scholar / CiNii 統合クローリング）",
     icon: "PA", color: "#7c3aed",
@@ -2295,6 +2303,7 @@ const databases = [
     notable: "3学術APIクローリング統合"
   },
   {
+    id: "essence-crm",
     name: "Essence CRM",
     desc: "カンバン形式の営業管理 CRM（組織・連絡先・営業案件・セミナー・サーベイ）",
     icon: "CR", color: "#2563eb",
@@ -2306,6 +2315,7 @@ const databases = [
     notable: "営業パイプライン、セミナー参加者、サーベイ回答"
   },
   {
+    id: "researcher-profiler",
     name: "Researcher Profiler",
     desc: "esse-sense 研究者 DB（Semantic Scholar 連携・論文分類・レポート生成）",
     icon: "RP", color: "#0891b2",
@@ -2316,6 +2326,7 @@ const databases = [
     notable: "研究者プロフィール、論文リスト、マッチングスコア"
   },
   {
+    id: "keyword-analyzer",
     name: "Keyword Analyzer",
     desc: "esse-sense.com 検索キーワード分析（月次テーマ・ニッチ KW）",
     icon: "KA", color: "#ea580c",
@@ -2326,6 +2337,7 @@ const databases = [
     notable: "月次分析レポート、テーマ自動分類"
   },
   {
+    id: "qualitative-research",
     name: "Qualitative Research",
     desc: "質的研究コーディング・分析ツール（GTA: Strauss & Corbin 版）",
     icon: "QR", color: "#0d9488",
@@ -2336,6 +2348,7 @@ const databases = [
     notable: "オープン/軸足/選択コーディング、因果リンク、三角測量"
   },
   {
+    id: "speaker-manager",
     name: "Speaker Manager",
     desc: "スピーカー・イベント管理（招待・Zoom・サーベイ・チケット・メンバーシップ）",
     icon: "SP", color: "#be185d",
@@ -2346,6 +2359,7 @@ const databases = [
     notable: "招待テンプレート、Zoom連携、チケットシステム"
   },
   {
+    id: "organization-app",
     name: "Organization App",
     desc: "AI 組織運営ダッシュボード（5 チーム + CxO 会議・PESTLE・カレンダー）",
     icon: "OA", color: "#475569",
@@ -2357,6 +2371,7 @@ const databases = [
     notable: "CxO議事録、PESTLEニュース、デイリーブリーフィング"
   },
   {
+    id: "miratuku-membership",
     name: "Miratuku Membership",
     desc: "会員管理（Stripe 決済・プロフィール・メール・学習進度・バッジ）",
     icon: "MM", color: "#9333ea",
@@ -2367,6 +2382,7 @@ const databases = [
     notable: "Stripe決済連携、法人会員、学習進度トラッキング"
   },
   {
+    id: "miratuku-events",
     name: "Miratuku Events",
     desc: "イベント管理 + オンデマンド学習（登録・メール・録画・ビデオ配信）",
     icon: "ME", color: "#c2410c",
@@ -2377,6 +2393,7 @@ const databases = [
     notable: "Peatix上位互換、パイプラインジョブ管理"
   },
   {
+    id: "miratuku-team-hub",
     name: "Miratuku Team Hub",
     desc: "Slack/Notion 統合チームハブ（メッセージ同期・プロジェクト・意思決定）",
     icon: "TH", color: "#1d4ed8",
@@ -2388,6 +2405,7 @@ const databases = [
     notable: "Slack/Notion双方向同期、意思決定ログ"
   },
   {
+    id: "lecture-video-editor",
     name: "Lecture Video Editor",
     desc: "講義動画自動編集パイプライン（タイトルカード・トリミング・字幕・スライド同期）",
     icon: "VE", color: "#e11d48",
@@ -2923,7 +2941,7 @@ function renderApps(filter = '') {
     const totalTables = databases.reduce((a, db) => a + db.tables, 0);
 
     dbSection.innerHTML = `
-      <div class="section-title db-section"><span class="section-indicator"></span>構築済みデータベース <span style="font-weight:400;opacity:0.6">(${databases.length})</span></div>
+      <div class="section-title db-section"><span class="section-indicator"></span>構築済みデータベース <span style="font-weight:400;opacity:0.6">(${databases.length})</span> <a href="db-explorer.html" style="font-size:11px;font-weight:400;color:#4f46e5;text-decoration:underline;margin-left:auto">DB Explorer</a></div>
       <div class="db-summary">
         <div class="db-stat"><div class="db-stat-value">${databases.length}</div><div class="db-stat-label">データベース</div></div>
         <div class="db-stat"><div class="db-stat-value">${totalSize.toFixed(0)} MB</div><div class="db-stat-label">総容量</div></div>
@@ -2936,6 +2954,7 @@ function renderApps(filter = '') {
       const card = document.createElement('div');
       card.className = 'app-card db-card';
       const urlBtn = db.url ? `<a href="${db.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>` : '';
+      const explorerBtn = db.id ? `<a href="db-explorer.html#${db.id}" class="btn btn-admin" onclick="event.stopPropagation()" style="background:#4f46e5">Explorer</a>` : '';
       const copyBtn = `<button class="btn btn-copy btn-cmd" data-cmd="sqlite3 ${db.path}">コピー</button>`;
       card.innerHTML = `
         <div class="app-icon" style="background:${db.color}" aria-hidden="true">${db.icon}</div>
@@ -2949,7 +2968,7 @@ function renderApps(filter = '') {
           </div>
           ${db.notable ? `<div class="db-notable">${escapeHtml(db.notable)}</div>` : ''}
         </div>
-        <div class="app-actions">${urlBtn}${copyBtn}</div>
+        <div class="app-actions">${urlBtn}${explorerBtn}${copyBtn}</div>
       `;
       dbSection.appendChild(card);
     });
