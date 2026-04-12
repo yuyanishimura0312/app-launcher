@@ -299,6 +299,59 @@
     background: #f0ede8;
     color: #9a918a;
   }
+  .badge.db-badge {
+    background: #e0e7ff;
+    color: #3730a3;
+  }
+  .section-title.db-section .section-indicator {
+    background: #4f46e5;
+  }
+  .db-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 0 2px;
+  }
+  .db-stat {
+    background: #faf9f7;
+    border: 1px solid #e7e0d9;
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .db-stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4f46e5;
+  }
+  .db-stat-label {
+    font-size: 10px;
+    color: #78716c;
+    margin-top: 2px;
+  }
+  .db-meta {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  .db-chip {
+    font-size: 10px;
+    background: #f0ede8;
+    color: #57534e;
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-family: 'SF Mono', monospace;
+  }
+  .db-notable {
+    font-size: 11px;
+    color: #78716c;
+    margin-top: 3px;
+  }
+  @media (max-width: 640px) {
+    .db-summary { grid-template-columns: repeat(2, 1fr); }
+  }
   .app-desc {
     font-size: 12px;
     color: #44403c;
@@ -2156,6 +2209,197 @@ const apps = [
 ];
 
 // ============================================
+// 構築済みデータベース一覧
+// ============================================
+const databases = [
+  {
+    name: "Policy DB",
+    desc: "全中央省庁の審議会・委員会・予算事業データベース（23省庁、30,000+事業）+ GTA テーマ分類",
+    icon: "PD", color: "#7A4033",
+    path: "~/projects/apps/policy-db/data/policy.db",
+    size: "106.7 MB",
+    tables: 21,
+    rows: "185,489",
+    url: "https://policy-db.vercel.app",
+    notable: "GTA分類（43コアテーマ・647サブテーマ）、FTS5全文検索、有識者ネットワーク"
+  },
+  {
+    name: "Sangaku Matcher",
+    desc: "産学マッチャー（大学技術シーズ x 企業ニーズ、500社分析）",
+    icon: "SM", color: "#6d28d9",
+    path: "~/projects/apps/sangaku-matcher/data/matcher.db",
+    size: "234.2 MB",
+    tables: 15,
+    rows: "491,953",
+    notable: "特許データ、企業テーマ近接度、技術タクソノミー"
+  },
+  {
+    name: "Future Insight",
+    desc: "CLA フレームワークによる未来洞察（論文・記事・トレンド・日次ダイジェスト）",
+    icon: "FI", color: "#b45309",
+    path: "~/projects/apps/future-insight-app/data/future_insight.db",
+    size: "141.1 MB",
+    tables: 7,
+    rows: "225,232",
+    url: "https://future-insight-workspace.vercel.app",
+    notable: "CLA因果階層分析、学術論文連携、自動トレンド検出"
+  },
+  {
+    name: "IR Collector",
+    desc: "上場企業約 4,000 社の IR 情報（EDINET API 経由、有価証券報告書メタデータ）",
+    icon: "IR", color: "#0369a1",
+    path: "~/projects/apps/ir-collector/data/ir.db",
+    size: "143.7 MB",
+    tables: 3,
+    rows: "3,829",
+    notable: "有価証券報告書・四半期報告書、セクション分割済み"
+  },
+  {
+    name: "Mail Contacts",
+    desc: "macOS Mail.app メールから連絡先抽出・整理・CRM 候補レコメンド",
+    icon: "MC", color: "#4f46e5",
+    path: "~/projects/apps/mail-contacts-app/emlx_index.db",
+    size: "36.3 MB",
+    tables: 1,
+    rows: "200,773",
+    notable: "emlxメールインデックス、連絡先候補自動抽出"
+  },
+  {
+    name: "Secretary App (Plaud)",
+    desc: "音声録音・分析 DB（Plaud 連携、録音メタデータ・文字起こし）",
+    icon: "PL", color: "#059669",
+    path: "~/projects/apps/secretary-app/data/plaud.db",
+    size: "25.9 MB",
+    tables: 2,
+    rows: "315",
+    notable: "Plaud録音デバイス連携、AI文字起こし・要約"
+  },
+  {
+    name: "Newsletter",
+    desc: "ニュースレター配信管理（配信リスト・キャンペーン・Webhook・AI キャッシュ）",
+    icon: "NL", color: "#dc2626",
+    path: "~/projects/apps/newsletter-app/data/newsletter.db",
+    size: "12.6 MB",
+    tables: 8,
+    rows: "118,282",
+    notable: "SendGrid連携、ウェルカムシリーズ、配信ログ"
+  },
+  {
+    name: "Paper Database",
+    desc: "Open Access 学術論文 DB（OpenAlex / Semantic Scholar / CiNii 統合クローリング）",
+    icon: "PA", color: "#7c3aed",
+    path: "~/projects/research/paper-database/papers.db",
+    size: "7.2 MB",
+    tables: 2,
+    rows: "316",
+    notable: "3学術APIクローリング統合"
+  },
+  {
+    name: "Essence CRM",
+    desc: "カンバン形式の営業管理 CRM（組織・連絡先・営業案件・セミナー・サーベイ）",
+    icon: "CR", color: "#2563eb",
+    path: "~/projects/apps/essence-crm/data/essence.db",
+    size: "1.6 MB",
+    tables: 20,
+    rows: "7,778",
+    url: "https://essence-crm.vercel.app",
+    notable: "営業パイプライン、セミナー参加者、サーベイ回答"
+  },
+  {
+    name: "Researcher Profiler",
+    desc: "esse-sense 研究者 DB（Semantic Scholar 連携・論文分類・レポート生成）",
+    icon: "RP", color: "#0891b2",
+    path: "~/projects/apps/researcher-profiler/researcher.db",
+    size: "0.7 MB",
+    tables: 10,
+    rows: "596",
+    notable: "研究者プロフィール、論文リスト、マッチングスコア"
+  },
+  {
+    name: "Keyword Analyzer",
+    desc: "esse-sense.com 検索キーワード分析（月次テーマ・ニッチ KW）",
+    icon: "KA", color: "#ea580c",
+    path: "~/projects/apps/keyword-analyzer/keywords.db",
+    size: "0.5 MB",
+    tables: 4,
+    rows: "2,859",
+    notable: "月次分析レポート、テーマ自動分類"
+  },
+  {
+    name: "Qualitative Research",
+    desc: "質的研究コーディング・分析ツール（GTA: Strauss & Corbin 版）",
+    icon: "QR", color: "#0d9488",
+    path: "~/projects/apps/qualitative-research-tool/data/qualitative.db",
+    size: "0.5 MB",
+    tables: 34,
+    rows: "31",
+    notable: "オープン/軸足/選択コーディング、因果リンク、三角測量"
+  },
+  {
+    name: "Speaker Manager",
+    desc: "スピーカー・イベント管理（招待・Zoom・サーベイ・チケット・メンバーシップ）",
+    icon: "SP", color: "#be185d",
+    path: "~/projects/apps/speaker-manager/data/speaker.db",
+    size: "0.4 MB",
+    tables: 26,
+    rows: "15",
+    notable: "招待テンプレート、Zoom連携、チケットシステム"
+  },
+  {
+    name: "Organization App",
+    desc: "AI 組織運営ダッシュボード（5 チーム + CxO 会議・PESTLE・カレンダー）",
+    icon: "OA", color: "#475569",
+    path: "~/projects/apps/organization-app/data/org.db",
+    size: "0.3 MB",
+    tables: 18,
+    rows: "58",
+    url: "https://miratuku-team-hub.vercel.app",
+    notable: "CxO議事録、PESTLEニュース、デイリーブリーフィング"
+  },
+  {
+    name: "Miratuku Membership",
+    desc: "会員管理（Stripe 決済・プロフィール・メール・学習進度・バッジ）",
+    icon: "MM", color: "#9333ea",
+    path: "~/projects/apps/miratuku-membership/data/miratuku.db",
+    size: "0.1 MB",
+    tables: 12,
+    rows: "22",
+    notable: "Stripe決済連携、法人会員、学習進度トラッキング"
+  },
+  {
+    name: "Miratuku Events",
+    desc: "イベント管理 + オンデマンド学習（登録・メール・録画・ビデオ配信）",
+    icon: "ME", color: "#c2410c",
+    path: "~/projects/apps/miratuku-events/data/local.db",
+    size: "0.1 MB",
+    tables: 7,
+    rows: "0",
+    notable: "Peatix上位互換、パイプラインジョブ管理"
+  },
+  {
+    name: "Miratuku Team Hub",
+    desc: "Slack/Notion 統合チームハブ（メッセージ同期・プロジェクト・意思決定）",
+    icon: "TH", color: "#1d4ed8",
+    path: "~/projects/apps/miratuku-team-hub/data/local.db",
+    size: "0.1 MB",
+    tables: 8,
+    rows: "2",
+    url: "https://miratuku-team-hub.vercel.app",
+    notable: "Slack/Notion双方向同期、意思決定ログ"
+  },
+  {
+    name: "Lecture Video Editor",
+    desc: "講義動画自動編集パイプライン（タイトルカード・トリミング・字幕・スライド同期）",
+    icon: "VE", color: "#e11d48",
+    path: "~/projects/apps/lecture-video-editor/data/jobs.db",
+    size: "0.01 MB",
+    tables: 1,
+    rows: "0",
+    notable: "ジョブキュー管理、4フェーズパイプライン"
+  },
+];
+
+// ============================================
 // Dev State (開発リマインダー) - Phase 1 MVP
 // データスキーマ: { version: 1, items: { [appName]: { nextAction, lastTouchedAt, status, pausedReason, notes } } }
 // 永続化: localStorage 'app-launcher:dev-state'
@@ -2500,7 +2744,7 @@ function renderFrequentApps() {
 // --- Sidebar rendering ---
 const SECTION_COLORS = {
   released: '#2e7d32', local: '#e65100', cli: '#78716c',
-  infra: '#475569', agent: '#7c3aed', research: '#7c3aed', archived: '#bbb'
+  infra: '#475569', agent: '#7c3aed', research: '#7c3aed', db: '#4f46e5', archived: '#bbb'
 };
 
 let _currentSidebarSection = null;
@@ -2520,12 +2764,20 @@ function renderSidebar(categories, archivedCount) {
     const meta = categories[cat];
     const isAgent = ['agent', 'research'].includes(meta.type) ||
       ['調査・リサーチ', '経営・日常業務', '開発・品質・デザイン', 'コンテンツ・ユーティリティ', '研究エージェント'].includes(cat);
+    const isDb = meta.type === 'db';
 
     if (isAgent && !nav.querySelector('.sidebar-label-agent')) {
       const agentLabel = document.createElement('div');
       agentLabel.className = 'sidebar-label sidebar-label-agent';
       agentLabel.textContent = 'エージェント';
       nav.appendChild(agentLabel);
+    }
+
+    if (isDb && !nav.querySelector('.sidebar-label-db')) {
+      const dbLabel = document.createElement('div');
+      dbLabel.className = 'sidebar-label sidebar-label-db';
+      dbLabel.textContent = 'データ';
+      nav.appendChild(dbLabel);
     }
 
     const btn = document.createElement('button');
@@ -2536,7 +2788,8 @@ function renderSidebar(categories, archivedCount) {
     btn.addEventListener('click', () => {
       nav.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const target = document.getElementById('section-' + i);
+      const targetId = meta.type === 'db' ? 'section-databases' : 'section-' + i;
+      const target = document.getElementById(targetId);
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
     nav.appendChild(btn);
@@ -2618,7 +2871,8 @@ function renderApps(filter = '') {
       '経営・日常業務': '経営',
       '開発・品質・デザイン': '開発',
       'コンテンツ・ユーティリティ': 'コンテンツ',
-      '研究エージェント': '研究'
+      '研究エージェント': '研究',
+      '構築済みデータベース': 'DB'
     };
     btn.textContent = shortLabels[cat] || cat;
     btn.addEventListener('click', () => {
@@ -2653,6 +2907,56 @@ function renderApps(filter = '') {
     container.appendChild(section);
   }
 
+  // Render databases section
+  if (!lf || databases.some(db => db.name.toLowerCase().includes(lf) || db.desc.toLowerCase().includes(lf))) {
+    const dbSection = document.createElement('div');
+    dbSection.className = 'section';
+    dbSection.id = 'section-databases';
+
+    const filteredDbs = lf
+      ? databases.filter(db => db.name.toLowerCase().includes(lf) || db.desc.toLowerCase().includes(lf))
+      : databases;
+
+    // Summary stats
+    const totalSize = databases.reduce((a, db) => a + parseFloat(db.size), 0);
+    const totalRows = databases.reduce((a, db) => a + parseInt(db.rows.replace(/,/g, '')), 0);
+    const totalTables = databases.reduce((a, db) => a + db.tables, 0);
+
+    dbSection.innerHTML = `
+      <div class="section-title db-section"><span class="section-indicator"></span>構築済みデータベース <span style="font-weight:400;opacity:0.6">(${databases.length})</span></div>
+      <div class="db-summary">
+        <div class="db-stat"><div class="db-stat-value">${databases.length}</div><div class="db-stat-label">データベース</div></div>
+        <div class="db-stat"><div class="db-stat-value">${totalSize.toFixed(0)} MB</div><div class="db-stat-label">総容量</div></div>
+        <div class="db-stat"><div class="db-stat-value">${totalRows.toLocaleString()}</div><div class="db-stat-label">総レコード</div></div>
+        <div class="db-stat"><div class="db-stat-value">${totalTables}</div><div class="db-stat-label">総テーブル</div></div>
+      </div>
+    `;
+
+    filteredDbs.forEach(db => {
+      const card = document.createElement('div');
+      card.className = 'app-card db-card';
+      const urlBtn = db.url ? `<a href="${db.url}" target="_blank" class="btn btn-open" onclick="event.stopPropagation()">開く</a>` : '';
+      const copyBtn = `<button class="btn btn-copy btn-cmd" data-cmd="sqlite3 ${db.path}">コピー</button>`;
+      card.innerHTML = `
+        <div class="app-icon" style="background:${db.color}" aria-hidden="true">${db.icon}</div>
+        <div class="app-info">
+          <div class="app-name">${db.name} <span class="badge db-badge">DB</span></div>
+          <div class="app-desc">${escapeHtml(db.desc)}</div>
+          <div class="db-meta">
+            <span class="db-chip">${db.size}</span>
+            <span class="db-chip">${db.tables} tables</span>
+            <span class="db-chip">${db.rows} rows</span>
+          </div>
+          ${db.notable ? `<div class="db-notable">${escapeHtml(db.notable)}</div>` : ''}
+        </div>
+        <div class="app-actions">${urlBtn}${copyBtn}</div>
+      `;
+      dbSection.appendChild(card);
+    });
+
+    container.appendChild(dbSection);
+  }
+
   if (Object.keys(activeCategories).length === 0 && archivedApps.length === 0) {
     container.innerHTML = '<p style="text-align:center;color:#666;padding:40px">該当するアプリが見つかりません</p>';
   }
@@ -2662,6 +2966,7 @@ function renderApps(filter = '') {
   Object.entries(activeCategories).forEach(([cat, items]) => {
     sidebarData[cat] = { type: activeCategoryMeta[cat] || '', count: items.length };
   });
+  sidebarData['構築済みデータベース'] = { type: 'db', count: databases.length };
   renderSidebar(sidebarData, archivedApps.length);
 
   // Render recent apps
