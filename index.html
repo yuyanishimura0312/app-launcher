@@ -1521,6 +1521,17 @@ const apps = [
   {
     category: "公開中の Web アプリ",
     sectionType: "released",
+    name: "Structural Inflection Scorer",
+    desc: "研究テーマの構造的変曲点を5つの学術フレームワーク（ペレス・クリステンセン等）でスコアリング。投資タイミングを評価するリサーチ評価ツール",
+    icon: "SI", color: "#1e40af",
+    url: "https://yuyanishimura0312.github.io/structural-inflection-scorer/",
+    localCmd: "open ~/projects/apps/structural-inflection-scorer/index.html",
+    hosting: "GitHub Pages",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Work Resume",
     desc: "職務経歴書ビルダー（ドラッグ&ドロップ編集対応）",
     icon: "WR", color: "#475569",
@@ -1600,6 +1611,17 @@ const apps = [
     hosting: "設計段階",
     badge: "開発中", badgeType: "dev"
   },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Meeting Flow",
+    desc: "Plaud連携の会議TODO自動化アプリ。録音→文字起こし→Claude AI分析→TODO一覧をWebダッシュボードで管理",
+    icon: "MF", color: "#0891b2",
+    localCmd: "cd ~/projects/apps/meeting-flow/backend && python3 server.py",
+    localUrl: "http://localhost:5200",
+    hosting: "Python + Vite/React + SQLite",
+    badge: "ローカル", badgeType: "local"
+  },
 
   // --- CLI ツール ---
   {
@@ -1664,6 +1686,26 @@ const apps = [
     desc: "ディープリサーチを実行するシェルスクリプト",
     icon: "DR", color: "#6d28d9",
     localCmd: "~/tools/deep-research.sh",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Sangaku Matcher v2",
+    desc: "産学連携マッチングv2。10次元スコアリング + 13協業パターン + 3出口タイプ（R&D協業/新領域開拓/探索対話）。122テーマ分類体系対応",
+    icon: "S2", color: "#78350f",
+    localCmd: "cd ~/projects/apps/sangaku-matcher-v2 && sangaku match --text '研究内容...'",
+    hosting: "Python CLI (pip install -e .)",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "University Contacts DB",
+    desc: "全国789大学の産学連携窓口コンタクトDB（METI大学ファクトブック2026ベース）。メールアドレス・URLをCSV/JSONで管理",
+    icon: "UC", color: "#1e40af",
+    localCmd: "open ~/projects/apps/university-contacts-db/data/universities_contacts_final.csv",
+    hosting: "CSV + JSON + Python スクレイパー",
     badge: "CLI", badgeType: "cli"
   },
 
