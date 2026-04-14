@@ -1622,6 +1622,38 @@ const apps = [
     hosting: "Python + Vite/React + SQLite",
     badge: "ローカル", badgeType: "local"
   },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Doc Filler",
+    desc: "書類自動記入ツール。Excel/Wordテンプレートに参照情報をもとにAIが自動記入",
+    icon: "DF", color: "#b45309",
+    localCmd: "cd ~/projects/apps/doc-filler && bash start.sh",
+    localUrl: "http://localhost:8001",
+    hosting: "Flask",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Dev Status",
+    desc: "iPhoneから開発プロジェクトの状況を監視するダッシュボード。Git commit履歴・未コミット変更・push状態を一覧表示",
+    icon: "DS", color: "#475569",
+    localCmd: "cd ~/projects/utils/dev-status && python app.py",
+    localUrl: "http://localhost:5300",
+    hosting: "Flask",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
+    name: "Academic DB Monitor",
+    desc: "学術知識DB（5分野）の収集進捗モニター。年代カバー率・分野別収集数を可視化",
+    icon: "AM", color: "#6366f1",
+    localCmd: "cd ~/projects/research/academic-db-monitor && python app.py",
+    hosting: "Flask",
+    badge: "ローカル", badgeType: "local"
+  },
 
   // --- CLI ツール ---
   {
@@ -1728,6 +1760,36 @@ const apps = [
     desc: "Gmail から問い合わせメールを抽出・分析するツール",
     icon: "EI", color: "#ea580c",
     localCmd: "cd ~/projects/utils/email-inquiry-extractor && python main.py",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Academic Knowledge DB",
+    desc: "5分野（人文学・社会科学・自然科学・工学・芸術）の知的生産物を体系的に収集・構造化するデータベース。心理学665理論パイロット完了",
+    icon: "AK", color: "#4f46e5",
+    localCmd: "cd ~/projects/research/academic-knowledge-db",
+    hosting: "SQLite + Python",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Anthropology Concepts DB",
+    desc: "人類学100年の概念系譜DB（500概念・252研究者・285系譜関係）。PESTLEシグナルに人類学的フォーサイト視点を体系的に適用",
+    icon: "AC", color: "#7c3aed",
+    localCmd: "cd ~/projects/research/anthropology-concepts",
+    hosting: "SQLite + Python",
+    badge: "CLI", badgeType: "cli"
+  },
+  {
+    category: "CLI ツール",
+    sectionType: "cli",
+    name: "Claude Config",
+    desc: "Claude Code個人設定（グローバル指示・カスタムコマンド・サブエージェント・フック）。~/.claude/ にシンボリックリンク",
+    icon: "CC", color: "#1e293b",
+    localCmd: "code ~/projects/utils/claude-config",
+    hosting: "設定ファイル",
     badge: "CLI", badgeType: "cli"
   },
 
