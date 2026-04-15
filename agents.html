@@ -322,6 +322,174 @@ td.cell-td { text-align: center; padding: 3px 2px; }
 .chip:hover { border-color: #c87864; }
 .chip.active { background: #783c28; color: #fff; border-color: #783c28; }
 
+/* Gap analysis */
+.gap-domain {
+  margin-bottom: 20px;
+}
+.gap-domain-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #f8f4ee;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.gap-domain-header:hover { background: #f0ece6; }
+.gap-domain-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.gap-coverage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gap-coverage-bar {
+  width: 80px;
+  height: 8px;
+  background: #e8e2da;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.gap-coverage-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+.gap-coverage-text {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 32px;
+  text-align: right;
+}
+.gap-role-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px;
+  padding: 0 4px;
+}
+.gap-role {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #e8e2da;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: box-shadow 0.15s;
+}
+.gap-role:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.gap-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.gap-role-name {
+  font-weight: 500;
+  flex: 1;
+}
+.gap-role-mapped {
+  font-size: 10px;
+  color: #6b635b;
+  max-width: 140px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Recommendation cards */
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+}
+.rec-card {
+  border: 1px solid #e8e2da;
+  border-radius: 10px;
+  padding: 16px;
+  background: #fff;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.rec-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.rec-card.priority-high { border-left: 3px solid #dc2626; }
+.rec-card.priority-medium { border-left: 3px solid #ea580c; }
+.rec-card.priority-low { border-left: 3px solid #0891b2; }
+.rec-priority {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.rec-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+.rec-domain {
+  font-size: 11px;
+  color: #6b635b;
+  margin-bottom: 8px;
+}
+.rec-desc {
+  font-size: 12px;
+  color: #44403c;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.rec-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.rec-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #f0ece6;
+  color: #44403c;
+}
+
+/* Overall coverage gauge */
+.gauge-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f8f4ee;
+  border-radius: 10px;
+}
+.gauge-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #783c28;
+  flex-shrink: 0;
+  position: relative;
+}
+.gauge-circle svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+.gauge-info { flex: 1; }
+.gauge-info h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.gauge-info p { font-size: 12px; color: #6b635b; }
+
 /* Responsive */
 @media (max-width: 768px) {
   .header { padding: 20px 16px 10px; }
@@ -352,6 +520,8 @@ td.cell-td { text-align: center; padding: 3px 2px; }
   <button class="tab" data-tab="heatmap">Heatmap</button>
   <button class="tab" data-tab="agents">Agent Roles</button>
   <button class="tab" data-tab="projects">Project View</button>
+  <button class="tab" data-tab="gap">Gap Analysis</button>
+  <button class="tab" data-tab="recommend">Recommendations</button>
 </div>
 
 <div class="container">
@@ -387,6 +557,26 @@ td.cell-td { text-align: center; padding: 3px 2px; }
       <div class="section-title">7-Stage Development Process — エージェント別統計</div>
       <p style="font-size:12px;color:#6b635b;margin-bottom:16px;">7段階循環モデルの各ステージを担当するエージェントの関与量。コミットメッセージのキーワード分析に基づく推定値。</p>
       <div class="agent-grid" id="agent-grid"></div>
+    </div>
+  </div>
+
+  <!-- Gap Analysis Tab -->
+  <div class="tab-content" id="tab-gap">
+    <div class="section">
+      <div class="section-title">Coverage Gap Analysis — 現在 vs 理想のエージェント構成</div>
+      <p style="font-size:12px;color:#6b635b;margin-bottom:16px;">世界標準の68ロールカタログ（10業務領域）に対する現在のエージェント体制のカバー率。緑=カバー済み、黄=部分的、赤=未カバー。</p>
+      <div id="gap-gauge"></div>
+      <div id="gap-domains"></div>
+    </div>
+  </div>
+
+  <!-- Recommendations Tab -->
+  <div class="tab-content" id="tab-recommend">
+    <div class="section">
+      <div class="section-title">推奨エージェント — 導入優先度順</div>
+      <p style="font-size:12px;color:#6b635b;margin-bottom:12px;">現在の開発体制・業務内容を踏まえ、追加すべきエージェントを優先度別に提案。学術フレームワーク（MetaGPT/CrewAI/OrgAgent）と業界ベストプラクティスに基づく。</p>
+      <div class="filter-chips" id="rec-filters"></div>
+      <div class="rec-grid" id="rec-grid"></div>
     </div>
   </div>
 
@@ -713,12 +903,345 @@ document.querySelectorAll('.proj-sort').forEach(btn => {
   });
 });
 
+// ===== GAP ANALYSIS DATA =====
+const GAP_DOMAINS = [
+  {
+    domain: 'ソフトウェア開発',
+    color: '#2563eb',
+    roles: [
+      {name:'System Architect', ja:'システムアーキテクト', status:'partial', mapped:'spec-writer + /design', desc:'要件からシステム構造・技術スタック選定'},
+      {name:'Frontend Specialist', ja:'フロントエンド専門家', status:'covered', mapped:'/engineer', desc:'UI実装・パフォーマンス最適化'},
+      {name:'Backend Specialist', ja:'バックエンド専門家', status:'covered', mapped:'/engineer', desc:'API・DB設計・ビジネスロジック'},
+      {name:'Database Specialist', ja:'DB専門家', status:'gap', mapped:'', desc:'データモデリング・クエリ最適化・インデックス設計'},
+      {name:'Unit Tester', ja:'単体テスト', status:'covered', mapped:'qa-func-tester', desc:'関数・クラス単位の検証'},
+      {name:'Integration Tester', ja:'統合テスト', status:'partial', mapped:'qa-func-tester', desc:'モジュール間連携の検証'},
+      {name:'E2E Tester', ja:'E2Eテスト', status:'covered', mapped:'qa-ui-tester', desc:'ユーザー操作シナリオ全体の検証'},
+      {name:'Performance Tester', ja:'パフォーマンステスト', status:'gap', mapped:'', desc:'負荷テスト・ボトルネック特定・SLO検証'},
+      {name:'Code Reviewer', ja:'コードレビュアー', status:'covered', mapped:'qa-code-reviewer', desc:'PR品質・設計パターン評価'},
+      {name:'Security Auditor', ja:'セキュリティ監査', status:'covered', mapped:'security-auditor', desc:'OWASP基準の脆弱性分析'},
+      {name:'CI/CD Engineer', ja:'CI/CDエンジニア', status:'partial', mapped:'deploy-manager', desc:'パイプライン設計・デプロイ自動化'},
+      {name:'Infrastructure Engineer', ja:'インフラエンジニア', status:'gap', mapped:'', desc:'クラウドインフラ設計・IaC管理'},
+      {name:'Monitoring Engineer', ja:'監視エンジニア', status:'partial', mapped:'monitor-observer', desc:'SLI/SLO監視・異常検知・アラート設定'},
+      {name:'Technical Writer', ja:'テクニカルライター', status:'partial', mapped:'/usage-guide', desc:'APIドキュメント・ユーザーガイド・リリースノート'},
+    ]
+  },
+  {
+    domain: 'プロダクト管理',
+    color: '#7c3aed',
+    roles: [
+      {name:'Product Manager', ja:'プロダクトマネジャー', status:'partial', mapped:'spec-writer', desc:'PRD作成・優先度付けバックログ・ロードマップ'},
+      {name:'Scrum Master', ja:'スクラムマスター', status:'gap', mapped:'', desc:'スプリント計画・障害除去・振り返り運営'},
+      {name:'Backlog Manager', ja:'バックログ管理', status:'gap', mapped:'', desc:'アイテム整理・重複検出・受入基準ドラフト'},
+      {name:'User Story Writer', ja:'ユーザーストーリー作成', status:'gap', mapped:'', desc:'As a/I want/So that形式の要件記述'},
+      {name:'Roadmap Planner', ja:'ロードマップ策定', status:'gap', mapped:'', desc:'四半期/年次ロードマップ・リスク依存関係マップ'},
+    ]
+  },
+  {
+    domain: 'デザイン',
+    color: '#e11d48',
+    roles: [
+      {name:'UI Designer', ja:'UIデザイナー', status:'covered', mapped:'ux-visual-designer', desc:'ビジュアルインターフェース設計'},
+      {name:'UX Researcher', ja:'UXリサーチャー', status:'partial', mapped:'ux-interaction-designer', desc:'ユーザー行動調査・インサイト抽出'},
+      {name:'Accessibility Specialist', ja:'アクセシビリティ専門家', status:'covered', mapped:'ux-accessibility-expert', desc:'WCAG準拠評価・ARIAマークアップ'},
+      {name:'Visual Designer', ja:'ビジュアルデザイナー', status:'partial', mapped:'/design', desc:'アイコン・イラスト・ブランドアセット制作'},
+      {name:'Motion Designer', ja:'モーションデザイナー', status:'gap', mapped:'', desc:'UIアニメーション・マイクロインタラクション設計'},
+      {name:'Design System Manager', ja:'デザインシステム管理', status:'gap', mapped:'', desc:'コンポーネントライブラリ・デザイントークン管理'},
+    ]
+  },
+  {
+    domain: 'リサーチ・分析',
+    color: '#0891b2',
+    roles: [
+      {name:'Market Research Analyst', ja:'市場調査アナリスト', status:'covered', mapped:'/research, /competitor-scan', desc:'市場規模・成長率・参入障壁の調査'},
+      {name:'Competitive Intelligence', ja:'競合分析担当', status:'covered', mapped:'/competitor-scan', desc:'競合モニタリング・差別化機会特定'},
+      {name:'User Researcher', ja:'ユーザーリサーチャー', status:'gap', mapped:'', desc:'インタビュー・エスノグラフィ・行動ログ分析'},
+      {name:'Academic Literature Reviewer', ja:'学術文献レビュアー', status:'covered', mapped:'/academic-search, /deep-research', desc:'系統的レビュー・引用ネットワーク分析'},
+      {name:'Data Analyst', ja:'データアナリスト', status:'partial', mapped:'/db', desc:'統計分析・パターン発見・ダッシュボード作成'},
+      {name:'Statistical Analyst', ja:'統計アナリスト', status:'gap', mapped:'', desc:'因果推論・回帰分析・ベイズ推定'},
+      {name:'Predictive Modeler', ja:'予測モデリング', status:'gap', mapped:'', desc:'ML/DLモデル構築・予測システム提供'},
+    ]
+  },
+  {
+    domain: 'ビジネス・経営',
+    color: '#b91c1c',
+    roles: [
+      {name:'Business Strategist', ja:'ビジネス戦略立案', status:'covered', mapped:'/management, /cxo-meeting', desc:'中長期戦略策定・SWOT分析'},
+      {name:'Financial Analyst', ja:'財務アナリスト', status:'partial', mapped:'/finance-check', desc:'財務モデリング・予算対比分析'},
+      {name:'Risk Manager', ja:'リスク管理', status:'gap', mapped:'', desc:'戦略/財務/オペレーショナルリスク評価'},
+      {name:'Legal Advisor', ja:'法務アドバイザー', status:'gap', mapped:'', desc:'契約レビュー・法規制対応・知財管理'},
+      {name:'Compliance Manager', ja:'コンプライアンス管理', status:'gap', mapped:'', desc:'規制準拠監視・違反リスク検出'},
+      {name:'HR Specialist', ja:'人事・採用専門家', status:'gap', mapped:'', desc:'採用設計・人材育成・エンゲージメント分析'},
+    ]
+  },
+  {
+    domain: 'コンテンツ・コミュニケーション',
+    color: '#ea580c',
+    roles: [
+      {name:'Content Writer', ja:'コンテンツライター', status:'covered', mapped:'/esse-report, /signal-article', desc:'ブログ・LP・ホワイトペーパー執筆'},
+      {name:'Editor', ja:'編集者', status:'partial', mapped:'ux-content-reviewer', desc:'論理構造・文体・事実正確性の評価'},
+      {name:'Translator', ja:'翻訳担当', status:'covered', mapped:'/translate-academic', desc:'学術英語翻訳・ローカライズ'},
+      {name:'Social Media Manager', ja:'SNS管理', status:'gap', mapped:'', desc:'SNSコンテンツ企画・投稿・エンゲージメント分析'},
+      {name:'PR Specialist', ja:'PR・広報', status:'partial', mapped:'/proposal', desc:'プレスリリース・メディアピッチ'},
+      {name:'Brand Manager', ja:'ブランドマネジャー', status:'gap', mapped:'', desc:'ブランドガイドライン管理・ヘルス計測'},
+      {name:'Presentation Designer', ja:'スライド作成', status:'covered', mapped:'/pptx, /slide', desc:'McKinsey/BCG水準のスライド設計'},
+      {name:'Report Writer', ja:'レポートライター', status:'covered', mapped:'/parallel-report, /new-report', desc:'調査報告書・エグゼクティブサマリー'},
+    ]
+  },
+  {
+    domain: 'オペレーション・管理',
+    color: '#059669',
+    roles: [
+      {name:'Project Manager', ja:'プロジェクトマネジャー', status:'partial', mapped:'process-orchestrator', desc:'スコープ・スケジュール・コスト・品質管理'},
+      {name:'Task Coordinator', ja:'タスクコーディネーター', status:'covered', mapped:'/execution', desc:'タスク整理・割当・追跡・ブロッカー検出'},
+      {name:'Schedule Manager', ja:'スケジュール管理', status:'covered', mapped:'/secretary, cal-read', desc:'会議調整・カレンダー最適化'},
+      {name:'Quality Manager', ja:'品質管理', status:'covered', mapped:'qa-lead', desc:'品質基準定義・継続的品質測定'},
+      {name:'Process Improvement', ja:'プロセス改善', status:'gap', mapped:'', desc:'業務プロセス分析・ムダ削減'},
+      {name:'Vendor Manager', ja:'ベンダー管理', status:'gap', mapped:'', desc:'外部ベンダー評価・SLAモニタリング'},
+      {name:'Procurement Specialist', ja:'調達担当', status:'gap', mapped:'', desc:'RFP作成・コスト最適化・購買実行'},
+    ]
+  },
+  {
+    domain: 'カスタマー対応',
+    color: '#6366f1',
+    roles: [
+      {name:'Customer Support Agent', ja:'カスタマーサポート', status:'gap', mapped:'', desc:'FAQ参照回答・エスカレーション・対応記録'},
+      {name:'FAQ Manager', ja:'FAQ管理', status:'gap', mapped:'', desc:'問い合わせパターン分析・FAQ自動更新'},
+      {name:'CRM Analyst', ja:'CRMアナリスト', status:'gap', mapped:'', desc:'顧客セグメント・LTV予測・チャーン検出'},
+      {name:'Onboarding Specialist', ja:'オンボーディング', status:'gap', mapped:'', desc:'新規顧客ガイド・TTFV最大化'},
+    ]
+  },
+  {
+    domain: 'セキュリティ・ガバナンス',
+    color: '#1e293b',
+    roles: [
+      {name:'Security Analyst', ja:'セキュリティアナリスト', status:'partial', mapped:'security-auditor', desc:'ログ監視・攻撃兆候検出・脅威インテリジェンス'},
+      {name:'Vulnerability Scanner', ja:'脆弱性スキャン', status:'partial', mapped:'security-auditor', desc:'定期スキャン・CVE優先度付け'},
+      {name:'Compliance Monitor', ja:'コンプライアンス監視', status:'gap', mapped:'', desc:'GDPR/SOC2/ISO27001準拠の継続監視'},
+      {name:'Policy Manager', ja:'ポリシー管理', status:'gap', mapped:'', desc:'セキュリティポリシー一元管理・更新'},
+      {name:'Incident Responder', ja:'インシデント対応', status:'gap', mapped:'', desc:'封じ込め・フォレンジック・PIRレポート'},
+    ]
+  },
+  {
+    domain: 'フォーサイト・イノベーション',
+    color: '#0d9488',
+    roles: [
+      {name:'Trend Analyst', ja:'トレンドアナリスト', status:'covered', mapped:'PESTLE collection, /signal-article', desc:'PESTLE分析・トレンドマップ生成'},
+      {name:'Weak Signal Detector', ja:'弱いシグナル検出', status:'covered', mapped:'/futurology, Future Insight', desc:'非線形変化の萌芽検出・早期警戒'},
+      {name:'Scenario Planner', ja:'シナリオプランニング', status:'covered', mapped:'/futurology', desc:'複数未来シナリオ構築・含意評価'},
+      {name:'Futures Forecaster', ja:'未来予測', status:'partial', mapped:'/futurology', desc:'定量的予測・デルファイ法・時系列分析'},
+      {name:'Innovation Manager', ja:'イノベーション管理', status:'gap', mapped:'', desc:'アイデア収集・育成・パイプライン管理'},
+      {name:'Anthropology Researcher', ja:'人類学研究者', status:'covered', mapped:'/concept-bridge, /field-note', desc:'文化的文脈分析・Thick Description'},
+    ]
+  },
+];
+
+// Recommendations data
+const RECOMMENDATIONS = [
+  {
+    name: 'Product Manager Agent',
+    ja: 'プロダクトマネジャー',
+    domain: 'プロダクト管理',
+    priority: 'high',
+    reason: '現在spec-writerが部分的にカバーしているが、PRD作成・バックログ優先度付け・ロードマップ策定を包括的に担うエージェントが不在。MetaGPT/ChatDevの両方で最上流に位置する重要ロール。',
+    impact: '開発の方向性決定が高速化。spec-writer → PM Agent → Engineer の流れで仕様の曖昧さが大幅減少。',
+    tags: ['MetaGPT', 'ChatDev', 'Stage 0-1'],
+  },
+  {
+    name: 'Data Analyst Agent',
+    ja: 'データアナリスト',
+    domain: 'リサーチ・分析',
+    priority: 'high',
+    reason: '18個のSQLiteデータベースを持ちながら、統計分析・パターン発見を体系的に行うエージェントが不在。/dbは横断検索に特化しており、分析・インサイト抽出には不十分。',
+    impact: 'ユーザー行動・事業KPI・研究データの定量分析が自動化。ダッシュボード自動生成。',
+    tags: ['CrewAI Analyst', 'Stage 1'],
+  },
+  {
+    name: 'Technical Writer Agent',
+    ja: 'テクニカルライター',
+    domain: 'ソフトウェア開発',
+    priority: 'high',
+    reason: '/usage-guideは使い方ガイド構築に特化。APIドキュメント、README、CHANGELOG、リリースノートの自動生成・更新を包括的に担うエージェントが必要。62プロジェクトの文書品質を統一する効果大。',
+    impact: 'コード変更に追随するドキュメント自動更新。README品質の標準化。',
+    tags: ['ChatDev', 'Stage 5'],
+  },
+  {
+    name: 'Performance Tester Agent',
+    ja: 'パフォーマンステスト',
+    domain: 'ソフトウェア開発',
+    priority: 'medium',
+    reason: 'QAチームに機能テスト・UIテスト・コードレビュー・セキュリティは揃っているが、負荷テスト・レスポンス計測が欠落。Vercelデプロイ済みアプリが20以上あり、パフォーマンス監視の必要性が高まっている。',
+    impact: 'デプロイ前のパフォーマンス劣化検出。Lighthouse自動計測 + SLO違反アラート。',
+    tags: ['QA Team拡張', 'Stage 3'],
+  },
+  {
+    name: 'Infrastructure Engineer Agent',
+    ja: 'インフラエンジニア',
+    domain: 'ソフトウェア開発',
+    priority: 'medium',
+    reason: 'Vercel・GitHub Pages・Render.com・Supabase・Firebase・AWSと多様なインフラを使用しているが、構成管理・コスト最適化を担うエージェントが不在。esse-sense AWSサンドボックス構築計画もある。',
+    impact: 'マルチクラウド構成の可視化・コスト分析。IaCテンプレート生成。',
+    tags: ['DevOps', 'Stage 2-5'],
+  },
+  {
+    name: 'CRM Analyst Agent',
+    ja: 'CRMアナリスト',
+    domain: 'カスタマー対応',
+    priority: 'medium',
+    reason: 'Essence CRMとmiratuku-membershipが稼働中だが、顧客セグメンテーション・LTV予測・チャーンリスク検出を自動化するエージェントがない。メンバーシップ事業の成長に直結。',
+    impact: '会員の離脱予兆を早期検出。エンゲージメント施策の自動提案。',
+    tags: ['Salesforce Agentforce型', 'Stage 6'],
+  },
+  {
+    name: 'Compliance Monitor Agent',
+    ja: 'コンプライアンス監視',
+    domain: 'セキュリティ・ガバナンス',
+    priority: 'medium',
+    reason: 'security-auditorはコードレベルの脆弱性に特化。個人情報保護法・GDPR等の規制準拠、APIキー漏洩防止、依存パッケージのライセンス監視を継続的に行うエージェントが不在。',
+    impact: '規制違反リスクの自動検出。監査証跡の自動生成。',
+    tags: ['OrgAgent Compliance Layer', 'Stage 3'],
+  },
+  {
+    name: 'Process Improvement Agent',
+    ja: 'プロセス改善',
+    domain: 'オペレーション・管理',
+    priority: 'medium',
+    reason: '7段階循環モデルが確立されているが、プロセス自体のボトルネック分析・最適化を行うメタレベルのエージェントがない。各ステージの所要時間・手戻り率を計測して改善提案する役割。',
+    impact: '開発プロセスの定量的改善。ステージ間ハンドオフの最適化。',
+    tags: ['Lean/Six Sigma', 'Stage 6→0'],
+  },
+  {
+    name: 'Social Media Manager Agent',
+    ja: 'SNS管理エージェント',
+    domain: 'コンテンツ・コミュニケーション',
+    priority: 'low',
+    reason: 'Slack連携は充実しているが、外部SNS（X/LinkedIn/note等）への投稿・エンゲージメント分析を担うエージェントがない。esse-senseやミラツクの情報発信力強化に寄与。',
+    impact: 'リサーチ結果やSignal記事のSNS自動配信。エンゲージメント分析レポート。',
+    tags: ['Marketing Team', 'Stage 5-6'],
+  },
+  {
+    name: 'Risk Manager Agent',
+    ja: 'リスク管理',
+    domain: 'ビジネス・経営',
+    priority: 'low',
+    reason: 'CxO会議で戦略議論はできるが、リスクレジスター・リスクマトリクスを継続的に維持管理するエージェントがない。NPO法人として助成金・コンプライアンスリスクの管理が重要。',
+    impact: 'リスクの可視化と定期レビュー。シナリオ分析との連携。',
+    tags: ['ISO 31000', 'Stage 1'],
+  },
+  {
+    name: 'Onboarding Specialist Agent',
+    ja: 'オンボーディング',
+    domain: 'カスタマー対応',
+    priority: 'low',
+    reason: 'Speaker Manager・Miratuku Events・Libraryなど外部ユーザー向けアプリが増加。新規ユーザーの定着率を高めるオンボーディングフロー自動化が未整備。',
+    impact: 'TTFV（初回価値到達時間）の短縮。離脱率低減。',
+    tags: ['Customer Success', 'Stage 6'],
+  },
+  {
+    name: 'Innovation Manager Agent',
+    ja: 'イノベーション管理',
+    domain: 'フォーサイト・イノベーション',
+    priority: 'low',
+    reason: 'フォーサイト系エージェントはトレンド検出・シナリオ構築に強いが、アイデアの収集→評価→実験→学習のパイプライン管理が不在。リサーチ結果が事業アクションに接続する仕組みが弱い。',
+    impact: 'リサーチ→プロトタイプ→事業化の循環加速。',
+    tags: ['Lean Startup', 'Stage 0-1'],
+  },
+];
+
+// Render Gap Analysis
+function renderGapAnalysis() {
+  // Overall coverage
+  let totalRoles = 0, covered = 0, partial = 0, gap = 0;
+  GAP_DOMAINS.forEach(d => d.roles.forEach(r => {
+    totalRoles++;
+    if (r.status === 'covered') covered++;
+    else if (r.status === 'partial') partial++;
+    else gap++;
+  }));
+  const coveragePct = Math.round((covered + partial * 0.5) / totalRoles * 100);
+  const circumference = 2 * Math.PI * 34;
+  const offset = circumference - (coveragePct / 100) * circumference;
+
+  document.getElementById('gap-gauge').innerHTML = `
+    <div class="gauge-row">
+      <div class="gauge-circle">
+        <svg width="80" height="80"><circle cx="40" cy="40" r="34" fill="none" stroke="#e8e2da" stroke-width="6"/>
+        <circle cx="40" cy="40" r="34" fill="none" stroke="#783c28" stroke-width="6"
+          stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round"/></svg>
+        ${coveragePct}%
+      </div>
+      <div class="gauge-info">
+        <h3>総合カバー率: ${coveragePct}%（${totalRoles}ロール中）</h3>
+        <p style="display:flex;gap:16px;margin-top:4px">
+          <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#059669;margin-right:4px"></span>カバー済み ${covered}</span>
+          <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ea580c;margin-right:4px"></span>部分的 ${partial}</span>
+          <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#dc2626;margin-right:4px"></span>未カバー ${gap}</span>
+        </p>
+      </div>
+    </div>`;
+
+  // Per-domain
+  const container = document.getElementById('gap-domains');
+  container.innerHTML = GAP_DOMAINS.map(d => {
+    const total = d.roles.length;
+    const cov = d.roles.filter(r => r.status === 'covered').length;
+    const par = d.roles.filter(r => r.status === 'partial').length;
+    const pct = Math.round((cov + par * 0.5) / total * 100);
+    const fillColor = pct >= 70 ? '#059669' : pct >= 40 ? '#ea580c' : '#dc2626';
+
+    const roleCards = d.roles.map(r => {
+      const dotColor = r.status === 'covered' ? '#059669' : r.status === 'partial' ? '#ea580c' : '#dc2626';
+      return `<div class="gap-role" onmouseenter="showTooltip(event,'${r.desc}')" onmouseleave="hideTooltip()">
+        <div class="gap-status-dot" style="background:${dotColor}"></div>
+        <div class="gap-role-name">${r.name}<span style="font-size:10px;color:#6b635b;margin-left:4px">${r.ja}</span></div>
+        <div class="gap-role-mapped">${r.mapped || '—'}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="gap-domain">
+      <div class="gap-domain-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'grid':'none'">
+        <div class="gap-domain-name" style="color:${d.color}">${d.domain}</div>
+        <div class="gap-coverage">
+          <div class="gap-coverage-bar"><div class="gap-coverage-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+          <div class="gap-coverage-text" style="color:${fillColor}">${pct}%</div>
+          <span style="font-size:10px;color:#9a918a">${cov}/${total}</span>
+        </div>
+      </div>
+      <div class="gap-role-list">${roleCards}</div>
+    </div>`;
+  }).join('');
+}
+
+// Render Recommendations
+function renderRecommendations(priorityFilter = 'all') {
+  const filters = [{key:'all',label:'All'},{key:'high',label:'High'},{key:'medium',label:'Medium'},{key:'low',label:'Low'}];
+  document.getElementById('rec-filters').innerHTML = filters.map(f =>
+    `<div class="chip ${f.key === priorityFilter ? 'active' : ''}" onclick="renderRecommendations('${f.key}')">${f.label}</div>`
+  ).join('');
+
+  const filtered = priorityFilter === 'all' ? RECOMMENDATIONS : RECOMMENDATIONS.filter(r => r.priority === priorityFilter);
+
+  document.getElementById('rec-grid').innerHTML = filtered.map(r => {
+    const prColor = r.priority === 'high' ? '#dc2626' : r.priority === 'medium' ? '#ea580c' : '#0891b2';
+    const prLabel = r.priority === 'high' ? 'HIGH PRIORITY' : r.priority === 'medium' ? 'MEDIUM' : 'LOW';
+    return `<div class="rec-card priority-${r.priority}">
+      <div class="rec-priority" style="color:${prColor}">${prLabel}</div>
+      <div class="rec-name">${r.name}</div>
+      <div class="rec-domain">${r.domain} / ${r.ja}</div>
+      <div class="rec-desc"><strong>Why:</strong> ${r.reason}</div>
+      <div class="rec-desc"><strong>Impact:</strong> ${r.impact}</div>
+      <div class="rec-tags">${r.tags.map(t => `<span class="rec-tag">${t}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
 // Init
 renderSummary();
 renderStackedBars();
 renderHeatmap();
 renderAgentRoles();
 renderProjectView();
+renderGapAnalysis();
+renderRecommendations();
 </script>
 
 </body>
