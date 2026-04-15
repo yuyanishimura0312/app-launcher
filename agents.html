@@ -490,6 +490,120 @@ td.cell-td { text-align: center; padding: 3px 2px; }
 .gauge-info h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .gauge-info p { font-size: 12px; color: #6b635b; }
 
+/* Catalog */
+.catalog-search {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #e8e2da;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  color: #1a1a1a;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.catalog-search:focus { border-color: #c87864; }
+.catalog-search::placeholder { color: #9a918a; }
+.cat-group {
+  margin-bottom: 20px;
+}
+.cat-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f8f4ee;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.cat-group-header:hover { background: #f0ece6; }
+.cat-group-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.cat-group-count {
+  font-size: 11px;
+  color: #6b635b;
+  background: #e8e2da;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.cat-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 8px;
+}
+.cat-card {
+  border: 1px solid #e8e2da;
+  border-radius: 8px;
+  padding: 12px 14px;
+  transition: box-shadow 0.15s;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.cat-card:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.cat-card.new-agent { border-left: 3px solid #059669; }
+.cat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  font-family: 'SF Mono', 'Menlo', monospace;
+}
+.cat-info { flex: 1; min-width: 0; }
+.cat-cmd {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-family: 'SF Mono', 'Menlo', monospace;
+}
+.cat-cmd .new-badge {
+  font-size: 9px;
+  font-weight: 600;
+  color: #059669;
+  background: #e6f4e6;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 6px;
+  font-family: -apple-system, sans-serif;
+  letter-spacing: 0.3px;
+}
+.cat-desc {
+  font-size: 11px;
+  color: #44403c;
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.cat-detail {
+  font-size: 10px;
+  color: #6b635b;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.cat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+.cat-tag-item {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: #f0ece6;
+  color: #6b635b;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .header { padding: 20px 16px 10px; }
@@ -522,6 +636,7 @@ td.cell-td { text-align: center; padding: 3px 2px; }
   <button class="tab" data-tab="projects">Project View</button>
   <button class="tab" data-tab="gap">Gap Analysis</button>
   <button class="tab" data-tab="recommend">Recommendations</button>
+  <button class="tab" data-tab="catalog">Catalog (79)</button>
 </div>
 
 <div class="container">
@@ -577,6 +692,17 @@ td.cell-td { text-align: center; padding: 3px 2px; }
       <p style="font-size:12px;color:#6b635b;margin-bottom:12px;">現在の開発体制・業務内容を踏まえ、追加すべきエージェントを優先度別に提案。学術フレームワーク（MetaGPT/CrewAI/OrgAgent）と業界ベストプラクティスに基づく。</p>
       <div class="filter-chips" id="rec-filters"></div>
       <div class="rec-grid" id="rec-grid"></div>
+    </div>
+  </div>
+
+  <!-- Catalog Tab -->
+  <div class="tab-content" id="tab-catalog">
+    <div class="section">
+      <div class="section-title">Agent Catalog — 全79エージェント</div>
+      <p style="font-size:12px;color:#6b635b;margin-bottom:12px;">スラッシュコマンドで起動する全エージェントの一覧。各エージェントの役割・特徴・連携先を確認できます。</p>
+      <input type="text" class="catalog-search" id="catalog-search" placeholder="エージェントを検索（名前・説明・キーワード）">
+      <div class="filter-chips" id="catalog-filters"></div>
+      <div id="catalog-list"></div>
     </div>
   </div>
 
@@ -902,6 +1028,102 @@ document.querySelectorAll('.proj-sort').forEach(btn => {
     renderProjectView(currentProjCat, currentProjSort);
   });
 });
+
+// ===== CATALOG DATA =====
+const CATALOG = [
+  // --- Core Team ---
+  {cmd:'engineer', cat:'Core Team', color:'#2563eb', desc:'開発・技術課題を解決するプロフェッショナルエンジニアリングチーム', detail:'Clean Code / Pragmatic Programmer / Refactoring の原則に基づく。実装→テスト→デプロイ→保存→報告の完遂を重視。Python 3, Node.js 24, Vercel, GitHub Pages対応。', tags:['Stage 2','実装','テスト','デプロイ'], related:['/design','/management']},
+  {cmd:'design', cat:'Core Team', color:'#e11d48', desc:'UI/UX・ビジュアル・資料デザインを担うプロフェッショナルクリエイティブチーム', detail:'Don Norman / Steve Krug / Edward Tufte の原則。Figma的思考でUIを設計し、アクセシビリティとレスポンシブを標準対応。', tags:['UI/UX','ビジュアル','Figma'], related:['/engineer','/ux-review']},
+  {cmd:'execution', cat:'Core Team', color:'#ea580c', desc:'指示を受けたタスクを最高水準で完遂するプロフェッショナル実務部隊', detail:'GTD / Checklist Manifesto の原則。明確な指示に対して確実に実行し、結果を報告する。', tags:['タスク実行','GTD'], related:['/secretary','/engineer']},
+  {cmd:'management', cat:'Core Team', color:'#0d9488', desc:'経営判断・戦略立案を支えるプロフェッショナル経営アドバイザー', detail:'Good Strategy / Porter の原則。事業戦略・組織運営・意思決定を支援。CxO会議との連携。', tags:['戦略','経営判断','Porter'], related:['/cxo-meeting','/finance-check']},
+  {cmd:'secretary', cat:'Core Team', color:'#7c3aed', desc:'スケジュール・連絡・情報を完璧に管理するプロフェッショナル秘書', detail:'GTD / Drucker の原則。カレンダー管理、連絡調整、情報整理を一手に担う。iCalスクリプト連携。', tags:['スケジュール','カレンダー','連絡'], related:['/briefing','/meeting-prep']},
+  // --- Product & Infra ---
+  {cmd:'product-manager', cat:'Product & Infra', color:'#7c3aed', desc:'プロダクトの方向性を定義し、開発チームが何を作るべきかを常に明確にする', detail:'Inspired (Cagan) / Lean Startup (Ries) / JTBD (Christensen) に基づく。PRD作成、優先度付きバックログ、ロードマップ策定。MoSCoW/RICEで優先度を可視化。', tags:['PRD','バックログ','ロードマップ','Stage 0-1'], related:['/engineer','/design','/architect'], isNew:true},
+  {cmd:'architect', cat:'Product & Infra', color:'#1e293b', desc:'実装前にシステム全体の構造を設計し、技術選定・コンポーネント分割を定義', detail:'Philosophy of Software Design (Ousterhout) / Clean Architecture (Martin) / DDIA (Kleppmann)。ADR、API設計、データモデル、非機能要件を生成。Mermaid記法で図を描く。', tags:['設計','ADR','API','データモデル'], related:['/engineer','/infra-engineer'], isNew:true},
+  {cmd:'backlog-manager', cat:'Product & Infra', color:'#059669', desc:'60以上のGitHubリポジトリに散在するIssue・TODO・開発タスクを横断整理', detail:'GitHub MCP + CLAUDE.md memoryから全タスクを収集。重複検出、優先度マトリクス（アイゼンハワー）、ユーザーストーリー変換、長期放置Issue棚卸し。', tags:['Issue管理','優先度','横断整理'], related:['/product-manager','/status'], isNew:true},
+  {cmd:'infra-engineer', cat:'Product & Infra', color:'#475569', desc:'Vercel・GitHub Pages・Render.com・Supabase・Firebase・AWSのマルチクラウド構成管理', detail:'20以上のデプロイ済みアプリが5つ以上のホスティングに分散。構成可視化、コスト分析、セキュリティ確認、無料枠活用状況の把握。', tags:['Vercel','AWS','Supabase','コスト'], related:['/engineer','/incident-responder'], isNew:true},
+  {cmd:'incident-responder', cat:'Product & Infra', color:'#dc2626', desc:'本番環境の障害・エラー・パフォーマンス劣化に対して迅速な原因特定と復旧を主導', detail:'Detect→Triage(P1-P4)→Contain→RCA→Remediate→PIR の6段階対応。Playwright MCPで現状確認、git logで変更原因推定。AWS DevOps Agent型のインシデントコマンダー。', tags:['SRE','障害復旧','PIR','P1-P4'], related:['/engineer','/infra-engineer'], isNew:true},
+  // --- Development & Quality ---
+  {cmd:'qa-review', cat:'Dev & Quality', color:'#dc2626', desc:'5人のQA専門エージェント（機能・UI・コード・セキュリティ・統合）によるアプリ品質レビュー', detail:'qa-lead, qa-func-tester, qa-ui-tester, qa-code-reviewer, qa-bug-fixer の5エージェントチーム。Stage 3で起動。', tags:['Stage 3','5エージェント','品質'], related:['/ux-review','/perf-tester']},
+  {cmd:'ux-review', cat:'Dev & Quality', color:'#7c3aed', desc:'5人のUX専門エージェント（ビジュアル・インタラクション・アクセシビリティ・コンテンツ・統合）', detail:'ux-lead, ux-visual-designer, ux-interaction-designer, ux-accessibility-expert, ux-content-reviewer の5チーム。', tags:['Stage 3','UX','アクセシビリティ'], related:['/qa-review','/design']},
+  {cmd:'perf-tester', cat:'Dev & Quality', color:'#b45309', desc:'Core Web Vitals・Lighthouse・バンドルサイズ等のパフォーマンス計測', detail:'LCP 2.5s以下, CLS 0.1以下, Lighthouse 90以上を目標。Playwright MCPでネットワーク分析。ボトルネック特定と改善提案。', tags:['Lighthouse','CWV','バンドル','Stage 3'], related:['/qa-review','/engineer'], isNew:true},
+  {cmd:'compliance-monitor', cat:'Dev & Quality', color:'#1e293b', desc:'規制準拠・ライセンス整合性・個人情報保護を継続的に監視', detail:'OrgAgent Compliance Layer相当。APIキー漏洩検出、GPLライセンス汚染、typosquatting、個人情報ハードコード検出。Critical/High/Medium/Lowで分類。', tags:['GDPR','ライセンス','APIキー','Stage 3'], related:['/legal-advisor','/risk-manager'], isNew:true},
+  {cmd:'tech-writer', cat:'Dev & Quality', color:'#0891b2', desc:'コード変更に追随してREADME・CHANGELOG・APIリファレンスを自動更新', detail:'Docs for Developers (Bhatti) / Every Page is Page One (Baker)。62プロジェクトの文書品質統一。Keep a Changelog形式。', tags:['README','CHANGELOG','API Doc','Stage 5'], related:['/usage-guide','/engineer'], isNew:true},
+  {cmd:'process-improve', cat:'Dev & Quality', color:'#ea580c', desc:'7段階循環開発モデル自体のボトルネックを分析し、プロセスの継続的改善を推進', detail:'Toyota Production System / Accelerate (4 Key Metrics) / The Goal (制約理論)。ステージ遷移時間、手戻り率、コミットパターンを定量分析。', tags:['Lean','制約理論','Stage 6→0'], related:['/retro','/status'], isNew:true},
+  {cmd:'review', cat:'Dev & Quality', color:'#475569', desc:'現在のブランチのコード変更をレビュー', detail:'差分ベースのコードレビュー。バグ、セキュリティ、パフォーマンス、コードスタイルをチェック。', tags:['コードレビュー','diff'], related:['/qa-review']},
+  {cmd:'fix-issue', cat:'Dev & Quality', color:'#dc2626', desc:'GitHub Issueを分析し、コード修正・PR作成まで実行', detail:'Issue分析→原因特定→修正実装→テスト→commit+push→PR作成の一貫フロー。', tags:['GitHub Issue','PR','修正'], related:['/engineer','/backlog-manager']},
+  {cmd:'usage-guide', cat:'Dev & Quality', color:'#059669', desc:'アプリの使い方ガイドページを3エージェント並列で構築', detail:'構成設計・コンテンツ作成・UI実装の3並列。Playwritght MCPでアプリを操作しながらガイドを作成。', tags:['ガイド','3並列','Stage 5'], related:['/tech-writer','/customer-support']},
+  {cmd:'catchup', cat:'Dev & Quality', color:'#6b635b', desc:'ブランチやリポジトリの最近の変更を把握', detail:'git log解析で直近の変更内容を要約。新しい会話の冒頭で状況把握に使用。', tags:['git','変更把握'], related:['/status']},
+  {cmd:'status', cat:'Dev & Quality', color:'#6b635b', desc:'現在のプロジェクト状況を確認', detail:'開発進捗、未解決Issue、デプロイ状態などプロジェクトの現状を包括的に報告。', tags:['進捗','状況確認'], related:['/catchup','/backlog-manager']},
+  // --- UX Research & Customer ---
+  {cmd:'user-researcher', cat:'UX & Customer', color:'#e11d48', desc:'アプリのユーザー行動・ニーズ・ペインポイントを調査する定性調査の専門家', detail:'Just Enough Research (Hall) / The Mom Test (Fitzpatrick)。ヒューリスティック評価、認知ウォークスルー、ペルソナ、カスタマージャーニーマップ。観察→解釈→含意の3層で報告。', tags:['ヒューリスティック','ペルソナ','ジャーニー'], related:['/design','/onboarding'], isNew:true},
+  {cmd:'customer-support', cat:'UX & Customer', color:'#6366f1', desc:'FAQ・エラーメッセージ・ヘルプドキュメントを設計・管理', detail:'セルフサービス解決率を最大化。エラーメッセージは「何が起きたか」+「どうすれば解決するか」の2点。トラブルシューティングガイド作成。', tags:['FAQ','エラーメッセージ','ヘルプ'], related:['/onboarding','/usage-guide'], isNew:true},
+  {cmd:'onboarding', cat:'UX & Customer', color:'#0891b2', desc:'新規ユーザーの定着率を高めるオンボーディングフロー設計・改善', detail:'Hooked (Nir Eyal)。TTFV（Time to First Value）最短化。ドロップオフポイント特定、チュートリアル設計、プログレスバー提案。', tags:['TTFV','定着率','チュートリアル'], related:['/user-researcher','/design'], isNew:true},
+  // --- Brand & Design System ---
+  {cmd:'brand-manager', cat:'Brand & Design', color:'#783c28', desc:'esse-sense/ミラツクのブランドアイデンティティを全チャネル・全アプリで一貫して維持', detail:'カラーパレット(#783c28/#faf8f5)、ファビコン(esse-sense白黒反転)、トーン(知的・プロフェッショナル・探究的)。ビジュアル整合性・トーン&ボイス監査。', tags:['ブランド','カラー','トーン'], related:['/design-system','/social-media'], isNew:true},
+  {cmd:'design-system', cat:'Brand & Design', color:'#7c3aed', desc:'60以上のアプリに一貫したUI/UXを提供するデザイントークン・コンポーネント管理', detail:'CSS変数・カラーパレット・タイポグラフィ・スペーシングの標準定義。クロスアプリ一貫性チェック、マイグレーションガイド作成。', tags:['デザイントークン','CSS','コンポーネント'], related:['/brand-manager','/design'], isNew:true},
+  // --- Data & Analysis ---
+  {cmd:'data-analyst', cat:'Data & Analysis', color:'#0891b2', desc:'18個のSQLiteデータベースと各種データソースを横断的に分析しインサイトを抽出', detail:'Storytelling with Data (Knaflic)。仮説駆動分析、可視化ファースト、So What?まで踏み込む。pandas, scipy, matplotlib, seaborn。', tags:['統計','可視化','pandas','Stage 1'], related:['/db','/statistical-analyst'], isNew:true},
+  {cmd:'statistical-analyst', cat:'Data & Analysis', color:'#1e40af', desc:'因果推論・仮説検証・予測モデリングを行う統計専門エージェント', detail:'Art of Statistics (Spiegelhalter) / Causal Inference (Cunningham)。t検定、回帰分析、ベイズ推定、時系列分析、PCA。効果量+信頼区間+p値の3点セット。', tags:['因果推論','ベイズ','仮説検定','効果量'], related:['/data-analyst','/academic-search'], isNew:true},
+  {cmd:'db-specialist', cat:'Data & Analysis', color:'#475569', desc:'18個のSQLiteデータベースのスキーマ最適化・クエリチューニング・品質管理', detail:'スキーマ監査（正規化・命名規則）、インデックス最適化、データ品質レポート（NULL率・重複・異常値）、マイグレーション設計。EXPLAIN ANALYZE活用。', tags:['スキーマ','インデックス','データ品質'], related:['/db','/data-analyst'], isNew:true},
+  {cmd:'db', cat:'Data & Analysis', color:'#6366f1', desc:'18個のSQLiteデータベースを横断的に活用する連結エージェント', detail:'CLIツール: python3 ~/tools/db-agent.py。list/schema/query/search/cross/export-schema。横断検索・結合・加工。', tags:['横断検索','SQLite','CLI'], related:['/data-analyst','/db-specialist']},
+  {cmd:'crm-analyst', cat:'Data & Analysis', color:'#059669', desc:'Essence CRM・miratuku-membershipの顧客データ分析', detail:'RFM分析、チャーン予測、LTV推計、コホート分析、エンゲージメントスコア。「何をすべきか」まで提案。Salesforce Agentforce型。', tags:['RFM','チャーン','LTV','Stage 6'], related:['/db','/management'], isNew:true},
+  // --- Research ---
+  {cmd:'research', cat:'Research', color:'#0891b2', desc:'指定テーマについてWebで調査し、結果をまとめてResearch Dashboardに保存', detail:'WebSearch+WebFetchで情報収集→文章レポート→save-research.sh全文保存→commit+push。', tags:['Web調査','Dashboard','自動保存'], related:['/deep-research','/save-research']},
+  {cmd:'deep-research', cat:'Research', color:'#1e293b', desc:'体系的かつ徹底的な調査を行うディープリサーチャー', detail:'学術論文+Web横断の多層調査。引用追跡、検証、ソース信頼性スコアリング付き。', tags:['多層調査','引用追跡','信頼性'], related:['/research','/academic-search']},
+  {cmd:'academic-search', cat:'Research', color:'#6366f1', desc:'学術論文を検索し、主要な研究動向をまとめる', detail:'Semantic Scholar/PubMed/arXiv等のAPIを活用。文献マップ作成、引用ネットワーク分析。', tags:['論文検索','Semantic Scholar','引用'], related:['/deep-research','/statistical-analyst']},
+  {cmd:'best-practice', cat:'Research', color:'#7c3aed', desc:'ベストプラクティスを体系的に調査し、構造解析して実行可能なフレームワークに変換', detail:'CMO+GRADEフレームワーク。3並列エージェント（学術・実務・批評）で多角的に調査。', tags:['BP調査','3並列','GRADE'], related:['/research','/research-design']},
+  {cmd:'research-design', cat:'Research', color:'#0d9488', desc:'3+1エージェント並列の調査プロジェクト設計', detail:'学術的視点・リサーチ視点・解析者視点の3専門エージェント+批評エージェント。', tags:['調査設計','3+1並列'], related:['/best-practice','/deep-research']},
+  {cmd:'competitor-scan', cat:'Research', color:'#dc2626', desc:'Playwright+Web検索による競合調査', detail:'競合のWebサイト・SNS・価格設定をPlaywright MCPで直接確認。比較マトリクス作成。', tags:['競合','Playwright','比較'], related:['/research','/brand-manager']},
+  {cmd:'claude-code-news', cat:'Research', color:'#783c28', desc:'Claude Codeの最先端ベストプラクティスに関する最新ニュース調査', detail:'Claude Code関連の最新機能・使い方・Tips・コミュニティ動向を定期的に調査しレポート。', tags:['Claude Code','最新情報'], related:['/research']},
+  {cmd:'save-research', cat:'Research', color:'#059669', desc:'リサーチ結果をResearch Dashboardに保存', detail:'save-research.sh --content-file で全文保存+embeddings再生成+commit+push。', tags:['Dashboard','保存'], related:['/research']},
+  // --- Foresight ---
+  {cmd:'futurology', cat:'Foresight', color:'#0d9488', desc:'未来予測カード557枚ベースの未来分析エージェント', detail:'約30冊の未来予測書籍から抽出した「カード」を参照。PESTLE/CLA/シナリオプランニング。', tags:['未来予測','557カード','PESTLE'], related:['/futurology-2','/signal-article']},
+  {cmd:'futurology-2', cat:'Foresight', color:'#0e7490', desc:'CLA（因果階層分析）36年分データ+シグナル理論+シナリオプランニング統合', detail:'より高度な未来洞察。理論と実践の統合、弱いシグナル検出、複数シナリオ構築。', tags:['CLA','シグナル理論','シナリオ'], related:['/futurology','/signal-article']},
+  {cmd:'signal-article', cat:'Foresight', color:'#2d6a4f', desc:'Signal of Change記事を3段階エージェントチームで作成', detail:'シグナル確保→人類学概念マッチ→記事執筆。miratuku-strategy向けコンテンツ。', tags:['Signal','人類学','3段階'], related:['/futurology','/concept-bridge']},
+  {cmd:'digest', cat:'Foresight', color:'#b45309', desc:'専門テーマの最新動向をパーソナライズされた週次ダイジェストで配信', detail:'指定した情報源から収集し、専門テーマに絞ったダイジェストを生成。', tags:['週次','ダイジェスト','パーソナライズ'], related:['/research','/futurology']},
+  // --- Business & Management ---
+  {cmd:'cxo-meeting', cat:'Business', color:'#b91c1c', desc:'7人のCxO（CEO/CFO/COO/CMO/CTO/CHRO/CSO）による経営会議シミュレーション', detail:'指定議題について7人が順番に専門視点から議論し、CEOが統合判断。5つの会議モード。', tags:['CxO','7人','経営会議'], related:['/management','/risk-manager']},
+  {cmd:'finance-check', cat:'Business', color:'#b45309', desc:'月次財務ヘルスチェック — キャッシュフロー・予算消化率・異常値検出', detail:'Profit First / 3シナリオ分析。楽観・基本・悲観の3パターンで財務状況を評価。', tags:['財務','月次','3シナリオ'], related:['/management','/risk-manager']},
+  {cmd:'risk-manager', cat:'Business', color:'#dc2626', desc:'事業・財務・オペレーションのリスクを特定・評価し、レジスターを維持管理', detail:'ISO 31000 / Thinking in Bets (Duke) / Black Swan (Taleb)。影響度x発生確率マトリクス。回避・軽減・移転・受容の対応策。', tags:['ISO 31000','リスクマトリクス','月次レビュー'], related:['/finance-check','/compliance-monitor'], isNew:true},
+  {cmd:'legal-advisor', cat:'Business', color:'#1e293b', desc:'契約書レビュー・利用規約作成・知的財産管理・NPOコンプライアンス確認', detail:'ドラフト作成のみ（最終判断は弁護士に委ねる）。リスクポイント分類（重大/注意/軽微）。OSSライセンス確認。', tags:['契約','利用規約','NPO','ライセンス'], related:['/compliance-monitor','/risk-manager'], isNew:true},
+  {cmd:'innovation', cat:'Business', color:'#0d9488', desc:'リサーチ結果を事業アクションに接続するアイデアパイプライン管理', detail:'Lean Startup / Crossing the Chasm / Blue Ocean / Ten Types of Innovation。アイデア収集→評価→実験→学習のサイクル。', tags:['Lean','パイプライン','実験'], related:['/futurology','/product-manager'], isNew:true},
+  {cmd:'social-media', cat:'Business', color:'#ea580c', desc:'X/LinkedIn/noteへのSNSコンテンツ企画・作成・分析', detail:'リサーチ結果やSignal記事をSNS投稿に変換。チャネル特性に合わせた文体。投稿前に西村の確認必須。', tags:['X','LinkedIn','note','SNS'], related:['/brand-manager','/signal-article'], isNew:true},
+  {cmd:'stakeholder-map', cat:'Business', color:'#475569', desc:'ステークホルダーの洗い出し、影響力・関心度・接触状況を可視化', detail:'プロジェクトや事業に関わる関係者をマッピング。影響力×関心度のマトリクスで整理。', tags:['ステークホルダー','マトリクス'], related:['/management','/proposal']},
+  // --- Daily Ops ---
+  {cmd:'briefing', cat:'Daily Ops', color:'#7c3aed', desc:'今日の予定・タスク・重要事項のモーニングブリーフィング', detail:'カレンダー確認、Slack未読、重要タスク、アラートを統合して朝の状況報告。', tags:['朝','ブリーフィング','カレンダー'], related:['/secretary','/weekly-review']},
+  {cmd:'weekly-review', cat:'Daily Ops', color:'#059669', desc:'GTD式の週次レビュー — 今週の振り返り+来週の重点3項目', detail:'GTDウィークリーレビューをAIで自動化。「今週の振り返り」と「来週の計画」を構造化。', tags:['GTD','週次','振り返り'], related:['/briefing','/retro']},
+  {cmd:'retro', cat:'Daily Ops', color:'#ea580c', desc:'After-Action Review — プロジェクト完了後の構造化された事後レビュー', detail:'何がうまくいったか、何がうまくいかなかったか、教訓を組織知として蓄積。', tags:['振り返り','教訓','AAR'], related:['/weekly-review','/process-improve']},
+  {cmd:'meeting-prep', cat:'Daily Ops', color:'#6366f1', desc:'ミーティング事前ブリーフ自動生成 — 参加者・議題・過去経緯', detail:'指定された会議に対して、関連情報を収集し、事前ブリーフを自動生成。', tags:['会議準備','ブリーフ'], related:['/secretary','/briefing']},
+  {cmd:'slack-catchup', cat:'Daily Ops', color:'#0891b2', desc:'Slackの未読メッセージをキャッチアップして要約', detail:'主要チャンネルの未読を確認し、アクション可能な項目と情報共有に分類。', tags:['Slack','未読','要約'], related:['/slack-post','/slack-thread']},
+  {cmd:'slack-post', cat:'Daily Ops', color:'#0891b2', desc:'Slackにメッセージを投稿（送信前に内容・チャンネルを確認）', detail:'ミラツクSlackの各チャンネルに投稿。日本語で、送信前に必ず西村の確認を取る。', tags:['Slack','投稿'], related:['/slack-catchup']},
+  {cmd:'slack-thread', cat:'Daily Ops', color:'#0891b2', desc:'Slackの特定スレッドの内容を確認', detail:'スレッドURLまたはチャンネル+タイムスタンプでスレッド内容を取得。', tags:['Slack','スレッド'], related:['/slack-catchup']},
+  // --- Content ---
+  {cmd:'parallel-report', cat:'Content', color:'#2563eb', desc:'複数エージェントを並列に使い、高品質なレポートを高速に作成', detail:'テーマに対して複数の調査エージェントを同時起動し、結果を統合してレポート化。', tags:['並列','高速','レポート'], related:['/research','/new-report']},
+  {cmd:'esse-report', cat:'Content', color:'#783c28', desc:'esse-senseスタイルのコンテンツ・レポート作成', detail:'esse-sense/ミラツクのトーン＆ボイスで、知的でプロフェッショナルなコンテンツを生成。', tags:['esse-sense','コンテンツ'], related:['/brand-manager']},
+  {cmd:'proposal', cat:'Content', color:'#0d9488', desc:'提案書・企画書ドラフト生成 — Minto Pyramid / SCQA', detail:'クライアント向けの提案書、企画書、事業計画書をプロフェッショナルなトーンで作成。', tags:['提案書','Minto','SCQA'], related:['/management','/pptx']},
+  {cmd:'pptx', cat:'Content', color:'#b91c1c', desc:'5エージェントPPTXデザインチーム — McKinsey/BCG/Tufte準拠', detail:'Slide Director + Structure + Visual + Data Viz + Review。~/tools/pptx-skill/にツール群。', tags:['PPTX','5エージェント','McKinsey'], related:['/slide','/proposal']},
+  {cmd:'slide', cat:'Content', color:'#7c3aed', desc:'Marpスライド作成 — esse-senseカスタムテーマ', detail:'Markdownベースのスライド生成。esse-senseのデザインガイドラインに準拠。', tags:['Marp','スライド','Markdown'], related:['/pptx']},
+  {cmd:'translate-academic', cat:'Content', color:'#1e40af', desc:'テキストまたはファイルを学術的な英語に翻訳', detail:'人類学・社会科学の専門用語に対応。学術論文のAbstract、conference paper向け。', tags:['翻訳','学術英語','人類学'], related:['/academic-search']},
+  {cmd:'new-app', cat:'Content', color:'#059669', desc:'新規アプリ/ツールのプロジェクト作成', detail:'git init, GitHub repo作成, .gitignore, 適切なテンプレート配置を自動実行。', tags:['新規','プロジェクト作成'], related:['/engineer']},
+  {cmd:'new-report', cat:'Content', color:'#059669', desc:'新規レポート/調査報告書のプロジェクト作成', detail:'README.md, report.md, data/, scripts/, figures/ のテンプレート構造を自動生成。', tags:['新規','レポート'], related:['/parallel-report']},
+  {cmd:'notion-note', cat:'Content', color:'#6366f1', desc:'Notionに新しいメモ/ページを作成', detail:'Notion MCPを使ってページ作成。Claude code配下にサブページとして追加。', tags:['Notion','メモ'], related:['/notion-search']},
+  {cmd:'notion-search', cat:'Content', color:'#6366f1', desc:'Notionワークスペースを検索して情報を発見', detail:'Notion MCP search APIで既存コンテンツを検索。重複防止にも活用。', tags:['Notion','検索'], related:['/notion-note','/knowledge']},
+  {cmd:'knowledge', cat:'Content', color:'#1e293b', desc:'Notion・Slack・Research Dashboard・ローカルファイルを横断検索', detail:'セカンドブレイン的なナレッジ横断検索。指定テーマに関する過去の情報を統合して提示。', tags:['横断検索','ナレッジ','セカンドブレイン'], related:['/notion-search','/research']},
+  // --- Academic Research ---
+  {cmd:'field-note', cat:'Academic', color:'#0d9488', desc:'人類学フィールドワーク（観察・インタビュー・イベント参加等）の構造化記録', detail:'Thick Description / Spradleyの9次元。フィールドノートを構造化して保存。', tags:['Thick Description','Spradley','フィールドワーク'], related:['/concept-bridge']},
+  {cmd:'concept-bridge', cat:'Academic', color:'#7c3aed', desc:'人類学⇄ビジネスの概念翻訳・フレームワーク接続', detail:'異なる領域のフレームワーク間の構造的な接続を発見。概念系譜DB（500概念）を活用。', tags:['概念翻訳','人類学','ビジネス'], related:['/field-note','/signal-article']},
+  // --- Academic DB ---
+  {cmd:'academic-db', cat:'Academic DB', color:'#4338ca', desc:'5学問領域の学術知識DBオーケストレーター（9サブコマンド統括）', detail:'人文学・社会科学・自然科学・工学・芸術。scope/survey/collect/verify/audit/trace/crossref/collect-recentを統括。', tags:['5分野','オーケストレーター','9コマンド'], related:[]},
+  {cmd:'academic-db-scope', cat:'Academic DB', color:'#4338ca', desc:'Phase 0: 対象分野の知識生産量を推定し、収集目標マトリクスを算出', detail:'サブフィールドごと・時代区分ごとの目標を設定。全体の規模感を事前に把握。', tags:['Phase 0','スコーピング'], related:[]},
+  {cmd:'academic-db-survey', cat:'Academic DB', color:'#4338ca', desc:'Phase 1: 学問分野の全体構造を把握し、網羅的な調査フレームを構築', detail:'分野のランドスケープを俯瞰し、主要テーマ・学派・論争を整理。', tags:['Phase 1','調査設計'], related:[]},
+  {cmd:'academic-db-collect', cat:'Academic DB', color:'#4338ca', desc:'Phase 2: 指定された分野・分類から知識単位を収集しDBに登録', detail:'体系的な情報収集。文献・概念・理論をデータベースに構造化登録。', tags:['Phase 2','収集'], related:[]},
+  {cmd:'academic-db-collect-recent', cat:'Academic DB', color:'#4338ca', desc:'文献起点型Collector — 直近10-15年の理論/モデルを5参照パターンで収集', detail:'引用追跡・著者ネットワーク・キーワードクラスタリング等5つのパターンで発見。', tags:['文献起点','直近理論'], related:[]},
+  {cmd:'academic-db-verify', cat:'Academic DB', color:'#4338ca', desc:'Phase 3: 収集データの正確性・網羅性を検証し品質レポートを生成', detail:'データの正確性チェック、矛盾検出、欠落情報の特定。', tags:['Phase 3','検証'], related:[]},
+  {cmd:'academic-db-audit', cat:'Academic DB', color:'#4338ca', desc:'Phase 3: カバレッジ監査 — 収集結果のカバー率を検証し不足領域を特定', detail:'目標マトリクスに対する達成率を計算。追加収集の優先順位をガイド。', tags:['Phase 3','カバレッジ'], related:[]},
+  {cmd:'academic-db-trace', cat:'Academic DB', color:'#4338ca', desc:'Genealogy Tracer — 知識単位の系譜関係を深く追跡しDBに登録', detail:'概念の起源・発展・分岐を追跡。影響関係ネットワークを構築。', tags:['系譜','影響関係'], related:[]},
+  {cmd:'academic-db-crossref', cat:'Academic DB', color:'#4338ca', desc:'Cross-Domain Linker — 5分野間の概念的つながりを発見', detail:'cross_domain_relationテーブルに分野横断の接続を記録。', tags:['分野横断','接続'], related:[]},
+];
 
 // ===== GAP ANALYSIS DATA =====
 const GAP_DOMAINS = [
@@ -1234,6 +1456,64 @@ function renderRecommendations(priorityFilter = 'all') {
   }).join('');
 }
 
+// Catalog
+function renderCatalog(catFilter = 'all', searchTerm = '') {
+  const cats = [...new Set(CATALOG.map(c => c.cat))];
+  const filterEl = document.getElementById('catalog-filters');
+  filterEl.innerHTML = [{key:'all',label:`All (${CATALOG.length})`}, ...cats.map(c => ({key:c,label:`${c} (${CATALOG.filter(a=>a.cat===c).length})`}))].map(f =>
+    `<div class="chip ${f.key === catFilter ? 'active' : ''}" onclick="currentCatFilter='${f.key}';renderCatalog('${f.key}',document.getElementById('catalog-search').value)">${f.label}</div>`
+  ).join('');
+
+  let filtered = catFilter === 'all' ? CATALOG : CATALOG.filter(c => c.cat === catFilter);
+  if (searchTerm) {
+    const q = searchTerm.toLowerCase();
+    filtered = filtered.filter(c =>
+      c.cmd.toLowerCase().includes(q) ||
+      c.desc.toLowerCase().includes(q) ||
+      c.detail.toLowerCase().includes(q) ||
+      c.tags.some(t => t.toLowerCase().includes(q))
+    );
+  }
+
+  const grouped = {};
+  filtered.forEach(c => {
+    if (!grouped[c.cat]) grouped[c.cat] = [];
+    grouped[c.cat].push(c);
+  });
+
+  const container = document.getElementById('catalog-list');
+  container.innerHTML = Object.entries(grouped).map(([cat, items]) => {
+    const cards = items.map(c => {
+      const initials = c.cmd.split('-').map(w => w[0]).join('').toUpperCase().slice(0,2);
+      const newBadge = c.isNew ? '<span class="new-badge">NEW</span>' : '';
+      const tags = c.tags.map(t => `<span class="cat-tag-item">${t}</span>`).join('');
+      const relLinks = (c.related||[]).map(r => `<span style="color:#783c28">${r}</span>`).join(' ');
+      return `<div class="cat-card ${c.isNew ? 'new-agent' : ''}">
+        <div class="cat-icon" style="background:${c.color}">${initials}</div>
+        <div class="cat-info">
+          <div class="cat-cmd">/${c.cmd}${newBadge}</div>
+          <div class="cat-desc">${c.desc}</div>
+          <div class="cat-detail">${c.detail}</div>
+          <div class="cat-tags">${tags}</div>
+          ${relLinks ? `<div style="font-size:10px;margin-top:3px;color:#6b635b">連携: ${relLinks}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="cat-group">
+      <div class="cat-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'grid':'none'">
+        <div class="cat-group-name" style="color:${items[0].color}">${cat}</div>
+        <div class="cat-group-count">${items.length}</div>
+      </div>
+      <div class="cat-items">${cards}</div>
+    </div>`;
+  }).join('');
+}
+
+let currentCatFilter = 'all';
+document.getElementById('catalog-search').addEventListener('input', e => {
+  renderCatalog(currentCatFilter, e.target.value);
+});
+
 // Init
 renderSummary();
 renderStackedBars();
@@ -1242,6 +1522,7 @@ renderAgentRoles();
 renderProjectView();
 renderGapAnalysis();
 renderRecommendations();
+renderCatalog();
 </script>
 
 </body>
