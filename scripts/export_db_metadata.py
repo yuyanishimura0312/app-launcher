@@ -134,6 +134,68 @@ DATABASES = [
      [
          ("プレスリリース一覧", "SELECT title, organization, published_date FROM press_releases ORDER BY published_date DESC LIMIT 20"),
      ]),
+    ("prtimes", "PR Times", "~/projects/apps/sangaku-matcher-v2/data/prtimes.db",
+     "PR Timesプレスリリース・企業・大学連携データ",
+     [
+         ("プレスリリース", "SELECT title, company_name, published_at FROM press_releases ORDER BY published_at DESC LIMIT 20"),
+         ("企業一覧", "SELECT name, industry FROM companies LIMIT 20"),
+     ]),
+    ("sangaku-matcher-v2", "Sangaku Matcher v2", "~/projects/apps/sangaku-matcher-v2/data/sangaku_v2.db",
+     "産学マッチングv2（企業・シーズ・協業・特許・プレスリリース統合）",
+     [
+         ("企業一覧", "SELECT name, industry FROM companies ORDER BY name LIMIT 20"),
+         ("技術シーズ", "SELECT title, field, university FROM seeds LIMIT 20"),
+         ("マッチング結果", "SELECT company_id, seed_id, score FROM matches ORDER BY score DESC LIMIT 20"),
+     ]),
+    ("grant-db", "Grant DB", "~/projects/apps/grant-db/grant_db.sqlite",
+     "助成金・補助金DB（6,113件・1,307機関・PDF解析・申請書テンプレ）",
+     [
+         ("助成金プログラム", "SELECT name, organization_name, category FROM grant_programs LIMIT 20"),
+         ("公募一覧", "SELECT title, status, deadline FROM grant_calls ORDER BY deadline DESC LIMIT 20"),
+         ("機関一覧", "SELECT name, type, grant_count FROM organizations ORDER BY grant_count DESC LIMIT 20"),
+     ]),
+    ("investment-signal-v2", "Investment Signal v2", "~/projects/research/investment-signal-radar/data/investment_signal_v2.db",
+     "投資シグナルレーダーv2（組織・資金調達ラウンド・イベント・セクター）",
+     [
+         ("組織一覧", "SELECT name, type, sector FROM organizations LIMIT 20"),
+         ("資金調達ラウンド", "SELECT organization_id, round_type, amount FROM funding_rounds ORDER BY announced_date DESC LIMIT 20"),
+         ("イベント", "SELECT title, event_type, date FROM events ORDER BY date DESC LIMIT 20"),
+     ]),
+    ("experts-db", "Experts DB", "~/projects/research/experts-db/data/experts.db",
+     "有識者ネットワークDB（省庁審議会・委員兼任・構造的空隙分析）",
+     [
+         ("有識者ランキング", "SELECT p.name, p.primary_org, count(DISTINCT a.council_id) AS cnt FROM persons p JOIN appointments a ON a.person_id = p.id GROUP BY p.id ORDER BY cnt DESC LIMIT 20"),
+         ("橋渡し人物", "SELECT name, betweenness, communities FROM bridge_persons ORDER BY betweenness DESC LIMIT 20"),
+     ]),
+    ("pestle", "PESTLE Articles", "~/projects/apps/secretary-app/pestle.db",
+     "PESTLEニュース記事DB（政治・経済・社会・技術・法律・環境）",
+     [
+         ("最新記事", "SELECT title, category, published_at FROM pestle_articles ORDER BY published_at DESC LIMIT 20"),
+     ]),
+    ("frontier-detector", "Frontier Detector", "~/projects/research/frontier-detector/frontier_detector.db",
+     "学術フロンティア検出（技術・シグナル・研究者・スコア）",
+     [
+         ("技術一覧", "SELECT name, field, maturity FROM technologies LIMIT 20"),
+         ("シグナル", "SELECT title, signal_type, relevance_score FROM signals ORDER BY relevance_score DESC LIMIT 20"),
+     ]),
+    ("healthy-aging", "Healthy Aging DB", "~/projects/research/healthy-aging-db/healthy_aging.db",
+     "健康長寿研究DB（要因・介入・エビデンス・理論枠組み）",
+     [
+         ("要因一覧", "SELECT name, category, importance FROM factors ORDER BY importance DESC LIMIT 20"),
+         ("介入一覧", "SELECT name, target, evidence_level FROM interventions LIMIT 20"),
+     ]),
+    ("structural-inflection", "Structural Inflection Radar", "~/projects/research/structural-inflection-radar/data/radar.db",
+     "構造的変化点検出レーダー（ドメイン・キーワード・スコアリング）",
+     [
+         ("ドメイン一覧", "SELECT name, description FROM domains LIMIT 20"),
+         ("キーワード", "SELECT keyword, domain_id FROM domain_keywords LIMIT 20"),
+     ]),
+    ("kakenhi-writer", "KAKENHI Writer", "~/projects/apps/kakenhi-writer/data/kakenhi.db",
+     "科研費申請書自動生成（カテゴリ・評価基準・テンプレート）",
+     [
+         ("カテゴリ", "SELECT name, code FROM kakenhi_categories LIMIT 20"),
+         ("審査区分", "SELECT name, category FROM review_sections LIMIT 20"),
+     ]),
 ]
 
 def export_db(db_id, name, path, desc, queries):
