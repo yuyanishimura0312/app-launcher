@@ -8,7 +8,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', 'Hiragino Sans', sans-serif;
     background: #f8f6f3;
     color: #1c1917;
     line-height: 1.5;
@@ -60,6 +60,100 @@
     font-family: 'SF Mono', monospace;
   }
   .summary-label { font-size: 12px; color: #78716c; margin-top: 2px; }
+
+  /* Overview section */
+  .overview {
+    max-width: 1200px; margin: 20px auto 0; padding: 0 20px;
+  }
+  .overview-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .overview-title {
+    font-size: 18px; font-weight: 700; color: #1c1917;
+  }
+  .overview-collapse-btn {
+    font-size: 12px; padding: 5px 14px; border-radius: 6px;
+    border: 1px solid #e7e0d9; background: #fff; color: #78716c;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .overview-collapse-btn:hover { border-color: #7A4033; color: #7A4033; }
+
+  .overview-intro {
+    font-size: 14px; color: #44403c; line-height: 1.85;
+    margin-bottom: 20px;
+    padding: 20px 24px;
+    background: #fff; border: 1px solid #e7e0d9; border-radius: 12px;
+  }
+  .overview-intro strong { color: #7A4033; font-weight: 600; }
+  .overview-intro code {
+    font-size: 12px; background: #f5f0eb; padding: 2px 6px;
+    border-radius: 4px; color: #7A4033;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .ov-card {
+    background: #fff; border: 1px solid #e7e0d9; border-radius: 12px;
+    overflow: hidden; transition: box-shadow 0.2s;
+  }
+  .ov-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  .ov-card-header {
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ov-card-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #fff; flex-shrink: 0;
+  }
+  .ov-card-header-text { flex: 1; }
+  .ov-card-label {
+    font-size: 14px; font-weight: 700; color: #1c1917;
+  }
+  .ov-card-sublabel {
+    font-size: 12px; color: #78716c; margin-top: 1px;
+  }
+  .ov-card-count {
+    font-size: 11px; font-weight: 600; color: #78716c;
+    background: #f5f0eb; padding: 3px 10px; border-radius: 12px;
+    flex-shrink: 0;
+  }
+
+  .ov-card-body {
+    padding: 0 18px 16px;
+    font-size: 13px; color: #57534e; line-height: 1.75;
+  }
+  .ov-card-body p { margin-bottom: 10px; }
+  .ov-card-body p:last-child { margin-bottom: 0; }
+
+  .ov-db-list {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-top: 10px;
+  }
+  .ov-db-item {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 6px 10px;
+    background: #faf9f7; border-radius: 6px;
+    font-size: 12px;
+  }
+  .ov-db-badge {
+    font-size: 10px; font-weight: 700; color: #fff;
+    padding: 1px 6px; border-radius: 4px;
+    flex-shrink: 0; text-align: center; min-width: 26px;
+  }
+  .ov-db-name { font-weight: 600; color: #44403c; flex-shrink: 0; }
+  .ov-db-desc { color: #78716c; flex: 1; }
+  .ov-db-stat {
+    font-family: 'SF Mono', monospace; font-size: 10px;
+    color: #a8a29e; flex-shrink: 0; white-space: nowrap;
+  }
 
   /* Search */
   .search-bar {
@@ -146,7 +240,8 @@
   }
   .card-desc {
     font-size: 12px; color: #78716c; margin-top: 1px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .card-stats {
@@ -205,61 +300,6 @@
   }
   .card-detail-link:hover { background: #faf9f7; text-decoration: none; }
 
-  /* Overview */
-  .overview {
-    max-width: 1200px; margin: 0 auto; padding: 0 20px 16px;
-  }
-  .overview-toggle {
-    display: flex; align-items: center; gap: 8px;
-    background: none; border: 1px solid #e7e0d9; border-radius: 8px;
-    padding: 10px 16px; width: 100%; cursor: pointer;
-    font-size: 14px; font-weight: 600; color: #44403c;
-    transition: all 0.15s;
-  }
-  .overview-toggle:hover { background: #faf9f7; border-color: #7A4033; color: #7A4033; }
-  .overview-chevron {
-    transition: transform 0.2s;
-    font-size: 12px; color: #a8a29e;
-  }
-  .overview-chevron.open { transform: rotate(90deg); }
-  .overview-body {
-    margin-top: 12px;
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 12px;
-  }
-  .overview-card {
-    background: #fff; border: 1px solid #e7e0d9; border-radius: 8px;
-    padding: 14px 16px; border-left: 3px solid #7A4033;
-  }
-  .overview-card-title {
-    font-size: 12px; font-weight: 700; color: #7A4033;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    margin-bottom: 8px;
-  }
-  .overview-card ul {
-    list-style: none; padding: 0; margin: 0;
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .overview-card li {
-    font-size: 12px; color: #57534e; line-height: 1.5;
-    display: flex; gap: 6px; align-items: baseline;
-  }
-  .overview-card li::before {
-    content: ''; display: inline-block; width: 4px; height: 4px;
-    border-radius: 50%; background: #d6d3d1; flex-shrink: 0;
-    margin-top: 6px;
-  }
-  .overview-db-name { font-weight: 600; color: #44403c; }
-  .overview-db-detail { color: #78716c; }
-  .overview-intro {
-    font-size: 13px; color: #57534e; line-height: 1.7;
-    margin-bottom: 14px; padding: 12px 16px;
-    background: #fff; border: 1px solid #e7e0d9; border-radius: 8px;
-  }
-  @media (max-width: 768px) {
-    .overview-body { grid-template-columns: 1fr; }
-  }
-
   /* Toast */
   .toast {
     position: fixed; bottom: 20px; left: 50%;
@@ -275,6 +315,7 @@
   @media (max-width: 768px) {
     .summary { grid-template-columns: repeat(2, 1fr); }
     .grid { grid-template-columns: 1fr; }
+    .overview-grid { grid-template-columns: 1fr; }
     .size-bar-label { width: 80px; font-size: 10px; }
     .header-links { display: none; }
   }
@@ -296,81 +337,309 @@
 
 <div class="summary" id="summary"></div>
 
-<div class="overview">
-  <button class="overview-toggle" id="overview-toggle" onclick="toggleOverview()">
-    <span class="overview-chevron" id="overview-chevron">&#x25B6;</span>
-    データベース概要 -- 31DBに格納されているデータの全体像
-  </button>
-  <div id="overview-body" style="display:none">
+<!-- Overview Section -->
+<div class="overview" id="overview-section">
+  <div class="overview-header">
+    <div class="overview-title">データベース概要</div>
+    <button class="overview-collapse-btn" id="overview-toggle" onclick="toggleOverview()">閉じる</button>
+  </div>
+
+  <div id="overview-body">
     <div class="overview-intro">
-      NPO法人ミラツク / 株式会社エッセンスの事業・研究活動を支える31のSQLiteデータベース群。政策分析・産学連携・未来洞察・学術研究・事業運営の5領域をカバーし、合計100万件以上のレコードを蓄積。各DBはClaude Code（<code>python3 ~/tools/db-agent.py</code>）から横断検索・分析が可能。
+      このダッシュボードは、ミラツク / エッセンスの事業・研究活動を支える<strong>31のSQLiteデータベース</strong>を一覧しています。
+      政策分析から産学連携、未来洞察、学術研究、日常の事業運営まで、組織の知的活動の全体像がここに集約されています。
+      合計<strong>100万件以上</strong>のレコードが蓄積されており、Claude Codeから<code>python3 ~/tools/db-agent.py</code>で横断検索・分析が可能です。
+      以下の6つの領域に分類して、各データベースの役割と格納データを解説します。
     </div>
-    <div class="overview-body">
 
-      <div class="overview-card" style="border-left-color:#7A4033">
-        <div class="overview-card-title">政策・行政</div>
-        <ul>
-          <li><span class="overview-db-name">Policy DB</span> <span class="overview-db-detail">-- 23省庁の審議会1,541件・有識者3,995名・予算事業・委員任命7,047件</span></li>
-          <li><span class="overview-db-name">Experts DB</span> <span class="overview-db-detail">-- 有識者ネットワーク・委員兼任分析・構造的空隙200件・コミュニティ検出</span></li>
-        </ul>
+    <div class="overview-grid">
+
+      <!-- 政策・行政 -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#f5e6e2,#fff)">
+          <div class="ov-card-icon" style="background:#7A4033">&#x1F3DB;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">政策・行政</div>
+            <div class="ov-card-sublabel">中央省庁の審議会・有識者データ</div>
+          </div>
+          <div class="ov-card-count">2 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>日本の中央省庁23省庁が設置する審議会・委員会の構造と、そこに参加する有識者のネットワークを体系的に記録しています。「どの専門家が、どの省庁の、どの政策議論に関わっているか」を横断的に把握でき、政策形成プロセスの可視化に活用されています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#7A4033">PD</span>
+              <span class="ov-db-name">Policy DB</span>
+              <span class="ov-db-desc">審議会1,541件、有識者3,995名、委員任命7,047件、予算事業</span>
+              <span class="ov-db-stat">108MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#9333ea">EX</span>
+              <span class="ov-db-name">Experts DB</span>
+              <span class="ov-db-desc">委員兼任ネットワーク、構造的空隙分析200件、コミュニティ検出</span>
+              <span class="ov-db-stat">10MB</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="overview-card" style="border-left-color:#6d28d9">
-        <div class="overview-card-title" style="color:#6d28d9">産学連携・イノベーション</div>
-        <ul>
-          <li><span class="overview-db-name">Sangaku Matcher v1/v2</span> <span class="overview-db-detail">-- 大学シーズ×企業ニーズ。企業3,872社・連携29K件・マッチングスコア465K件</span></li>
-          <li><span class="overview-db-name">Sangaku Press Releases</span> <span class="overview-db-detail">-- 産学連携プレスリリース6,581件</span></li>
-          <li><span class="overview-db-name">Investment Signal v2</span> <span class="overview-db-detail">-- 組織3,461社・資金調達1,461件・投資家参加6,122件・セクター220分類</span></li>
-          <li><span class="overview-db-name">Funding DB</span> <span class="overview-db-detail">-- スタートアップ資金調達。企業1,803社・PR 3,658件</span></li>
-        </ul>
+      <!-- 産学連携・イノベーション -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#ede5f5,#fff)">
+          <div class="ov-card-icon" style="background:#6d28d9">&#x1F91D;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">産学連携・投資</div>
+            <div class="ov-card-sublabel">大学と企業の連携、スタートアップ投資</div>
+          </div>
+          <div class="ov-card-count">4 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>大学の研究シーズと企業のニーズをAIでマッチングするデータ基盤です。産学連携の実績データ、企業のIR情報、スタートアップへの投資動向を統合的に分析し、「どの技術領域に、どの企業が関心を持ち、どの大学が強みを持つか」を可視化しています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#6d28d9">S2</span>
+              <span class="ov-db-name">Sangaku v2</span>
+              <span class="ov-db-desc">企業3,872社、連携29K件、122テーマ分類、マッチングスコア465K件</span>
+              <span class="ov-db-stat">213MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#b91c1c">IS</span>
+              <span class="ov-db-name">Investment Signal</span>
+              <span class="ov-db-desc">組織3,461社、資金調達1,461件、投資家6,122参加、セクター220</span>
+              <span class="ov-db-stat">31MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#a16207">FD</span>
+              <span class="ov-db-name">Funding DB</span>
+              <span class="ov-db-desc">スタートアップ1,803社、資金調達プレスリリース3,658件</span>
+              <span class="ov-db-stat">2.6MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#7e22ce">SR</span>
+              <span class="ov-db-name">Sangaku PR</span>
+              <span class="ov-db-desc">産学連携プレスリリース6,581件（大学-企業共同研究、技術移転）</span>
+              <span class="ov-db-stat">2.5MB</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="overview-card" style="border-left-color:#0f766e">
-        <div class="overview-card-title" style="color:#0f766e">研究・学術</div>
-        <ul>
-          <li><span class="overview-db-name">Anthropology Concepts</span> <span class="overview-db-detail">-- 人類学概念系譜。研究者252名・概念間関係285件・OCM分類</span></li>
-          <li><span class="overview-db-name">Paper DB</span> <span class="overview-db-detail">-- 学術論文299件（OpenAlex/S2/CiNii統合）</span></li>
-          <li><span class="overview-db-name">Researcher Profiler</span> <span class="overview-db-detail">-- 研究者プロファイル（Semantic Scholar連携）</span></li>
-          <li><span class="overview-db-name">Kakenhi Writer</span> <span class="overview-db-detail">-- 科研費申請。評価基準21件・テンプレート35件</span></li>
-          <li><span class="overview-db-name">Qualitative Research</span> <span class="overview-db-detail">-- GTA質的研究ツール（34テーブル）</span></li>
-          <li><span class="overview-db-name">Healthy Aging</span> <span class="overview-db-detail">-- 健康長寿研究（要因・介入・エビデンス）</span></li>
-        </ul>
+      <!-- 未来洞察 -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#fef3e2,#fff)">
+          <div class="ov-card-icon" style="background:#b45309">&#x1F52D;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">未来洞察・シグナル検出</div>
+            <div class="ov-card-sublabel">ニュース分析、構造的変化の予兆検出</div>
+          </div>
+          <div class="ov-card-count">4 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>グローバルなニュースや学術論文を日次で自動収集し、社会の構造的変化の予兆（シグナル）を検出する仕組みです。CLA（因果階層分析）で表層的な出来事の裏にある深層構造を読み解き、PESTLE 6カテゴリ（政治・経済・社会・技術・法律・環境）で分類しています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#b45309">FI</span>
+              <span class="ov-db-name">Future Insight</span>
+              <span class="ov-db-desc">グローバルニュース225K件、CLA 4層分析546件</span>
+              <span class="ov-db-stat">142MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#0e7490">PE</span>
+              <span class="ov-db-name">PESTLE</span>
+              <span class="ov-db-desc">6カテゴリ別ニュース、毎朝6時に各50件ずつ自動収集</span>
+              <span class="ov-db-stat">日次更新</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#64748b">SI</span>
+              <span class="ov-db-name">Structural Inflection</span>
+              <span class="ov-db-desc">10ドメイン、閾値接近・外的圧力など5軸スコアリング</span>
+              <span class="ov-db-stat">180KB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#c2410c">FR</span>
+              <span class="ov-db-name">Frontier Detector</span>
+              <span class="ov-db-desc">学術フロンティア検出、10ドメイン・323キーワード</span>
+              <span class="ov-db-stat">構築中</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="overview-card" style="border-left-color:#b45309">
-        <div class="overview-card-title" style="color:#b45309">未来洞察・シグナル検出</div>
-        <ul>
-          <li><span class="overview-db-name">Future Insight</span> <span class="overview-db-detail">-- グローバルニュース225K件 + CLA 4層分析546件</span></li>
-          <li><span class="overview-db-name">PESTLE</span> <span class="overview-db-detail">-- 政治・経済・社会・技術・法律・環境の6カテゴリ別ニュース日次収集</span></li>
-          <li><span class="overview-db-name">Structural Inflection</span> <span class="overview-db-detail">-- 構造的変化点検出。10ドメイン・5軸スコアリング</span></li>
-          <li><span class="overview-db-name">Frontier Detector</span> <span class="overview-db-detail">-- 学術フロンティア検出（10ドメイン・323キーワード）</span></li>
-        </ul>
+      <!-- 研究・学術 -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#e5f0ed,#fff)">
+          <div class="ov-card-icon" style="background:#0f766e">&#x1F4DA;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">研究・学術</div>
+            <div class="ov-card-sublabel">論文、研究者、人類学概念、科研費</div>
+          </div>
+          <div class="ov-card-count">6 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>学術研究に関わるデータを体系的に蓄積しています。人類学の概念体系を知的系譜として可視化するDB、学術論文の収集・分析基盤、科研費申請書の自動生成ツール、質的研究（GTA）のコーディングツールなど、研究活動の各段階を支援するデータが格納されています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#0f766e">AC</span>
+              <span class="ov-db-name">人類学概念DB</span>
+              <span class="ov-db-desc">概念系譜、研究者252名、概念間関係285件、OCM分類</span>
+              <span class="ov-db-stat">1.4MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#7c3aed">PA</span>
+              <span class="ov-db-name">Paper DB</span>
+              <span class="ov-db-desc">学術論文299件（OpenAlex / Semantic Scholar / CiNii統合）</span>
+              <span class="ov-db-stat">7.2MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#0891b2">RP</span>
+              <span class="ov-db-name">Researcher Profiler</span>
+              <span class="ov-db-desc">研究者プロファイル、出版物、専門分野スコア</span>
+              <span class="ov-db-stat">0.8MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#a21caf">KW</span>
+              <span class="ov-db-name">Kakenhi Writer</span>
+              <span class="ov-db-desc">科研費9カテゴリ、評価基準21件、テンプレート35件</span>
+              <span class="ov-db-stat">128KB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#0d9488">QR</span>
+              <span class="ov-db-name">Qualitative Research</span>
+              <span class="ov-db-desc">GTA質的研究（コード・カテゴリ・メモ、34テーブル）</span>
+              <span class="ov-db-stat">0.5MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#4d7c0f">HA</span>
+              <span class="ov-db-name">Healthy Aging</span>
+              <span class="ov-db-desc">健康長寿研究（健康要因・介入・エビデンス）</span>
+              <span class="ov-db-stat">構築中</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="overview-card" style="border-left-color:#2563eb">
-        <div class="overview-card-title" style="color:#2563eb">事業運営</div>
-        <ul>
-          <li><span class="overview-db-name">Essence CRM</span> <span class="overview-db-detail">-- 連絡先2,342件・組織・案件パイプライン・セミナー管理</span></li>
-          <li><span class="overview-db-name">Newsletter</span> <span class="overview-db-detail">-- SendGrid連携メルマガ配信管理118K件</span></li>
-          <li><span class="overview-db-name">Grant DB</span> <span class="overview-db-detail">-- 助成金・補助金検索 + AI申請書作成</span></li>
-          <li><span class="overview-db-name">IR Collector</span> <span class="overview-db-detail">-- 上場企業IR（EDINET有価証券報告書）</span></li>
-          <li><span class="overview-db-name">Mail Contacts</span> <span class="overview-db-detail">-- Mac Mailメール連絡先インデックス201K件</span></li>
-          <li><span class="overview-db-name">Keyword Analyzer</span> <span class="overview-db-detail">-- esse-sense検索KW分析2,729件・月次レポート</span></li>
-          <li><span class="overview-db-name">PRTimes</span> <span class="overview-db-detail">-- PR Timesプレスリリース（Investment Signal v2に統合）</span></li>
-        </ul>
+      <!-- 事業運営 -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#e5edf8,#fff)">
+          <div class="ov-card-icon" style="background:#2563eb">&#x1F4BC;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">事業運営</div>
+            <div class="ov-card-sublabel">CRM、メルマガ、助成金、IR、メール</div>
+          </div>
+          <div class="ov-card-count">7 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>日常の事業運営を支えるデータベース群です。顧客・連絡先管理（CRM）、メルマガ配信、助成金・補助金の検索、上場企業のIR情報、メールの連絡先抽出、Webサイトの検索キーワード分析など、ビジネスのバックオフィス機能を担っています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#2563eb">CR</span>
+              <span class="ov-db-name">Essence CRM</span>
+              <span class="ov-db-desc">連絡先2,342件、組織、案件、セミナー（20テーブル）</span>
+              <span class="ov-db-stat">1.6MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#dc2626">NL</span>
+              <span class="ov-db-name">Newsletter</span>
+              <span class="ov-db-desc">SendGrid連携メルマガ管理、配信データ118K件</span>
+              <span class="ov-db-stat">12.6MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#15803d">GD</span>
+              <span class="ov-db-name">Grant DB</span>
+              <span class="ov-db-desc">助成金・補助金検索 + AI申請書作成支援</span>
+              <span class="ov-db-stat">Vercel</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#0369a1">IR</span>
+              <span class="ov-db-name">IR Collector</span>
+              <span class="ov-db-desc">上場企業の有価証券報告書（EDINET API）</span>
+              <span class="ov-db-stat">144MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#4f46e5">MC</span>
+              <span class="ov-db-name">Mail Contacts</span>
+              <span class="ov-db-desc">Mac Mailのメール連絡先インデックス201K件</span>
+              <span class="ov-db-stat">36MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#ea580c">KA</span>
+              <span class="ov-db-name">Keyword Analyzer</span>
+              <span class="ov-db-desc">esse-sense検索KW 2,729件、月次トレンド分析</span>
+              <span class="ov-db-stat">0.5MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#1e40af">PT</span>
+              <span class="ov-db-name">PRTimes</span>
+              <span class="ov-db-desc">プレスリリース収集（Investment Signal v2に統合済み）</span>
+              <span class="ov-db-stat">統合済</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="overview-card" style="border-left-color:#9333ea">
-        <div class="overview-card-title" style="color:#9333ea">組織・イベント・ツール</div>
-        <ul>
-          <li><span class="overview-db-name">Organization App</span> <span class="overview-db-detail">-- AI CxO会議の議事録・PESTLE分析18テーブル</span></li>
-          <li><span class="overview-db-name">Miratuku Membership</span> <span class="overview-db-detail">-- 会員管理・Stripe決済・アーカイブ動画</span></li>
-          <li><span class="overview-db-name">Miratuku Events</span> <span class="overview-db-detail">-- イベント管理 + オンデマンド学習コンテンツ</span></li>
-          <li><span class="overview-db-name">Team Hub</span> <span class="overview-db-detail">-- Slack/Notion統合・意思決定ログ・プロジェクト管理</span></li>
-          <li><span class="overview-db-name">Speaker Manager</span> <span class="overview-db-detail">-- 登壇者・招待・コミュニケーション履歴30テーブル</span></li>
-          <li><span class="overview-db-name">Secretary Plaud</span> <span class="overview-db-detail">-- 録音281件・AI文字起こし・要約分析93件</span></li>
-          <li><span class="overview-db-name">Lecture Video Editor</span> <span class="overview-db-detail">-- 講義動画自動編集ジョブ管理</span></li>
-        </ul>
+      <!-- 組織・ツール -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#f0e8f5,#fff)">
+          <div class="ov-card-icon" style="background:#9333ea">&#x1F527;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">組織・イベント・ツール</div>
+            <div class="ov-card-sublabel">会員管理、イベント、録音分析、動画編集</div>
+          </div>
+          <div class="ov-card-count">8 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>組織運営に関わるデータベースと、業務効率化ツールのデータです。ミラツクの会員管理・イベント運営・チーム連携から、会議録音のAI分析、講義動画の自動編集、登壇者管理まで、組織活動のオペレーション全般をカバーしています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#475569">OA</span>
+              <span class="ov-db-name">Organization App</span>
+              <span class="ov-db-desc">AI CxO会議の議事録、意思決定ログ（18テーブル）</span>
+              <span class="ov-db-stat">0.3MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#9333ea">MM</span>
+              <span class="ov-db-name">Membership</span>
+              <span class="ov-db-desc">ミラツク会員管理、Stripe決済、アーカイブ動画</span>
+              <span class="ov-db-stat">0.1MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#c2410c">ME</span>
+              <span class="ov-db-name">Events</span>
+              <span class="ov-db-desc">ミラツクイベント管理 + オンデマンド学習</span>
+              <span class="ov-db-stat">0.1MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#1d4ed8">TH</span>
+              <span class="ov-db-name">Team Hub</span>
+              <span class="ov-db-desc">Slack/Notion統合、プロジェクト管理、週次レポート</span>
+              <span class="ov-db-stat">0.1MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#be185d">SP</span>
+              <span class="ov-db-name">Speaker Manager</span>
+              <span class="ov-db-desc">トークイベント登壇者、招待管理（30テーブル）</span>
+              <span class="ov-db-stat">0.4MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#059669">PL</span>
+              <span class="ov-db-name">Secretary Plaud</span>
+              <span class="ov-db-desc">録音281件、AIによる文字起こし・要約分析93件</span>
+              <span class="ov-db-stat">28.5MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#e11d48">VE</span>
+              <span class="ov-db-name">Video Editor</span>
+              <span class="ov-db-desc">講義動画の自動編集ジョブ管理</span>
+              <span class="ov-db-stat">0.0MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#6d28d9">SM</span>
+              <span class="ov-db-name">Sangaku Matcher v1</span>
+              <span class="ov-db-desc">産学マッチング初期版（v2に移行済み）</span>
+              <span class="ov-db-stat">251MB</span>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -402,10 +671,10 @@ let searchTerm = '';
 
 function toggleOverview() {
   const body = document.getElementById('overview-body');
-  const chevron = document.getElementById('overview-chevron');
+  const btn = document.getElementById('overview-toggle');
   const isOpen = body.style.display !== 'none';
   body.style.display = isOpen ? 'none' : 'block';
-  chevron.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? '概要を表示' : '閉じる';
 }
 
 const DB_COLORS = {
