@@ -3,7 +3,7 @@
     "id": "policy-db",
     "name": "Policy DB",
     "path": "~/projects/apps/policy-db/data/policy.db",
-    "desc": "全中央省庁の審議会・委員会・予算事業データベース",
+    "desc": "23省庁の審議会1,541件・有識者3,995名・委員任命7,047件・予算事業・政策テーマを格納。委員兼任ネットワーク・省庁横断分析・橋渡し人材280名を可視化",
     "size_mb": 108.2,
     "tables": [
       {
@@ -4071,7 +4071,7 @@
     "id": "sangaku-matcher",
     "name": "Sangaku Matcher",
     "path": "~/projects/apps/sangaku-matcher/data/matcher.db",
-    "desc": "産学マッチャー（大学技術シーズ x 企業ニーズ）",
+    "desc": "大学技術シーズ×企業ニーズのマッチングDB。企業IR 152K件・産学連携3,005件・40テーマ分類と企業親和度スコア492K件を格納",
     "size_mb": 251.2,
     "tables": [
       {
@@ -5821,7 +5821,7 @@
     "id": "future-insight",
     "name": "Future Insight",
     "path": "~/projects/apps/future-insight-app/data/future_insight.db",
-    "desc": "CLAフレームワークによる未来洞察",
+    "desc": "PESTLEカテゴリ別のグローバルニュース225K件を蓄積。CLA（因果階層分析）546件で表層事象→深層構造→世界観→神話を4層分析",
     "size_mb": 141.9,
     "tables": [
       {
@@ -6756,7 +6756,7 @@
     "id": "ir-collector",
     "name": "IR Collector",
     "path": "~/projects/apps/ir-collector/data/ir.db",
-    "desc": "上場企業IR情報（EDINET API）",
+    "desc": "EDINET APIから取得する上場企業の有価証券報告書データ。企業基本情報・財務データの収集基盤（144MB構造）",
     "size_mb": 143.7,
     "tables": [
       {
@@ -7062,7 +7062,7 @@
     "id": "mail-contacts",
     "name": "Mail Contacts",
     "path": "~/projects/apps/mail-contacts-app/emlx_index.db",
-    "desc": "メール連絡先抽出・整理",
+    "desc": "Mac Mailのemlxファイルから抽出したメール連絡先インデックス201K件。メッセージID・ファイルパスを格納",
     "size_mb": 36.3,
     "tables": [
       {
@@ -7175,7 +7175,7 @@
     "id": "secretary-plaud",
     "name": "Secretary App (Plaud)",
     "path": "~/projects/apps/secretary-app/data/plaud.db",
-    "desc": "音声録音・分析DB（Plaud連携）",
+    "desc": "Plaud録音デバイスの音声データ281件と、Claude AIによる文字起こし・要約・アクションアイテム抽出分析93件を格納",
     "size_mb": 28.4,
     "tables": [
       {
@@ -7493,7 +7493,7 @@
     "id": "newsletter",
     "name": "Newsletter",
     "path": "~/projects/apps/newsletter-app/data/newsletter.db",
-    "desc": "ニュースレター配信管理",
+    "desc": "SendGrid連携のメルマガ配信管理。配信リスト・キャンペーン・購読者データ118K件、AI生成キャッシュを格納",
     "size_mb": 12.6,
     "tables": [
       {
@@ -8516,7 +8516,7 @@
     "id": "paper-database",
     "name": "Paper Database",
     "path": "~/projects/research/paper-database/papers.db",
-    "desc": "学術論文DB（OpenAlex/Semantic Scholar/CiNii統合）",
+    "desc": "OpenAlex・Semantic Scholar・CiNiiから収集した学術論文299件。DOI・著者・抄録・出版日・ジャーナル情報とクロールログを格納",
     "size_mb": 7.2,
     "tables": [
       {
@@ -8812,7 +8812,7 @@
     "id": "essence-crm",
     "name": "Essence CRM",
     "path": "~/projects/apps/essence-crm/data/essence.db",
-    "desc": "営業管理CRM",
+    "desc": "エッセンス社の営業管理CRM。連絡先2,342件・組織・案件パイプライン・活動ログ・セミナー・提案書を20テーブルで管理",
     "size_mb": 1.6,
     "tables": [
       {
@@ -10606,7 +10606,7 @@
     "id": "researcher-profiler",
     "name": "Researcher Profiler",
     "path": "~/projects/apps/researcher-profiler/researcher.db",
-    "desc": "研究者DB（Semantic Scholar連携）",
+    "desc": "Semantic Scholar連携の研究者プロファイルDB。企業9社・研究者情報・出版物・委員歴・専門分野スコアを格納",
     "size_mb": 0.8,
     "tables": [
       {
@@ -11847,7 +11847,7 @@
     "id": "keyword-analyzer",
     "name": "Keyword Analyzer",
     "path": "~/projects/apps/keyword-analyzer/keywords.db",
-    "desc": "検索キーワード分析",
+    "desc": "esse-sense.comの検索キーワード分析。月次KW 2,729件・月次分析レポート6件・トレンド推移を格納",
     "size_mb": 0.5,
     "tables": [
       {
@@ -12245,7 +12245,7 @@
     "id": "qualitative-research",
     "name": "Qualitative Research",
     "path": "~/projects/apps/qualitative-research-tool/data/qualitative.db",
-    "desc": "質的研究コーディング・分析ツール（GTA）",
+    "desc": "GTA（グラウンデッド・セオリー）ベースの質的研究ツール。プロジェクト・文書・コード・カテゴリ・メモを34テーブルで構造化",
     "size_mb": 0.5,
     "tables": [
       {
@@ -14243,7 +14243,7 @@
     "id": "speaker-manager",
     "name": "Speaker Manager",
     "path": "~/projects/apps/speaker-manager/data/speaker.db",
-    "desc": "スピーカー・イベント管理",
+    "desc": "トークイベントの登壇者・招待管理。スピーカー情報・イベント・招待状・コミュニケーション履歴を30テーブルで管理",
     "size_mb": 0.4,
     "tables": [
       {
@@ -16610,7 +16610,7 @@
     "id": "organization-app",
     "name": "Organization App",
     "path": "~/projects/apps/organization-app/data/org.db",
-    "desc": "AI組織運営ダッシュボード",
+    "desc": "AI CxO経営会議の議事録・分析・カレンダー・PESTLEレポートを格納。組織運営の意思決定ログ18テーブル",
     "size_mb": 0.3,
     "tables": [
       {
@@ -17819,7 +17819,7 @@
     "id": "miratuku-membership",
     "name": "Miratuku Membership",
     "path": "~/projects/apps/miratuku-membership/data/miratuku.db",
-    "desc": "会員管理（Stripe決済）",
+    "desc": "ミラツク会員管理。会員プラン・Stripe決済・バッジ・アーカイブ動画・プロジェクトを12テーブルで管理",
     "size_mb": 0.1,
     "tables": [
       {
@@ -18905,7 +18905,7 @@
     "id": "miratuku-events",
     "name": "Miratuku Events",
     "path": "~/projects/apps/miratuku-events/data/local.db",
-    "desc": "イベント管理+オンデマンド学習",
+    "desc": "ミラツクのイベント管理+オンデマンド学習。イベント・参加者・メール配信・コンテンツ管理を7テーブルで管理",
     "size_mb": 0.1,
     "tables": [
       {
@@ -19566,7 +19566,7 @@
     "id": "miratuku-team-hub",
     "name": "Miratuku Team Hub",
     "path": "~/projects/apps/miratuku-team-hub/data/local.db",
-    "desc": "Slack/Notion統合チームハブ",
+    "desc": "Slack/Notion統合のチームハブ。意思決定ログ・プロジェクト・TODO・ウィークリーレポート・Notion連携を8テーブルで管理",
     "size_mb": 0.1,
     "tables": [
       {
@@ -20020,7 +20020,7 @@
     "id": "lecture-video-editor",
     "name": "Lecture Video Editor",
     "path": "~/projects/apps/lecture-video-editor/data/jobs.db",
-    "desc": "講義動画自動編集パイプライン",
+    "desc": "講義動画の自動編集ジョブ管理。入力動画・スライド・編集設定・出力ファイル・処理状態を記録",
     "size_mb": 0.0,
     "tables": [
       {
@@ -20227,7 +20227,7 @@
     "id": "anthropology-concepts",
     "name": "Anthropology Concepts",
     "path": "~/projects/research/anthropology-concepts/data/anthropology.db",
-    "desc": "人類学概念系譜DB（概念・研究者・文献・OCM分類）",
+    "desc": "人類学の概念系譜DB。概念・研究者252名・出版物・概念間関係285件・OCM分類44件を格納。概念の知的系譜をネットワークで可視化",
     "size_mb": 1.4,
     "tables": [
       {
@@ -21311,7 +21311,7 @@
     "id": "funding-database",
     "name": "Funding Database",
     "path": "~/projects/research/investment-signal-radar/data/funding_database.db",
-    "desc": "VC資金調達DB（企業・ラウンド・月次統計）",
+    "desc": "日本のスタートアップ資金調達DB。企業1,803社・プレスリリース3,658件・セクター分類・月次統計。産学連携除外のVC投資特化",
     "size_mb": 2.6,
     "tables": [
       {
@@ -21763,7 +21763,7 @@
     "id": "sangaku-press-releases",
     "name": "Sangaku Press Releases",
     "path": "~/projects/research/investment-signal-radar/data/sangaku_press_releases.db",
-    "desc": "産学連携プレスリリースDB（sangaku-matcher-v2由来）",
+    "desc": "産学連携に特化したプレスリリースDB 6,581件。大学・企業の共同研究・技術移転・実用化ニュースを収集・分類",
     "size_mb": 2.5,
     "tables": [
       {
@@ -21926,7 +21926,7 @@
     "id": "prtimes",
     "name": "PR Times",
     "path": "~/projects/apps/sangaku-matcher-v2/data/prtimes.db",
-    "desc": "PR Timesプレスリリース・企業・大学連携データ",
+    "desc": "PR Timesからの企業プレスリリース収集。企業名・カテゴリ・資金調達関連フラグで分類（investment-signal-v2に統合）",
     "size_mb": 5.8,
     "tables": [
       {
@@ -22374,7 +22374,7 @@
     "id": "sangaku-matcher-v2",
     "name": "Sangaku Matcher v2",
     "path": "~/projects/apps/sangaku-matcher-v2/data/sangaku_v2.db",
-    "desc": "産学マッチングv2（企業・シーズ・協業・特許・プレスリリース統合）",
+    "desc": "産学マッチングv2。企業3,872社・技術シーズ109件・産学連携29K件・特許・プレスリリース11K件・122テーマ分類のマッチングスコア465K件",
     "size_mb": 213.2,
     "tables": [
       {
@@ -23677,7 +23677,7 @@
     "id": "grant-db",
     "name": "Grant DB",
     "path": "~/projects/apps/grant-db/grant_db.sqlite",
-    "desc": "助成金・補助金DB（6,113件・1,307機関・PDF解析・申請書テンプレ）",
+    "desc": "助成金・補助金の検索DB。申請書テンプレート・審査基準・募集要項PDF解析結果を格納。AI支援の申請書作成基盤",
     "size_mb": 277.0,
     "tables": [
       {
@@ -26962,7 +26962,7 @@
     "id": "investment-signal-v2",
     "name": "Investment Signal v2",
     "path": "~/projects/research/investment-signal-radar/data/investment_signal_v2.db",
-    "desc": "投資シグナルレーダーv2（組織・資金調達ラウンド・イベント・セクター）",
+    "desc": "投資シグナルレーダーv2。組織3,461社・資金調達ラウンド1,461件・投資家参加6,122件・プレスリリース12K件・セクター220分類・共同投資ネットワーク",
     "size_mb": 31.2,
     "tables": [
       {
@@ -28897,7 +28897,7 @@
     "id": "experts-db",
     "name": "Experts DB",
     "path": "~/projects/research/experts-db/data/experts.db",
-    "desc": "有識者ネットワークDB（省庁審議会・委員兼任・構造的空隙分析）",
+    "desc": "省庁審議会の有識者ネットワークDB。人物3,995名・審議会1,541件・委員任命7,047件・構造的空隙200件・ネットワークコミュニティ分析",
     "size_mb": 10.2,
     "tables": [
       {
@@ -30636,7 +30636,7 @@
     "id": "pestle",
     "name": "PESTLE Articles",
     "path": "~/projects/apps/secretary-app/pestle.db",
-    "desc": "PESTLEニュース記事DB（政治・経済・社会・技術・法律・環境）",
+    "desc": "PESTLE（政治・経済・社会・技術・法律・環境）カテゴリ別のグローバルニュース記事DB。毎日6時に各カテゴリ50件ずつ自動収集",
     "size_mb": 1.3,
     "tables": [
       {
@@ -30804,7 +30804,7 @@
     "id": "frontier-detector",
     "name": "Frontier Detector",
     "path": "~/projects/research/frontier-detector/frontier_detector.db",
-    "desc": "学術フロンティア検出（技術・シグナル・研究者・スコア）",
+    "desc": "学術フロンティア検出。10ドメイン・323キーワード・学術論文のスコアリング基盤。変化点検出・研究トレンド分析",
     "size_mb": 0.6,
     "tables": [
       {
@@ -31509,7 +31509,7 @@
     "id": "healthy-aging",
     "name": "Healthy Aging DB",
     "path": "~/projects/research/healthy-aging-db/healthy_aging.db",
-    "desc": "健康長寿研究DB（要因・介入・エビデンス・理論枠組み）",
+    "desc": "健康長寿に関する研究DB。健康要因・介入方法・エビデンスレベル・理論的枠組みを体系的に格納",
     "size_mb": 0.2,
     "tables": [
       {
@@ -33321,7 +33321,7 @@
     "id": "structural-inflection",
     "name": "Structural Inflection Radar",
     "path": "~/projects/research/structural-inflection-radar/data/radar.db",
-    "desc": "構造的変化点検出レーダー（ドメイン・キーワード・スコアリング）",
+    "desc": "構造的変化点検出レーダー。10ドメイン・323キーワード・3情報源から論文を収集し、閾値接近・外的圧力・技術サイクルなど5軸でスコアリング",
     "size_mb": 0.2,
     "tables": [
       {
@@ -34155,7 +34155,7 @@
     "id": "kakenhi-writer",
     "name": "KAKENHI Writer",
     "path": "~/projects/apps/kakenhi-writer/data/kakenhi.db",
-    "desc": "科研費申請書自動生成（カテゴリ・評価基準・テンプレート）",
+    "desc": "科研費申請書自動生成。9カテゴリ・評価基準21件・審査セクション104件・テンプレート35件を格納。研究計画書のAI支援作成基盤",
     "size_mb": 0.1,
     "tables": [
       {
