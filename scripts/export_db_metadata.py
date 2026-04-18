@@ -117,6 +117,23 @@ DATABASES = [
      [
          ("ジョブ一覧", "SELECT * FROM jobs ORDER BY rowid DESC LIMIT 10"),
      ]),
+    ("anthropology-concepts", "Anthropology Concepts", "~/projects/research/anthropology-concepts/data/anthropology.db",
+     "人類学概念系譜DB（概念・研究者・文献・OCM分類）",
+     [
+         ("概念一覧", "SELECT name, field, era FROM concepts ORDER BY name LIMIT 20"),
+         ("研究者一覧", "SELECT name, nationality, birth_year FROM researchers ORDER BY name LIMIT 20"),
+     ]),
+    ("funding-database", "Funding Database", "~/projects/research/investment-signal-radar/data/funding_database.db",
+     "VC資金調達DB（企業・ラウンド・月次統計）",
+     [
+         ("最新ラウンド", "SELECT company_name, round_type, amount_jpy FROM funding_rounds ORDER BY announced_date DESC LIMIT 20"),
+         ("月次統計", "SELECT month, total_amount, deal_count FROM monthly_stats ORDER BY month DESC LIMIT 12"),
+     ]),
+    ("sangaku-press-releases", "Sangaku Press Releases", "~/projects/research/investment-signal-radar/data/sangaku_press_releases.db",
+     "産学連携プレスリリースDB（sangaku-matcher-v2由来）",
+     [
+         ("プレスリリース一覧", "SELECT title, organization, published_date FROM press_releases ORDER BY published_date DESC LIMIT 20"),
+     ]),
 ]
 
 def export_db(db_id, name, path, desc, queries):

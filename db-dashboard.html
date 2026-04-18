@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DB Dashboard - データベース俯瞰</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    background: #f8f6f3;
+    color: #1c1917;
+    line-height: 1.5;
+  }
+  a { color: #7A4033; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header {
+    background: #fff;
+    border-bottom: 1px solid #e7e0d9;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-title { font-size: 16px; font-weight: 700; color: #1c1917; }
+  .header-title span { color: #7A4033; }
+  .header-back {
+    font-size: 13px; color: #78716c;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .header-back:hover { color: #7A4033; text-decoration: none; }
+  .header-links {
+    margin-left: auto;
+    display: flex; gap: 8px;
+  }
+  .header-link {
+    font-size: 12px; padding: 5px 14px; border-radius: 6px;
+    border: 1px solid #e7e0d9; background: #fff; color: #57534e;
+    cursor: pointer; transition: all 0.15s; text-decoration: none;
+  }
+  .header-link:hover { background: #f5f0eb; color: #7A4033; border-color: #7A4033; text-decoration: none; }
+
+  /* Summary */
+  .summary {
+    max-width: 1200px; margin: 24px auto 0; padding: 0 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  .summary-card {
+    background: #fff; border: 1px solid #e7e0d9; border-radius: 10px;
+    padding: 16px 20px; text-align: center;
+  }
+  .summary-value {
+    font-size: 28px; font-weight: 700; color: #7A4033;
+    font-family: 'SF Mono', monospace;
+  }
+  .summary-label { font-size: 12px; color: #78716c; margin-top: 2px; }
+
+  /* Search */
+  .search-bar {
+    max-width: 1200px; margin: 20px auto 0; padding: 0 20px;
+  }
+  .search-bar input {
+    width: 100%; padding: 10px 16px; background: #fff;
+    border: 1px solid #e8e2da; border-radius: 8px;
+    color: #1c1917; font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: #c87864; }
+  .search-bar input::placeholder { color: #9a918a; }
+
+  /* Sort/View controls */
+  .controls {
+    max-width: 1200px; margin: 16px auto 0; padding: 0 20px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .control-label { font-size: 12px; color: #78716c; }
+  .control-btn {
+    font-size: 12px; padding: 4px 12px; border-radius: 6px;
+    border: 1px solid #e7e0d9; background: #fff; color: #57534e;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .control-btn:hover { border-color: #7A4033; color: #7A4033; }
+  .control-btn.active { background: #7A4033; color: #fff; border-color: #7A4033; }
+
+  /* Size chart */
+  .size-chart {
+    max-width: 1200px; margin: 20px auto 0; padding: 0 20px;
+  }
+  .size-chart-title {
+    font-size: 13px; font-weight: 600; color: #57534e; margin-bottom: 10px;
+  }
+  .size-bar-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .size-bar-row:hover .size-bar-fill { opacity: 0.8; }
+  .size-bar-label {
+    width: 140px; font-size: 11px; color: #44403c;
+    text-align: right; flex-shrink: 0; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .size-bar-track {
+    flex: 1; height: 16px; background: #f0ede8; border-radius: 3px;
+    overflow: hidden; position: relative;
+  }
+  .size-bar-fill {
+    height: 100%; border-radius: 3px; transition: width 0.6s ease;
+    min-width: 2px;
+  }
+  .size-bar-value {
+    width: 60px; font-size: 11px; color: #78716c;
+    font-family: 'SF Mono', monospace; flex-shrink: 0;
+  }
+
+  /* Card grid */
+  .grid {
+    max-width: 1200px; margin: 24px auto 0; padding: 0 20px 60px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;
+  }
+
+  /* DB Card */
+  .db-card {
+    background: #fff; border: 1px solid #e7e0d9; border-radius: 12px;
+    overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .db-card:hover { border-color: #c5b9ad; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  .card-top {
+    display: flex; align-items: center; gap: 12px; padding: 16px 16px 12px;
+  }
+  .card-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .card-info { flex: 1; min-width: 0; }
+  .card-name {
+    font-size: 15px; font-weight: 700; color: #1c1917;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-desc {
+    font-size: 12px; color: #78716c; margin-top: 1px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .card-stats {
+    display: flex; gap: 6px; padding: 0 16px 12px; flex-wrap: wrap;
+  }
+  .card-chip {
+    font-size: 11px; background: #f0ede8; color: #57534e;
+    padding: 2px 8px; border-radius: 8px;
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* Table list inside card */
+  .card-tables {
+    border-top: 1px solid #f0ede8; padding: 10px 16px;
+    max-height: 160px; overflow-y: auto;
+  }
+  .card-table-row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 3px 0; font-size: 12px;
+  }
+  .card-table-name {
+    font-family: 'SF Mono', monospace; color: #44403c;
+    flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .card-table-rows {
+    font-size: 10px; color: #a8a29e;
+    font-family: 'SF Mono', monospace; flex-shrink: 0;
+  }
+  .card-table-cols {
+    font-size: 10px; color: #c5b9ad;
+    font-family: 'SF Mono', monospace; flex-shrink: 0;
+    width: 40px; text-align: right;
+  }
+
+  /* Copy bar */
+  .card-copy-bar {
+    border-top: 1px solid #f0ede8; padding: 8px 16px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .copy-btn {
+    font-size: 11px; padding: 4px 10px; border-radius: 6px;
+    border: 1px solid #e7e0d9; background: #faf9f7; color: #57534e;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .copy-btn:hover { border-color: #7A4033; color: #7A4033; background: #fff; }
+  .copy-btn:active { background: #f0ede8; }
+  .copy-icon { font-size: 10px; }
+
+  /* Detail link */
+  .card-detail-link {
+    display: block; text-align: center; padding: 8px;
+    border-top: 1px solid #f0ede8; font-size: 12px;
+    color: #7A4033; transition: background 0.15s;
+  }
+  .card-detail-link:hover { background: #faf9f7; text-decoration: none; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #292524; color: #fff;
+    padding: 8px 20px; border-radius: 8px; font-size: 13px;
+    opacity: 0; transition: all 0.3s; z-index: 1000;
+    white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .summary { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+    .size-bar-label { width: 80px; font-size: 10px; }
+    .header-links { display: none; }
+  }
+  @media (max-width: 480px) {
+    .summary { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .summary-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="header-back">&larr; App Launcher</a>
+  <div class="header-title"><span>DB</span> Dashboard</div>
+  <div class="header-links">
+    <a href="db-explorer.html" class="header-link">DB Explorer (詳細) &rarr;</a>
+  </div>
+</div>
+
+<div class="summary" id="summary"></div>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="データベースを検索..." aria-label="データベースを検索">
+</div>
+
+<div class="controls">
+  <span class="control-label">並び替え:</span>
+  <button class="control-btn active" data-sort="size">サイズ順</button>
+  <button class="control-btn" data-sort="rows">行数順</button>
+  <button class="control-btn" data-sort="tables">テーブル数順</button>
+  <button class="control-btn" data-sort="name">名前順</button>
+</div>
+
+<div class="size-chart" id="size-chart"></div>
+
+<div class="grid" id="grid"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let allDbs = [];
+let currentSort = 'size';
+let searchTerm = '';
+
+const DB_COLORS = {
+  'policy-db': '#7A4033', 'sangaku-matcher': '#6d28d9', 'future-insight': '#b45309',
+  'ir-collector': '#0369a1', 'mail-contacts': '#4f46e5', 'secretary-plaud': '#059669',
+  'newsletter': '#dc2626', 'paper-database': '#7c3aed', 'essence-crm': '#2563eb',
+  'researcher-profiler': '#0891b2', 'keyword-analyzer': '#ea580c',
+  'qualitative-research': '#0d9488', 'speaker-manager': '#be185d',
+  'organization-app': '#475569', 'miratuku-membership': '#9333ea',
+  'miratuku-events': '#c2410c', 'miratuku-team-hub': '#1d4ed8',
+  'lecture-video-editor': '#e11d48', 'anthropology-concepts': '#0f766e',
+  'funding-database': '#a16207', 'sangaku-press-releases': '#7e22ce',
+};
+
+const DB_ICONS = {
+  'policy-db': 'PD', 'sangaku-matcher': 'SM', 'future-insight': 'FI',
+  'ir-collector': 'IR', 'mail-contacts': 'MC', 'secretary-plaud': 'PL',
+  'newsletter': 'NL', 'paper-database': 'PA', 'essence-crm': 'CR',
+  'researcher-profiler': 'RP', 'keyword-analyzer': 'KA', 'qualitative-research': 'QR',
+  'speaker-manager': 'SP', 'organization-app': 'OA', 'miratuku-membership': 'MM',
+  'miratuku-events': 'ME', 'miratuku-team-hub': 'TH', 'lecture-video-editor': 'VE',
+  'anthropology-concepts': 'AC', 'funding-database': 'FD', 'sangaku-press-releases': 'SR',
+};
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function copyText(text, label) {
+  navigator.clipboard.writeText(text).then(() => showToast(label ? `${label} をコピーしました` : 'コピーしました'));
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getDbStats(db) {
+  const totalRows = db.tables.reduce((a, t) => a + t.row_count, 0);
+  const totalCols = db.tables.reduce((a, t) => a + t.columns.length, 0);
+  return { totalRows, totalCols };
+}
+
+function renderSummary() {
+  const totalSize = allDbs.reduce((a, d) => a + d.size_mb, 0);
+  const totalTables = allDbs.reduce((a, d) => a + d.tables.length, 0);
+  const totalRows = allDbs.reduce((a, d) => a + d.tables.reduce((b, t) => b + t.row_count, 0), 0);
+
+  document.getElementById('summary').innerHTML = `
+    <div class="summary-card">
+      <div class="summary-value">${allDbs.length}</div>
+      <div class="summary-label">データベース</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-value">${totalTables}</div>
+      <div class="summary-label">テーブル</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-value">${totalRows >= 1000000 ? (totalRows / 1000000).toFixed(1) + 'M' : totalRows >= 1000 ? Math.round(totalRows / 1000) + 'K' : totalRows}</div>
+      <div class="summary-label">総レコード数</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-value">${totalSize >= 1000 ? (totalSize / 1000).toFixed(1) + 'GB' : Math.round(totalSize) + 'MB'}</div>
+      <div class="summary-label">総サイズ</div>
+    </div>
+  `;
+}
+
+function renderSizeChart() {
+  const sorted = [...allDbs].sort((a, b) => b.size_mb - a.size_mb);
+  const maxSize = sorted[0]?.size_mb || 1;
+  const el = document.getElementById('size-chart');
+
+  el.innerHTML = `
+    <div class="size-chart-title">データベースサイズ分布</div>
+    ${sorted.map(db => {
+      const color = DB_COLORS[db.id] || '#78716c';
+      const pct = (db.size_mb / maxSize * 100).toFixed(1);
+      return `<div class="size-bar-row" onclick="scrollToCard('${db.id}')">
+        <span class="size-bar-label">${escapeHtml(db.name)}</span>
+        <div class="size-bar-track">
+          <div class="size-bar-fill" style="width:${pct}%;background:${color}"></div>
+        </div>
+        <span class="size-bar-value">${db.size_mb >= 100 ? Math.round(db.size_mb) : db.size_mb} MB</span>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+function scrollToCard(id) {
+  const card = document.querySelector(`.db-card[data-id="${id}"]`);
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function sortDbs(dbs) {
+  const sorted = [...dbs];
+  switch (currentSort) {
+    case 'size': sorted.sort((a, b) => b.size_mb - a.size_mb); break;
+    case 'rows': sorted.sort((a, b) => getDbStats(b).totalRows - getDbStats(a).totalRows); break;
+    case 'tables': sorted.sort((a, b) => b.tables.length - a.tables.length); break;
+    case 'name': sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
+  }
+  return sorted;
+}
+
+function filterDbs(dbs) {
+  if (!searchTerm) return dbs;
+  const q = searchTerm.toLowerCase();
+  return dbs.filter(db =>
+    db.name.toLowerCase().includes(q) ||
+    db.desc.toLowerCase().includes(q) ||
+    db.id.toLowerCase().includes(q) ||
+    db.tables.some(t => t.name.toLowerCase().includes(q))
+  );
+}
+
+function buildCopyPrompt(db) {
+  const stats = getDbStats(db);
+  const tableNames = db.tables.map(t => t.name).join(', ');
+  return `${db.name}（${db.path}）を使って分析して。\nテーブル: ${tableNames}\n総行数: ${stats.totalRows.toLocaleString()}`;
+}
+
+function renderGrid() {
+  const filtered = filterDbs(allDbs);
+  const sorted = sortDbs(filtered);
+  const el = document.getElementById('grid');
+
+  if (sorted.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#a8a29e;grid-column:1/-1">該当するデータベースがありません</div>';
+    return;
+  }
+
+  el.innerHTML = sorted.map(db => {
+    const color = DB_COLORS[db.id] || '#78716c';
+    const icon = DB_ICONS[db.id] || db.id.substring(0, 2).toUpperCase();
+    const stats = getDbStats(db);
+    const topTables = db.tables
+      .filter(t => t.row_count > 0 || db.tables.length <= 8)
+      .sort((a, b) => b.row_count - a.row_count)
+      .slice(0, 8);
+
+    return `<div class="db-card" data-id="${db.id}">
+      <div class="card-top">
+        <div class="card-icon" style="background:${color}">${icon}</div>
+        <div class="card-info">
+          <div class="card-name">${escapeHtml(db.name)}</div>
+          <div class="card-desc">${escapeHtml(db.desc)}</div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <span class="card-chip">${db.size_mb} MB</span>
+        <span class="card-chip">${db.tables.length} tables</span>
+        <span class="card-chip">${stats.totalRows.toLocaleString()} rows</span>
+        <span class="card-chip">${stats.totalCols} cols</span>
+      </div>
+      <div class="card-tables">
+        ${topTables.map(t => `
+          <div class="card-table-row">
+            <span class="card-table-name">${escapeHtml(t.name)}</span>
+            <span class="card-table-cols">${t.columns.length} cols</span>
+            <span class="card-table-rows">${t.row_count.toLocaleString()} rows</span>
+          </div>
+        `).join('')}
+        ${db.tables.length > 8 ? `<div class="card-table-row" style="color:#a8a29e;font-size:11px">+ ${db.tables.length - 8} more tables</div>` : ''}
+      </div>
+      <div class="card-copy-bar">
+        <button class="copy-btn" onclick="copyText('${escapeHtml(db.name)}', 'DB名')">
+          <span class="copy-icon">&#x2398;</span> DB名
+        </button>
+        <button class="copy-btn" onclick="copyText('sqlite3 ${escapeHtml(db.path)}', 'sqlite3コマンド')">
+          <span class="copy-icon">&#x2398;</span> sqlite3
+        </button>
+        <button class="copy-btn" onclick="copyText(buildCopyPrompt(allDbs.find(d=>d.id==='${db.id}')), 'Claude Codeプロンプト')">
+          <span class="copy-icon">&#x2398;</span> Claude Code用
+        </button>
+      </div>
+      <a href="db-explorer.html#${db.id}" class="card-detail-link">詳細スキーマを見る &rarr;</a>
+    </div>`;
+  }).join('');
+}
+
+// Event listeners
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value;
+  renderGrid();
+});
+
+document.querySelectorAll('.control-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.dataset.sort;
+    renderGrid();
+  });
+});
+
+// Keyboard shortcut
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+  if (e.key === 'Escape') {
+    document.getElementById('search').blur();
+    document.getElementById('search').value = '';
+    searchTerm = '';
+    renderGrid();
+  }
+});
+
+// Load data
+fetch('data/db_metadata.json')
+  .then(r => r.json())
+  .then(data => {
+    allDbs = data;
+    renderSummary();
+    renderSizeChart();
+    renderGrid();
+  })
+  .catch(e => {
+    document.getElementById('grid').innerHTML = `<div style="text-align:center;padding:40px;color:#c62828;grid-column:1/-1">Error: ${e.message}</div>`;
+  });
+</script>
+</body>
+</html>

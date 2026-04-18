@@ -4,8 +4,103 @@
     "name": "Policy DB",
     "path": "~/projects/apps/policy-db/data/policy.db",
     "desc": "全中央省庁の審議会・委員会・予算事業データベース",
-    "size_mb": 106.7,
+    "size_mb": 108.2,
     "tables": [
+      {
+        "name": "analysis_runs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "run_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "started_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "completed_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "parameters_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "results_summary",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 5,
+        "sample_rows": [
+          {
+            "id": 1,
+            "run_type": "cluster",
+            "started_at": "2026-04-15 12:12:05",
+            "completed_at": null,
+            "status": "running",
+            "parameters_json": "{\"method\": \"tfidf_kmeans\", \"n_clusters\": 80}",
+            "results_summary": null
+          },
+          {
+            "id": 2,
+            "run_type": "ppi",
+            "started_at": "2026-04-15 12:17:08",
+            "completed_at": "2026-04-15 12:17:08",
+            "status": "completed",
+            "parameters_json": "{\"method\": \"budget_document_gap\"}",
+            "results_summary": "{\"total_scores\": 215, \"fiscal_years\": [2021, 2022, 2023, 2024, 2025], \"themes_analyzed\": 43}"
+          },
+          {
+            "id": 3,
+            "run_type": "cluster",
+            "started_at": "2026-04-15 12:20:32",
+            "completed_at": null,
+            "status": "running",
+            "parameters_json": "{\"method\": \"tfidf_kmeans\", \"n_clusters\": 80}",
+            "results_summary": null
+          },
+          {
+            "id": 4,
+            "run_type": "cluster",
+            "started_at": "2026-04-15 12:27:52",
+            "completed_at": "2026-04-15 12:27:58",
+            "status": "completed",
+            "parameters_json": "{\"method\": \"theme_based\", \"source\": \"gta_core_themes\"}",
+            "results_summary": "{\"total_clusters\": 43, \"cross_ministry_clusters\": 20, \"projects_clustered\": 11055}"
+          },
+          {
+            "id": 5,
+            "run_type": "cluster",
+            "started_at": "2026-04-15 12:28:03",
+            "completed_at": "2026-04-15 12:28:06",
+            "status": "completed",
+            "parameters_json": "{\"method\": \"theme_based\", \"source\": \"gta_core_themes\"}",
+            "results_summary": "{\"total_clusters\": 43, \"cross_ministry_clusters\": 20, \"projects_clustered\": 11055}"
+          }
+        ]
+      },
       {
         "name": "appointments",
         "columns": [
@@ -168,6 +263,207 @@
         ]
       },
       {
+        "name": "bridge_persons",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "person_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "council_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "ministry_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "ministries_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "councils_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "themes_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "bridge_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 280,
+        "sample_rows": [
+          {
+            "id": 284,
+            "person_name": "堀井 奈津子",
+            "council_count": 9,
+            "ministry_count": 2,
+            "ministries_json": "[\"内閣官房\", \"消費者庁\"]",
+            "councils_json": "[\"会議・研究会等一覧\", \"会議資料一覧\", \"審議会・研究会\", \"政策会議等\", \"消費者安全調査委員会\", \"消費者庁発足以前の情報・発足経緯 (旧国民生活局・消費者行政推進会議)\", \"消費者教育推進会議\", \"食品ロス削減推進会議\", \"食品衛生基準審議会\"]",
+            "themes_json": null,
+            "bridge_score": 18.0
+          },
+          {
+            "id": 285,
+            "person_name": "飯田 健太",
+            "council_count": 9,
+            "ministry_count": 2,
+            "ministries_json": "[\"内閣官房\", \"消費者庁\"]",
+            "councils_json": "[\"会議・研究会等一覧\", \"会議資料一覧\", \"審議会・研究会\", \"政策会議等\", \"消費者安全調査委員会\", \"消費者庁発足以前の情報・発足経緯 (旧国民生活局・消費者行政推進会議)\", \"消費者教育推進会議\", \"食品ロス削減推進会議\", \"食品衛生基準審議会\"]",
+            "themes_json": null,
+            "bridge_score": 18.0
+          },
+          {
+            "id": 286,
+            "person_name": "及川 仁",
+            "council_count": 9,
+            "ministry_count": 2,
+            "ministries_json": "[\"内閣官房\", \"消費者庁\"]",
+            "councils_json": "[\"会議・研究会等一覧\", \"会議資料一覧\", \"審議会・研究会\", \"政策会議等\", \"消費者安全調査委員会\", \"消費者庁発足以前の情報・発足経緯 (旧国民生活局・消費者行政推進会議)\", \"消費者教育推進会議\", \"食品ロス削減推進会議\", \"食品衛生基準審議会\"]",
+            "themes_json": null,
+            "bridge_score": 18.0
+          },
+          {
+            "id": 287,
+            "person_name": "阪口 理司",
+            "council_count": 9,
+            "ministry_count": 2,
+            "ministries_json": "[\"内閣官房\", \"消費者庁\"]",
+            "councils_json": "[\"会議・研究会等一覧\", \"会議資料一覧\", \"審議会・研究会\", \"政策会議等\", \"消費者安全調査委員会\", \"消費者庁発足以前の情報・発足経緯 (旧国民生活局・消費者行政推進会議)\", \"消費者教育推進会議\", \"食品ロス削減推進会議\", \"食品衛生基準審議会\"]",
+            "themes_json": null,
+            "bridge_score": 18.0
+          },
+          {
+            "id": 288,
+            "person_name": "加納 克利",
+            "council_count": 3,
+            "ministry_count": 2,
+            "ministries_json": "[\"内閣官房\", \"消費者庁\"]",
+            "councils_json": "[\"消費者庁発足以前の情報・発足経緯 (旧国民生活局・消費者行政推進会議)\", \"食品ロス削減推進会議\", \"食品衛生基準審議会\"]",
+            "themes_json": null,
+            "bridge_score": 6.0
+          }
+        ]
+      },
+      {
+        "name": "budget_anomalies",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "fiscal_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "theme_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ministry_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "anomaly_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "anomaly_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "details_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 227,
+        "sample_rows": [
+          {
+            "id": 1,
+            "fiscal_year": null,
+            "theme_name": "化学物質・製品安全",
+            "ministry_name": null,
+            "anomaly_type": "surge",
+            "anomaly_score": 0.3232,
+            "details_json": "{\"theme_name\": \"化学物質・製品安全\", \"anomaly_score\": 0.3232, \"anomaly_type\": \"surge\", \"budgets_by_year\": {\"2021\": 75201017999, \"2022\": 92272011000, \"2023\": 69375531716, \"2024\": 148593999000, \"2025\": 103350831..."
+          },
+          {
+            "id": 2,
+            "fiscal_year": null,
+            "theme_name": "産業政策・経済戦略",
+            "ministry_name": null,
+            "anomaly_type": "surge",
+            "anomaly_score": 0.1725,
+            "details_json": "{\"theme_name\": \"産業政策・経済戦略\", \"anomaly_score\": 0.1725, \"anomaly_type\": \"surge\", \"budgets_by_year\": {\"2021\": 6917784829277, \"2022\": 4358638997998, \"2023\": 1328534744247, \"2024\": 1344444853892, \"2025\": 15..."
+          },
+          {
+            "id": 3,
+            "fiscal_year": null,
+            "theme_name": "サイバーセキュリティ・個人情報保護",
+            "ministry_name": null,
+            "anomaly_type": "surge",
+            "anomaly_score": 0.1228,
+            "details_json": "{\"theme_name\": \"サイバーセキュリティ・個人情報保護\", \"anomaly_score\": 0.1228, \"anomaly_type\": \"surge\", \"budgets_by_year\": {\"2021\": 334518314999, \"2022\": 574386383790, \"2023\": 2738385481418, \"2024\": 3942126515112, \"202..."
+          },
+          {
+            "id": 4,
+            "fiscal_year": null,
+            "theme_name": "行政デジタル化・DX推進",
+            "ministry_name": null,
+            "anomaly_type": "surge",
+            "anomaly_score": 0.1052,
+            "details_json": "{\"theme_name\": \"行政デジタル化・DX推進\", \"anomaly_score\": 0.1052, \"anomaly_type\": \"surge\", \"budgets_by_year\": {\"2021\": 561141900000, \"2022\": 2205155531000, \"2023\": 1032139247000, \"2024\": 441485651167, \"2025\": 4..."
+          },
+          {
+            "id": 5,
+            "fiscal_year": null,
+            "theme_name": "医師・医療従事者制度",
+            "ministry_name": null,
+            "anomaly_type": "surge",
+            "anomaly_score": 0.0579,
+            "details_json": "{\"theme_name\": \"医師・医療従事者制度\", \"anomaly_score\": 0.0579, \"anomaly_type\": \"surge\", \"budgets_by_year\": {\"2021\": 72736722888, \"2022\": 66061167000, \"2023\": 296464990919, \"2024\": 86527741890, \"2025\": 84840688..."
+          }
+        ]
+      },
+      {
         "name": "budget_history",
         "columns": [
           {
@@ -226,6 +522,141 @@
             "project_id": "f244fcae-4e16-4a4c-a8d1-4faa46cb7a63",
             "fiscal_year": 2025,
             "initial_budgets_total_amount": 34482000
+          }
+        ]
+      },
+      {
+        "name": "cluster_memberships",
+        "columns": [
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "cluster_id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "similarity_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 11055,
+        "sample_rows": [
+          {
+            "project_id": "64bfbd51-6495-428b-8566-64e1e3ed4ae6",
+            "cluster_id": 44,
+            "similarity_score": 0.7
+          },
+          {
+            "project_id": "789058ec-a96d-4165-a89b-c450a7a2373d",
+            "cluster_id": 44,
+            "similarity_score": 0.7
+          },
+          {
+            "project_id": "9e9b0069-ab88-4f72-9171-8e3d58b1ee54",
+            "cluster_id": 44,
+            "similarity_score": 0.7
+          },
+          {
+            "project_id": "024f5818-0662-41e4-89a1-be47263d86db",
+            "cluster_id": 44,
+            "similarity_score": 0.7
+          },
+          {
+            "project_id": "02cb2de2-77f6-49ba-a23d-ad27842c1461",
+            "cluster_id": 44,
+            "similarity_score": 0.7
+          }
+        ]
+      },
+      {
+        "name": "coherence_metrics",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "fiscal_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "metric_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "metric_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "metric_value",
+            "type": "REAL",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "details_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 10,
+        "sample_rows": [
+          {
+            "id": 1,
+            "fiscal_year": 2021,
+            "metric_type": "budget_concentration",
+            "metric_name": "HHI",
+            "metric_value": 0.23136493359492374,
+            "details_json": "{\"n_themes\": 43}"
+          },
+          {
+            "id": 2,
+            "fiscal_year": 2021,
+            "metric_type": "keyword_consistency",
+            "metric_name": "spearman_rank_correlation",
+            "metric_value": 0.43023255813953487,
+            "details_json": "{\"n_themes\": 43}"
+          },
+          {
+            "id": 3,
+            "fiscal_year": 2022,
+            "metric_type": "budget_concentration",
+            "metric_name": "HHI",
+            "metric_value": 0.21259082024147485,
+            "details_json": "{\"n_themes\": 43}"
+          },
+          {
+            "id": 4,
+            "fiscal_year": 2022,
+            "metric_type": "keyword_consistency",
+            "metric_name": "spearman_rank_correlation",
+            "metric_value": 0.4679855028692238,
+            "details_json": "{\"n_themes\": 43}"
+          },
+          {
+            "id": 5,
+            "fiscal_year": 2023,
+            "metric_type": "budget_concentration",
+            "metric_name": "HHI",
+            "metric_value": 0.12472027073163555,
+            "details_json": "{\"n_themes\": 43}"
           }
         ]
       },
@@ -299,7 +730,7 @@
             "notnull": false
           }
         ],
-        "row_count": 7360,
+        "row_count": 20352,
         "sample_rows": [
           {
             "id": 373,
@@ -365,6 +796,112 @@
             "fiscal_year": null,
             "source_type": "web",
             "source_url": null
+          }
+        ]
+      },
+      {
+        "name": "council_network_edges",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "council_a_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "council_b_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "shared_member_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "shared_members_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ministry_a",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ministry_b",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_cross_ministry",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 1912,
+        "sample_rows": [
+          {
+            "id": 2056,
+            "council_a_id": 1499,
+            "council_b_id": 2709,
+            "shared_member_count": 17,
+            "shared_members_json": "[\"及川 仁\", \"古川 剛\", \"堀井 奈津子\", \"堀内 隆広\", \"宮長 郁夫\", \"尾原 知明\", \"岡田 博己\", \"日下部 英紀\", \"法務監理官\", \"爲藤 里英子\", \"赤井 久宣\", \"遠藤 幹夫\", \"阪口 理司\", \"飯田 健太\", \"髙江 慎一\", \"鮎澤 良史\", \"黒田 啓太\"]",
+            "ministry_a": "内閣官房",
+            "ministry_b": "消費者庁",
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 2057,
+            "council_a_id": 1499,
+            "council_b_id": 2710,
+            "shared_member_count": 23,
+            "shared_members_json": "[\"井上 計\", \"加納 克利\", \"及川 仁\", \"古川 剛\", \"堀井 奈津子\", \"堀内 隆広\", \"宮長 郁夫\", \"尾原 知明\", \"岡田 博己\", \"日下部 英紀\", \"森島 英之\", \"法務監理官\", \"爲藤 里英子\", \"田中 久美子\", \"茶谷 晋太郎\", \"赤井 久宣\", \"遠藤 幹夫\", \"阪口 理司\", \"飯田 健太\", \"髙江 慎一\", \"鮎澤 良史\", \"黒木 理恵\",...",
+            "ministry_a": "内閣官房",
+            "ministry_b": "消費者庁",
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 2058,
+            "council_a_id": 1499,
+            "council_b_id": 2711,
+            "shared_member_count": 17,
+            "shared_members_json": "[\"及川 仁\", \"古川 剛\", \"堀井 奈津子\", \"堀内 隆広\", \"宮長 郁夫\", \"尾原 知明\", \"岡田 博己\", \"日下部 英紀\", \"法務監理官\", \"爲藤 里英子\", \"赤井 久宣\", \"遠藤 幹夫\", \"阪口 理司\", \"飯田 健太\", \"髙江 慎一\", \"鮎澤 良史\", \"黒田 啓太\"]",
+            "ministry_a": "内閣官房",
+            "ministry_b": "消費者庁",
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 2059,
+            "council_a_id": 1499,
+            "council_b_id": 2712,
+            "shared_member_count": 17,
+            "shared_members_json": "[\"及川 仁\", \"古川 剛\", \"堀井 奈津子\", \"堀内 隆広\", \"宮長 郁夫\", \"尾原 知明\", \"岡田 博己\", \"日下部 英紀\", \"法務監理官\", \"爲藤 里英子\", \"赤井 久宣\", \"遠藤 幹夫\", \"阪口 理司\", \"飯田 健太\", \"髙江 慎一\", \"鮎澤 良史\", \"黒田 啓太\"]",
+            "ministry_a": "内閣官房",
+            "ministry_b": "消費者庁",
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 2060,
+            "council_a_id": 1499,
+            "council_b_id": 2713,
+            "shared_member_count": 23,
+            "shared_members_json": "[\"井上 計\", \"加納 克利\", \"及川 仁\", \"古川 剛\", \"堀井 奈津子\", \"堀内 隆広\", \"宮長 郁夫\", \"尾原 知明\", \"岡田 博己\", \"日下部 英紀\", \"森島 英之\", \"法務監理官\", \"爲藤 里英子\", \"田中 久美子\", \"茶谷 晋太郎\", \"赤井 久宣\", \"遠藤 幹夫\", \"阪口 理司\", \"飯田 健太\", \"髙江 慎一\", \"鮎澤 良史\", \"黒木 理恵\",...",
+            "ministry_a": "内閣官房",
+            "ministry_b": "消費者庁",
+            "is_cross_ministry": 1
           }
         ]
       },
@@ -687,6 +1224,240 @@
         ]
       },
       {
+        "name": "cross_ministry_matrix",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "fiscal_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "ministry_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "ministry_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "theme_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "theme_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "project_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "total_budget",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "requested_budget",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "execution_amount",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "avg_execution_rate",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 2388,
+        "sample_rows": [
+          {
+            "id": 1,
+            "fiscal_year": 2022,
+            "ministry_id": "96436dc2-b5cf-4891-a804-86ba49355584",
+            "ministry_name": "内閣官房",
+            "theme_id": 25,
+            "theme_name": "公務員・行政管理",
+            "project_count": 2,
+            "total_budget": 81142000,
+            "requested_budget": 33328000,
+            "execution_amount": 60771000,
+            "avg_execution_rate": 77.34864378585735
+          },
+          {
+            "id": 2,
+            "fiscal_year": 2023,
+            "ministry_id": "96436dc2-b5cf-4891-a804-86ba49355584",
+            "ministry_name": "内閣官房",
+            "theme_id": 25,
+            "theme_name": "公務員・行政管理",
+            "project_count": 1,
+            "total_budget": 33328000,
+            "requested_budget": 33498000,
+            "execution_amount": 26711000,
+            "avg_execution_rate": 73.90570527364285
+          },
+          {
+            "id": 3,
+            "fiscal_year": 2021,
+            "ministry_id": "96436dc2-b5cf-4891-a804-86ba49355584",
+            "ministry_name": "内閣官房",
+            "theme_id": 25,
+            "theme_name": "公務員・行政管理",
+            "project_count": 3,
+            "total_budget": 123457000,
+            "requested_budget": 95013000,
+            "execution_amount": 0,
+            "avg_execution_rate": null
+          },
+          {
+            "id": 4,
+            "fiscal_year": 2024,
+            "ministry_id": "96436dc2-b5cf-4891-a804-86ba49355584",
+            "ministry_name": "内閣官房",
+            "theme_id": 25,
+            "theme_name": "公務員・行政管理",
+            "project_count": 1,
+            "total_budget": 33498000,
+            "requested_budget": 34482000,
+            "execution_amount": 11200834,
+            "avg_execution_rate": 33.60787926068171
+          },
+          {
+            "id": 5,
+            "fiscal_year": 2025,
+            "ministry_id": "96436dc2-b5cf-4891-a804-86ba49355584",
+            "ministry_name": "内閣官房",
+            "theme_id": 25,
+            "theme_name": "公務員・行政管理",
+            "project_count": 1,
+            "total_budget": 34482000,
+            "requested_budget": 50617000,
+            "execution_amount": 10395000,
+            "avg_execution_rate": 31.03170338527673
+          }
+        ]
+      },
+      {
+        "name": "document_sections",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "document_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "section_number",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "section_level",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "body",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "char_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 1881,
+        "sample_rows": [
+          {
+            "id": 1,
+            "document_id": 1,
+            "section_number": "1",
+            "section_level": 1,
+            "title": "第１章 現下の日本経済の課題と基本的方向性---------------------- 1",
+            "body": "",
+            "char_count": 0
+          },
+          {
+            "id": 2,
+            "document_id": 1,
+            "section_number": "2",
+            "section_level": 2,
+            "title": "１． 日本経済の現状と課題",
+            "body": "［１］経済財政の現状\n［２］今後の課題",
+            "char_count": 19
+          },
+          {
+            "id": 3,
+            "document_id": 1,
+            "section_number": "3",
+            "section_level": 2,
+            "title": "２． 新たなステージへ移りつつある東日本大震災からの復興",
+            "body": "",
+            "char_count": 0
+          },
+          {
+            "id": 4,
+            "document_id": 1,
+            "section_number": "4",
+            "section_level": 1,
+            "title": "第２章 経済の好循環の拡大と中長期の発展に向けた重点課題 ------- 6",
+            "body": "",
+            "char_count": 0
+          },
+          {
+            "id": 5,
+            "document_id": 1,
+            "section_number": "5",
+            "section_level": 2,
+            "title": "１． 我が国の潜在力の強化と未来社会を見据えた改革",
+            "body": "［１］「稼ぐ力」の強化に向けた事業環境の整備と成長市場の創造\n［２］海外の成長市場との連携強化\n［３］イノベーション・ナショナルシステムの実現、ＩＴ・ロボットによる産業構造\n改革",
+            "char_count": 89
+          }
+        ]
+      },
+      {
         "name": "gta_core_themes",
         "columns": [
           {
@@ -818,6 +1589,280 @@
             "core_theme_id": 1,
             "council_count": 5,
             "ministry_count": 1
+          }
+        ]
+      },
+      {
+        "name": "keyword_frequencies",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "keyword_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "document_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "section_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "frequency",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "tf_idf",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 924,
+        "sample_rows": [
+          {
+            "id": 2773,
+            "keyword_id": 253,
+            "document_id": 1,
+            "section_id": null,
+            "frequency": 1,
+            "tf_idf": 0.1425
+          },
+          {
+            "id": 2774,
+            "keyword_id": 253,
+            "document_id": 2,
+            "section_id": null,
+            "frequency": 0,
+            "tf_idf": 0.0
+          },
+          {
+            "id": 2775,
+            "keyword_id": 253,
+            "document_id": 3,
+            "section_id": null,
+            "frequency": 3,
+            "tf_idf": 0.3983
+          },
+          {
+            "id": 2776,
+            "keyword_id": 253,
+            "document_id": 4,
+            "section_id": null,
+            "frequency": 9,
+            "tf_idf": 0.7405
+          },
+          {
+            "id": 2777,
+            "keyword_id": 253,
+            "document_id": 5,
+            "section_id": null,
+            "frequency": 53,
+            "tf_idf": 4.0109
+          }
+        ]
+      },
+      {
+        "name": "latent_topic_memberships",
+        "columns": [
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "topic_id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "probability",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 3757,
+        "sample_rows": [
+          {
+            "project_id": "000439d6-707e-488b-b529-d69075c8147d",
+            "topic_id": 5,
+            "probability": 1.0
+          },
+          {
+            "project_id": "000eb3e0-65db-4996-ab3d-715e78151b08",
+            "topic_id": 73,
+            "probability": 1.0
+          },
+          {
+            "project_id": "0019a113-f27e-4d19-ace9-82bf1fa4f5ee",
+            "topic_id": 20,
+            "probability": 1.0
+          },
+          {
+            "project_id": "001d901d-f4a2-4705-b30d-d7e150013451",
+            "topic_id": 32,
+            "probability": 1.0
+          },
+          {
+            "project_id": "003cf39e-abea-4a1c-9b2e-7f0388768c91",
+            "topic_id": 12,
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "name": "latent_topics",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "topic_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "label",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "representative_words",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "project_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ministry_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "total_budget",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_hidden",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "matched_themes",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "top_ministries",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 77,
+        "sample_rows": [
+          {
+            "id": 1,
+            "topic_id": 0,
+            "label": "効率化推進費 / 情報通信技術調達等適正 / query",
+            "representative_words": "[\"効率化推進費\", \"情報通信技術調達等適正\", \"query\", \"本事業は\", \"運用する\", \"国家資格等情報連携\", \"保守\", \"また\", \"活用システム\", \"なお\"]",
+            "project_count": 317,
+            "ministry_count": 14,
+            "total_budget": 1482368376410,
+            "is_hidden": 0,
+            "matched_themes": "[\"調達・契約・公共事業\", \"情報通信・郵政\"]",
+            "top_ministries": "[{\"ministry\": \"デジタル庁\", \"count\": 232}, {\"ministry\": \"総務省\", \"count\": 27}, {\"ministry\": \"厚生労働省\", \"count\": 24}, {\"ministry\": \"法務省\", \"count\": 8}, {\"ministry\": \"国土交通省\", \"count\": 7}]",
+            "created_at": "2026-04-15 13:50:35"
+          },
+          {
+            "id": 2,
+            "topic_id": 1,
+            "label": "都道府県 / 10 / 実施主体",
+            "representative_words": "[\"都道府県\", \"10\", \"実施主体\", \"社福\", \"生活困窮者就労準備支援事業費等補助金関係\", \"公募により選定された民間団体に補助を行い\", \"子ども\", \"以下の事業に対して補助を行う\", \"query\", \"市町村\"]",
+            "project_count": 182,
+            "ministry_count": 10,
+            "total_budget": 2731339761838,
+            "is_hidden": 1,
+            "matched_themes": "[]",
+            "top_ministries": "[{\"ministry\": \"厚生労働省\", \"count\": 106}, {\"ministry\": \"こども家庭庁\", \"count\": 51}, {\"ministry\": \"警察庁\", \"count\": 8}, {\"ministry\": \"法務省\", \"count\": 6}, {\"ministry\": \"外務省\", \"count\": 3}]",
+            "created_at": "2026-04-15 13:50:35"
+          },
+          {
+            "id": 3,
+            "topic_id": 2,
+            "label": "廃炉 / 被災者支援総合交付金 / 福島イノベーション",
+            "representative_words": "[\"廃炉\", \"被災者支援総合交付金\", \"福島イノベーション\", \"福島県\", \"岩手県内\", \"対象地域\", \"対象団体\", \"宮城県内\", \"汚染水\", \"現状\"]",
+            "project_count": 149,
+            "ministry_count": 9,
+            "total_budget": 390477162656,
+            "is_hidden": 0,
+            "matched_themes": "[\"科学技術・イノベーション\"]",
+            "top_ministries": "[{\"ministry\": \"復興庁\", \"count\": 100}, {\"ministry\": \"原子力規制委員会\", \"count\": 14}, {\"ministry\": \"経済産業省\", \"count\": 9}, {\"ministry\": \"環境省\", \"count\": 8}, {\"ministry\": \"文部科学省\", \"count\": 5}]",
+            "created_at": "2026-04-15 13:50:35"
+          },
+          {
+            "id": 4,
+            "topic_id": 3,
+            "label": "工場 / サーキュラーエコノミーに関する産官学のパートナーシップ / 実証事業",
+            "representative_words": "[\"工場\", \"サーキュラーエコノミーに関する産官学のパートナーシップ\", \"実証事業\", \"経済産業省連携事業\", \"query\", \"事業場において実施されるエネルギー消費効率の高い設備への更新等を以下の取組を通じて支援する\", \"成長志向型の資源自律経済加速化事業\", \"fit\", \"一部\", \"水素社会推進に向けた先導的な技術開発\"]",
+            "project_count": 138,
+            "ministry_count": 7,
+            "total_budget": 1002278159553,
+            "is_hidden": 0,
+            "matched_themes": "[\"エネルギー・電力制度\"]",
+            "top_ministries": "[{\"ministry\": \"環境省\", \"count\": 68}, {\"ministry\": \"経済産業省\", \"count\": 62}, {\"ministry\": \"国土交通省\", \"count\": 3}, {\"ministry\": \"農林水産省\", \"count\": 2}, {\"ministry\": \"総務省\", \"count\": 1}]",
+            "created_at": "2026-04-15 13:50:35"
+          },
+          {
+            "id": 5,
+            "topic_id": 4,
+            "label": "定額 / 補助率 / 事業主体は",
+            "representative_words": "[\"定額\", \"補助率\", \"事業主体は\", \"事業評価等を行うための事業検討委員会を実施するとともに\", \"全体計画策定\", \"漁業協同組合等が作成した事業計画に基づき行う以下の取組等に対し必要な経費を助成する\", \"補助\", \"２以内\", \"閣議了解\", \"委託\"]",
+            "project_count": 98,
+            "ministry_count": 7,
+            "total_budget": 269438441138,
+            "is_hidden": 1,
+            "matched_themes": "[]",
+            "top_ministries": "[{\"ministry\": \"農林水産省\", \"count\": 82}, {\"ministry\": \"復興庁\", \"count\": 6}, {\"ministry\": \"経済産業省\", \"count\": 4}, {\"ministry\": \"国土交通省\", \"count\": 2}, {\"ministry\": \"内閣府\", \"count\": 2}]",
+            "created_at": "2026-04-15 13:50:35"
           }
         ]
       },
@@ -964,6 +2009,112 @@
             "name": "個人情報保護委員会",
             "created_at": "2024-08-20T06:39:14.438523+09:00",
             "updated_at": "2024-08-20T06:39:14.438533+09:00"
+          }
+        ]
+      },
+      {
+        "name": "network_communities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "community_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "council_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "ministry_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "ministries_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "themes_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "density",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_cross_ministry",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 6,
+        "sample_rows": [
+          {
+            "id": 1,
+            "community_id": 0,
+            "council_count": 174,
+            "ministry_count": 13,
+            "ministries_json": "{\"経済産業省\": 14, \"外務省\": 1, \"財務省\": 13, \"金融庁\": 4, \"警察庁\": 2, \"復興庁\": 1, \"文部科学省\": 7, \"厚生労働省\": 10, \"国土交通省\": 98, \"環境省\": 8, \"総務省\": 2, \"内閣府\": 8, \"防衛省\": 6}",
+            "themes_json": "{\"環境・脱炭素政策\": 7, \"文化・観光・国際交流\": 6, \"産業政策・経済戦略\": 4, \"財政・税制政策\": 5, \"その他政府業務・特別対策\": 14, \"化学物質・製品安全\": 5, \"金融監督・市場制度\": 4, \"サイバーセキュリティ・個人情報保護\": 1, \"データ戦略・統計制度\": 2, \"原子力・放射線政策\": 2, \"公務員・行政管理\": 2, \"未分類\": 5, \"航空...",
+            "density": 0.0778,
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 2,
+            "community_id": 1,
+            "council_count": 23,
+            "ministry_count": 1,
+            "ministries_json": "{\"防衛省\": 23}",
+            "themes_json": "{\"環境・脱炭素政策\": 1, \"防衛・安全保障政策\": 14, \"感染症・健康危機対策\": 1, \"調達・契約・公共事業\": 4, \"公務員・行政管理\": 3}",
+            "density": 0.9328,
+            "is_cross_ministry": 0
+          },
+          {
+            "id": 3,
+            "community_id": 2,
+            "council_count": 17,
+            "ministry_count": 2,
+            "ministries_json": "{\"公正取引委員会\": 16, \"内閣府\": 1}",
+            "themes_json": "{\"競争政策・規制改革\": 15, \"環境・脱炭素政策\": 1, \"未分類\": 1}",
+            "density": 1.0,
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 4,
+            "community_id": 3,
+            "council_count": 10,
+            "ministry_count": 2,
+            "ministries_json": "{\"内閣府\": 1, \"厚生労働省\": 9}",
+            "themes_json": "{\"医薬品・医療機器安全\": 1, \"独立行政法人・政府系機関評価\": 9}",
+            "density": 0.2222,
+            "is_cross_ministry": 1
+          },
+          {
+            "id": 5,
+            "community_id": 4,
+            "council_count": 5,
+            "ministry_count": 3,
+            "ministries_json": "{\"経済産業省\": 3, \"内閣府\": 1, \"内閣官房\": 1}",
+            "themes_json": "{\"科学技術・イノベーション\": 3, \"エネルギー・電力制度\": 1, \"産業政策・経済戦略\": 1}",
+            "density": 0.5,
+            "is_cross_ministry": 1
           }
         ]
       },
@@ -1260,6 +2411,463 @@
             "updated_at": "2026-04-10 14:16:09",
             "org_position": "参事",
             "org_name": "官(デジタル・業務改革等担当)"
+          }
+        ]
+      },
+      {
+        "name": "policy_clusters",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "cluster_label",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "cluster_description",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "project_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ministry_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "total_budget",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "avg_similarity",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ministries_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "representative_projects_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 43,
+        "sample_rows": [
+          {
+            "id": 44,
+            "cluster_label": "感染症・健康危機対策",
+            "cluster_description": "GTA分類「感染症・健康危機対策」に基づく510事業のクラスター（2省庁）",
+            "project_count": 510,
+            "ministry_count": 2,
+            "total_budget": 22236674998834,
+            "avg_similarity": null,
+            "ministries_json": "[\"内閣官房\", \"厚生労働省\"]",
+            "representative_projects_json": "[\"ca23be8d-3296-43fa-9fc3-b97978a1b14b\", \"f9e13512-48c7-47a2-a423-53d23688168f\", \"5cd11ec6-0ec0-4bbb-9e13-04db4878008d\", \"70152967-3f02-4742-bb77-43bcbb6e4672\", \"d5fd8a16-a408-42c0-8939-de0ea46d5273\"]",
+            "created_at": "2026-04-15 12:28:06"
+          },
+          {
+            "id": 45,
+            "cluster_label": "労働・雇用政策",
+            "cluster_description": "GTA分類「労働・雇用政策」に基づく435事業のクラスター（1省庁）",
+            "project_count": 435,
+            "ministry_count": 1,
+            "total_budget": 18971723374916,
+            "avg_similarity": null,
+            "ministries_json": "[\"厚生労働省\"]",
+            "representative_projects_json": "[\"f5ad7307-9b8a-41ab-8f8a-28fc70df1147\", \"06662a6a-29d9-49e0-919c-6c099bbfeeb3\", \"5c77b4cf-0da1-44ce-aef8-84c27b396cdd\", \"ade2021e-057c-4d43-ba4b-2f523a9c6f8a\", \"c420a4a1-9538-4327-864d-847e3f72a5fc\"]",
+            "created_at": "2026-04-15 12:28:06"
+          },
+          {
+            "id": 46,
+            "cluster_label": "労働安全・社会福祉",
+            "cluster_description": "GTA分類「労働安全・社会福祉」に基づく644事業のクラスター（2省庁）",
+            "project_count": 644,
+            "ministry_count": 2,
+            "total_budget": 30027008139089,
+            "avg_similarity": null,
+            "ministries_json": "[\"内閣府\", \"厚生労働省\"]",
+            "representative_projects_json": "[\"9017bd14-c086-43d0-8ecf-c223d5fa3206\", \"aafa0500-8513-4aaf-ba6f-8964ebee7ec1\", \"9a4e53e7-517b-487e-92d4-2932de56da45\", \"32cc0261-b0a1-438c-a823-3d8c7f7cecb0\", \"b8cd609c-6a5b-4fb5-a6ea-177623ad8ee5\"]",
+            "created_at": "2026-04-15 12:28:06"
+          },
+          {
+            "id": 47,
+            "cluster_label": "医療保険・診療報酬制度",
+            "cluster_description": "GTA分類「医療保険・診療報酬制度」に基づく204事業のクラスター（1省庁）",
+            "project_count": 204,
+            "ministry_count": 1,
+            "total_budget": 51997169571863,
+            "avg_similarity": null,
+            "ministries_json": "[\"厚生労働省\"]",
+            "representative_projects_json": "[\"b9bfcd9f-99b1-4eb3-8b0c-2644ebd9d37c\", \"eb224589-405b-4643-bff5-c0bee8687f98\", \"6af47d3b-7439-4a6f-b498-f7cb85c403d4\", \"c5bdc5e7-7cd1-4555-a95c-338be5f13962\", \"26be36e0-4f83-4be4-b39e-4be02b8d8b1c\"]",
+            "created_at": "2026-04-15 12:28:06"
+          },
+          {
+            "id": 48,
+            "cluster_label": "エネルギー・電力制度",
+            "cluster_description": "GTA分類「エネルギー・電力制度」に基づく372事業のクラスター（1省庁）",
+            "project_count": 372,
+            "ministry_count": 1,
+            "total_budget": 4439578107564,
+            "avg_similarity": null,
+            "ministries_json": "[\"経済産業省\"]",
+            "representative_projects_json": "[\"dbe4a5bb-4098-4954-a5a2-574bb238feaf\", \"aa57a894-0042-4eb6-ad43-c7bb17748db1\", \"0a810223-2427-44b3-9f4d-b4846783dab7\", \"72ebaab0-de66-487c-9bae-11fccd3585ec\", \"c9d508e1-571d-40cc-9f92-f82442335ca1\"]",
+            "created_at": "2026-04-15 12:28:06"
+          }
+        ]
+      },
+      {
+        "name": "policy_documents",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "document_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "fiscal_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "source_url",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "full_text",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "summary",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "total_chars",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 24,
+        "sample_rows": [
+          {
+            "id": 1,
+            "title": "経済財政運営と改革の基本方針2015",
+            "document_type": "honebuto",
+            "fiscal_year": 2015,
+            "source_url": "https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/2015/decision0630.html",
+            "full_text": "経済財政運営と改革の基本方針2015について\n平 成 27 年 6 月 30 日\n閣 議 決 定\n経済財政運営と改革の基本方針2015を別紙のとおり定める。\n（別紙）\n経済財政運営と改革の基本方針 2015\n～経済再生なくして財政健全化なし～\n平成 27 年６月 30 日\n経済財政運営と改革の基本方針2015\n（目次）\n第１章 現下の日本経済の課題と基本的方向性------------------...",
+            "summary": "経済財政運営と改革の基本方針2015について 平 成 27 年 6 月 30 日 閣 議 決 定 経済財政運営と改革の基本方針2015を別紙のとおり定める。 （別紙） 経済財政運営と改革の基本方針 2015 ～経済再生なくして財政健全化なし～ 平成 27 年６月 30 日 経済財政運営と改革の基本方針2015 （目次） 第１章 現下の日本経済の課題と基本的方向性------------------...",
+            "total_chars": 52052,
+            "created_at": "2026-04-15 12:11:34"
+          },
+          {
+            "id": 2,
+            "title": "経済財政運営と改革の基本方針2016　～600兆円経済への道筋～",
+            "document_type": "honebuto",
+            "fiscal_year": 2016,
+            "source_url": "https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/2016/decision0602.html",
+            "full_text": "経済財政運営と改革の基本方針2016について\n平成 28 年６月２日\n閣 議 決定\n経済財政運営と改革の基本方針2016を別紙のとおり定める。\n（別紙）\n経済財政運営と改革の基本方針 2016\n～600 兆円経済への道筋～\n平成 28 年６月２日\n経済財政運営と改革の基本方針2016\n（目次）\n第１章 現下の日本経済の課題と考え方 --------------------------- １\n１．日...",
+            "summary": "経済財政運営と改革の基本方針2016について 平成 28 年６月２日 閣 議 決定 経済財政運営と改革の基本方針2016を別紙のとおり定める。 （別紙） 経済財政運営と改革の基本方針 2016 ～600 兆円経済への道筋～ 平成 28 年６月２日 経済財政運営と改革の基本方針2016 （目次） 第１章 現下の日本経済の課題と考え方 --------------------------- １ １．日...",
+            "total_chars": 55661,
+            "created_at": "2026-04-15 12:11:40"
+          },
+          {
+            "id": 3,
+            "title": "経済財政運営と改革の基本方針2017　～人材への投資を通じた生産性向上～",
+            "document_type": "honebuto",
+            "fiscal_year": 2017,
+            "source_url": "https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/2017/decision0609.html",
+            "full_text": "経済財政運営と改革の基本方針2017について\n平成 29 年６月９日\n閣 議 決定\n経済財政運営と改革の基本方針2017を別紙のとおり定める。\n（別紙）\n経済財政運営と改革の基本方針 2017\n～人材への投資を通じた生産性向上～\n平成 29 年６月９日\n経済財政運営と改革の基本方針2017\n（目次）\n第１章 現下の日本経済の課題と考え方---------------------------- １\n...",
+            "summary": "経済財政運営と改革の基本方針2017について 平成 29 年６月９日 閣 議 決定 経済財政運営と改革の基本方針2017を別紙のとおり定める。 （別紙） 経済財政運営と改革の基本方針 2017 ～人材への投資を通じた生産性向上～ 平成 29 年６月９日 経済財政運営と改革の基本方針2017 （目次） 第１章 現下の日本経済の課題と考え方---------------------------- １ ...",
+            "total_chars": 55878,
+            "created_at": "2026-04-15 12:11:44"
+          },
+          {
+            "id": 4,
+            "title": "経済財政運営と改革の基本方針2018　～少子高齢化の克服による持続的な成長経路の実現～",
+            "document_type": "honebuto",
+            "fiscal_year": 2018,
+            "source_url": "https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/2018/decision0615.html",
+            "full_text": "経済財政運営と改革の基本方針2018について\n平成 30 年６月 15 日\n閣 議 決定\n経済財政運営と改革の基本方針2018を別紙のとおり定める。\n（別紙）\n経済財政運営と改革の基本方針 2018\n〜少子高齢化の克服による持続的な成長経路の実現〜\n平成 30 年６月 15 日\n1\n経済財政運営と改革の基本方針 2018\n（目次）\n第１章 現下の日本経済 —————————————————————...",
+            "summary": "経済財政運営と改革の基本方針2018について 平成 30 年６月 15 日 閣 議 決定 経済財政運営と改革の基本方針2018を別紙のとおり定める。 （別紙） 経済財政運営と改革の基本方針 2018 〜少子高齢化の克服による持続的な成長経路の実現〜 平成 30 年６月 15 日 1 経済財政運営と改革の基本方針 2018 （目次） 第１章 現下の日本経済 —————————————————————...",
+            "total_chars": 90179,
+            "created_at": "2026-04-15 12:11:47"
+          },
+          {
+            "id": 5,
+            "title": "経済財政運営と改革の基本方針2019　～「令和」新時代：「Society 5.0」への挑戦～",
+            "document_type": "honebuto",
+            "fiscal_year": 2019,
+            "source_url": "https://www5.cao.go.jp/keizai-shimon/kaigi/cabinet/honebuto/2019/decision0621.html",
+            "full_text": "経済財政運営と改革の基本方針2019について\n令和元年６月 21 日\n閣 議 決 定\n経済財政運営と改革の基本方針2019を別紙のとおり定める。\n（別紙）\n経済財政運営と改革の基本方針 2019\n～「令和」新時代：「Society 5.0」への挑戦～\n令和元年６月 21 日\n経済財政運営と改革の基本方針2019\n（目次）\n第１章 現下の日本経済———————————————————————————...",
+            "summary": "経済財政運営と改革の基本方針2019について 令和元年６月 21 日 閣 議 決 定 経済財政運営と改革の基本方針2019を別紙のとおり定める。 （別紙） 経済財政運営と改革の基本方針 2019 ～「令和」新時代：「Society 5.0」への挑戦～ 令和元年６月 21 日 経済財政運営と改革の基本方針2019 （目次） 第１章 現下の日本経済———————————————————————————...",
+            "total_chars": 98039,
+            "created_at": "2026-04-15 12:11:51"
+          }
+        ]
+      },
+      {
+        "name": "policy_keywords",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "keyword",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_priority_keyword",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 84,
+        "sample_rows": [
+          {
+            "id": 253,
+            "keyword": "デジタル",
+            "category": "デジタル・技術",
+            "is_priority_keyword": 1
+          },
+          {
+            "id": 254,
+            "keyword": "DX",
+            "category": "デジタル・技術",
+            "is_priority_keyword": 1
+          },
+          {
+            "id": 255,
+            "keyword": "AI",
+            "category": "デジタル・技術",
+            "is_priority_keyword": 1
+          },
+          {
+            "id": 256,
+            "keyword": "人工知能",
+            "category": "デジタル・技術",
+            "is_priority_keyword": 1
+          },
+          {
+            "id": 257,
+            "keyword": "半導体",
+            "category": "デジタル・技術",
+            "is_priority_keyword": 1
+          }
+        ]
+      },
+      {
+        "name": "priority_scores",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "fiscal_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "theme_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "theme_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "budget_share",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "budget_rank",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "budget_growth_rate",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "document_mention_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "document_rank",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "word_budget_gap",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "gap_direction",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "composite_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 215,
+        "sample_rows": [
+          {
+            "id": 1,
+            "fiscal_year": 2021,
+            "theme_id": null,
+            "theme_name": "国土計画・地域開発",
+            "budget_share": 0.005035051337634415,
+            "budget_rank": 20,
+            "budget_growth_rate": null,
+            "document_mention_count": 171,
+            "document_rank": 1,
+            "word_budget_gap": 0.11521811321932761,
+            "gap_direction": "over_spoken",
+            "composite_score": 0.7790697674418605
+          },
+          {
+            "id": 2,
+            "fiscal_year": 2021,
+            "theme_id": null,
+            "theme_name": "行政デジタル化・DX推進",
+            "budget_share": 0.0014967629887381738,
+            "budget_rank": 28,
+            "budget_growth_rate": null,
+            "document_mention_count": 104,
+            "document_rank": 2,
+            "word_budget_gap": 0.07163966457806914,
+            "gap_direction": "over_spoken",
+            "composite_score": 0.6744186046511628
+          },
+          {
+            "id": 3,
+            "fiscal_year": 2021,
+            "theme_id": null,
+            "theme_name": "サイバーセキュリティ・個人情報保護",
+            "budget_share": 0.0008922781081675795,
+            "budget_rank": 34,
+            "budget_growth_rate": null,
+            "document_mention_count": 104,
+            "document_rank": 3,
+            "word_budget_gap": 0.07224414945863973,
+            "gap_direction": "over_spoken",
+            "composite_score": 0.5930232558139534
+          },
+          {
+            "id": 4,
+            "fiscal_year": 2021,
+            "theme_id": null,
+            "theme_name": "データ戦略・統計制度",
+            "budget_share": 0.00040867345340129586,
+            "budget_rank": 37,
+            "budget_growth_rate": null,
+            "document_mention_count": 104,
+            "document_rank": 4,
+            "word_budget_gap": 0.07272775411340601,
+            "gap_direction": "over_spoken",
+            "composite_score": 0.5465116279069767
+          },
+          {
+            "id": 5,
+            "fiscal_year": 2021,
+            "theme_id": null,
+            "theme_name": "感染症・健康危機対策",
+            "budget_share": 0.43078959154156504,
+            "budget_rank": 1,
+            "budget_growth_rate": null,
+            "document_mention_count": 97,
+            "document_rank": 5,
+            "word_budget_gap": -0.36257580813790824,
+            "gap_direction": "under_spoken",
+            "composite_score": 0.9534883720930233
           }
         ]
       },
@@ -1641,6 +3249,90 @@
         ]
       },
       {
+        "name": "structural_holes",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "council_id",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "council_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "constraint_value",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "effective_size",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "bridging_themes_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 200,
+        "sample_rows": [
+          {
+            "id": 1,
+            "council_id": 2399,
+            "council_name": "交通体系分科会",
+            "constraint_value": 0.0709,
+            "effective_size": 55.3647,
+            "bridging_themes_json": "[\"その他政府業務・特別対策\", \"エネルギー・電力制度\", \"データ戦略・統計制度\", \"公務員・行政管理\", \"化学物質・製品安全\", \"医学・再生医療研究\", \"原子力・放射線政策\", \"国土計画・地域開発\", \"文化・観光・国際交流\", \"未分類\", \"河川・水資源管理\", \"災害対策・防災\", \"独立行政法人・政府系機関評価\", \"環境・脱炭素政策\", \"産業政策・経済戦略\", \"科学技..."
+          },
+          {
+            "id": 2,
+            "council_id": 2237,
+            "council_name": "国土審議会",
+            "constraint_value": 0.0755,
+            "effective_size": 43.0122,
+            "bridging_themes_json": "[\"その他政府業務・特別対策\", \"交通安全・自動車政策\", \"公務員・行政管理\", \"化学物質・製品安全\", \"医学・再生医療研究\", \"原子力・放射線政策\", \"地方自治・行政\", \"未分類\", \"河川・水資源管理\", \"独立行政法人・政府系機関評価\", \"環境・脱炭素政策\", \"調達・契約・公共事業\", \"財政・税制政策\", \"道路・交通インフラ\"]"
+          },
+          {
+            "id": 3,
+            "council_id": 1662,
+            "council_name": "科学技術・学術審議会",
+            "constraint_value": 0.0791,
+            "effective_size": 26.1914,
+            "bridging_themes_json": "[\"その他政府業務・特別対策\", \"エネルギー・電力制度\", \"サイバーセキュリティ・個人情報保護\", \"児童福祉・子育て支援\", \"労働安全・社会福祉\", \"化学物質・製品安全\", \"国土計画・地域開発\", \"文化・観光・国際交流\", \"未分類\", \"河川・水資源管理\", \"独立行政法人・政府系機関評価\", \"環境・脱炭素政策\", \"航空・宇宙政策\", \"財政・税制政策\", \"道路・交通インフラ..."
+          },
+          {
+            "id": 4,
+            "council_id": 2406,
+            "council_name": "技術分科会",
+            "constraint_value": 0.0855,
+            "effective_size": 35.6945,
+            "bridging_themes_json": "[\"その他政府業務・特別対策\", \"公務員・行政管理\", \"原子力・放射線政策\", \"国土計画・地域開発\", \"地方自治・行政\", \"未分類\", \"災害対策・防災\", \"独立行政法人・政府系機関評価\", \"環境・脱炭素政策\", \"科学技術・イノベーション\", \"航空・宇宙政策\", \"財政・税制政策\", \"道路・交通インフラ\", \"防衛・安全保障政策\"]"
+          },
+          {
+            "id": 5,
+            "council_id": 2238,
+            "council_name": "推進部会",
+            "constraint_value": 0.0939,
+            "effective_size": 51.4058,
+            "bridging_themes_json": "[\"その他政府業務・特別対策\", \"児童福祉・子育て支援\", \"化学物質・製品安全\", \"原子力・放射線政策\", \"地方自治・行政\", \"文化・観光・国際交流\", \"未分類\", \"河川・水資源管理\", \"災害対策・防災\", \"独立行政法人・政府系機関評価\", \"産業政策・経済戦略\", \"財政・税制政策\", \"道路・交通インフラ\", \"金融監督・市場制度\", \"防衛・安全保障政策\"]"
+          }
+        ]
+      },
+      {
         "name": "warp_snapshots",
         "columns": [
           {
@@ -1692,7 +3384,7 @@
             "notnull": false
           }
         ],
-        "row_count": 2074,
+        "row_count": 2293,
         "sample_rows": [
           {
             "id": 1,
@@ -2380,7 +4072,7 @@
     "name": "Sangaku Matcher",
     "path": "~/projects/apps/sangaku-matcher/data/matcher.db",
     "desc": "産学マッチャー（大学技術シーズ x 企業ニーズ）",
-    "size_mb": 234.2,
+    "size_mb": 251.2,
     "tables": [
       {
         "name": "acquisition_log",
@@ -2876,7 +4568,7 @@
             "employees": 27557,
             "rd_expense": 69200.0,
             "rd_intensity": 0.029143799803995313,
-            "rd_text": "塩化ビニル樹脂、半導体シリコン、シリコーン、合成石英、希土類磁石等の研究開発。半導体材料ではEUV用フォトマスク基板、ArF用フォトレジストの開発を推進。",
+            "rd_text": "<h3>６ 【研究開発活動】</h3> <p style=\"margin-left: 24px; text-align: left\"> 研究開発につきましては、お客様最優先、品質第一主義の立場に立って、お客様に信頼され愛され、お客様と喜びを分かち合える製品を開発すべく、日々努力を重ねております。</p> <p style=\"margin-left: 24px; text-align: left; ...",
             "rd_text_vector": "<BLOB 1536 bytes>",
             "midterm_plan_text": "<h3>１ 【経営方針、経営環境及び対処すべき課題等】</h3> <p style=\"margin-left: 24px; text-align: left\"> 当社グループの経営方針、経営環境及び対処すべき課題等は、以下のとおりであります。</p> <p style=\"margin-left: 24px; text-align: left\">なお、文中の将来に関する事項は、当連結会計年度末現在に...",
             "estimated_needs": "信越化学工業株式会社の推定技術ニーズ。同社は樹脂成形事業の低収益性からの脱却と中長期的なサステナビリティ確保を経営課題としており、R&D戦略は車両関連製品の高度化、プラスチック材料の循環型資源化、生産プロセスの自動化・DX化に重点を置いている。特に中国から東南アジアへの生産移管に伴う新市場対応と、ハウスウエア分野のリブランディング支援における製品革新が急務である。同時にGHG排出量30%削減目標の...",
@@ -2910,7 +4602,7 @@
             "employees": 162310,
             "rd_expense": 500000.0,
             "rd_intensity": 0.0699514564872561,
-            "rd_text": "電動化、自動運転、コネクティッド技術の研究開発。車載半導体、全固体電池材料、LiDAR、車載通信モジュールの開発を推進。カーボンニュートラルに向けたファクトリーオートメーション技術も開発。",
+            "rd_text": "<h3>６【研究開発活動】</h3> <p style=\"margin-left: 24px; text-align: left; text-indent: 12px\">当社グループにおける当連結会計年度の研究開発費の総額は31,464千円であります。</p> <p style=\"margin-left: 36px; text-align: left\">セグメントの研究開発活動を示すと、次のとおり...",
             "rd_text_vector": "<BLOB 1536 bytes>",
             "midterm_plan_text": "<h3>１【経営方針、経営環境及び対処すべき課題等】</h3> <p style=\"margin-left: 24px; text-align: left\"> 当社グループの経営方針、経営環境及び対処すべき課題等は、以下の通りであります。</p> <p style=\"margin-left: 24px; text-align: left\">なお、本文中の将来に関する事項は、当連結会計年度末現在にお...",
             "estimated_needs": "デンソーの推定技術ニーズ。同社は「System Technology Group」として、ICT技術と電子デバイス・装置の融合による新価値創造を経営方針に掲げており、R&D方向性は①アナログ&パワー半導体の高度化（特に酸化ガリウムデバイス）、②IoT・AI実装に対応した組み込みシステム開発、③メカトロニクス装置のシステムソリューション化に注力している。新規事業領域としては、ロボティクス（無人搬送車...",
@@ -2978,7 +4670,7 @@
             "employees": null,
             "rd_expense": 305.2498755636775,
             "rd_intensity": 0.003908109257919465,
-            "rd_text": "",
+            "rd_text": "<h3>６【研究開発活動】</h3> <p style=\"margin-left: 36px; text-align: justify; text-justify: inter-ideograph; text-indent: 12px\">研究開発に関しましては、常に高付加価値で新規性のあるオリジナル商品の開発をグローバルな視点で取り組んでおります。</p> <p style=\"margin-lef...",
             "rd_text_vector": "<BLOB 1536 bytes>",
             "midterm_plan_text": "<h3>１【経営方針、経営環境及び対処すべき課題等】</h3> <p style=\"margin-left: 28.4px; text-align: left\">文中の将来に関する事項は、当連結会計年度末現在において当社グループが判断したものであります。</p> <p style=\"margin-left: 28.4px; text-align: left; text-indent: -12px\"...",
             "estimated_needs": "カネコ種苗株式会社の推定技術ニーズ。同社は「ハイテクと国際化」を基本方針として、国内農業の生産性向上と海外展開の両軸でR&Dを推進している。国内ではスマート農業の実装化、特にドローンやAI画像診断技術の開発に注力しており、省力化と環境負荷軽減の両立が重要課題である。海外では気候変動に対応した品種開発と採種地の分散化による安定供給体制の構築が急務となっている。新規事業領域としては、使用済み農業フィル...",
@@ -3012,7 +4704,7 @@
             "employees": null,
             "rd_expense": 17798.71167241829,
             "rd_intensity": 0.042226445023294534,
-            "rd_text": "",
+            "rd_text": "<h3>６【研究開発活動】</h3> <p style=\"margin-left: 26.666666666666666666666666667px; line-height: 17.333333333333333333333333333px; text-align: justify; text-justify: inter-ideograph; text-indent: 13.333333333...",
             "rd_text_vector": "<BLOB 1536 bytes>",
             "midterm_plan_text": "<h3>１【経営方針、経営環境及び対処すべき課題等】</h3> <p style=\"margin-left: 26.666666666666666666666666667px; text-align: justify; text-justify: inter-ideograph\">（１）経営方針</p> <p style=\"margin-left: 26.666666666666666666666...",
             "estimated_needs": "株式会社　サカタのタネの推定技術ニーズ。同社は高品質でオリジナル性の高い種苗の継続的創出と、アジアを中心とした新興国市場への展開を重視しており、R&Dは地域栽培環境に適応した品種開発と、生産者の高収益化を実現する種苗機能の強化に向けられている。成熟市場での高収益モデル確立と新興市場での需要喚起のため、気候変動対応性や病害虫耐性、栄養価向上などの付加価値種苗開発が急務である。また、グローバルサプライ...",
@@ -3513,6 +5205,222 @@
         ]
       },
       {
+        "name": "multi_exit_matches",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "seed_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "exit_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "edinet_code",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "rank",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "total_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "tech_prox",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "need_fit",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "abs_cap",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "past_ties",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "future_option",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "open_inno",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "humanities_fit",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "ambition_fit",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "theme_breadth",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "synergy",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "hypothesis",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          }
+        ],
+        "row_count": 658,
+        "sample_rows": [
+          {
+            "id": 1,
+            "seed_id": "6be129a4-98d3-4a93-938b-9be57a370b3d",
+            "exit_type": "rd",
+            "edinet_code": "E00752",
+            "rank": 1,
+            "total_score": 0.6827,
+            "tech_prox": 0.612,
+            "need_fit": 0.8073,
+            "abs_cap": 0.6307,
+            "past_ties": 0.9228,
+            "future_option": 0.15,
+            "open_inno": 0.4797,
+            "humanities_fit": 0.4785,
+            "ambition_fit": 0.5513,
+            "theme_breadth": 0.8,
+            "synergy": 0.6812,
+            "hypothesis": "住友化学株式会社は技術ニーズとの一致度が高く(need_fit=0.81)、シーズが直接対応可能。 技術近接性(tech_prox=0.61)も適度な距離にあり、知識移転が期待できる。 知識吸収能力(abs_cap=0.63)が高く、共同研究契約に至りやすい候補。 過去の産学連携実績(past_ties=0.92)もあり。",
+            "created_at": "2026-04-12T17:36:57"
+          },
+          {
+            "id": 2,
+            "seed_id": "6be129a4-98d3-4a93-938b-9be57a370b3d",
+            "exit_type": "rd",
+            "edinet_code": "E01935",
+            "rank": 2,
+            "total_score": 0.6825,
+            "tech_prox": 0.601,
+            "need_fit": 0.9228,
+            "abs_cap": 0.5408,
+            "past_ties": 0.9248,
+            "future_option": 0.15,
+            "open_inno": 0.4039,
+            "humanities_fit": 0.4377,
+            "ambition_fit": 0.298,
+            "theme_breadth": 1.0,
+            "synergy": 0.6869,
+            "hypothesis": "カシオ計算機株式会社は技術ニーズとの一致度が高く(need_fit=0.92)、シーズが直接対応可能。 技術近接性(tech_prox=0.60)も適度な距離にあり、知識移転が期待できる。 知識吸収能力(abs_cap=0.54)が高く、共同研究契約に至りやすい候補。 過去の産学連携実績(past_ties=0.92)もあり。",
+            "created_at": "2026-04-12T17:36:57"
+          },
+          {
+            "id": 3,
+            "seed_id": "6be129a4-98d3-4a93-938b-9be57a370b3d",
+            "exit_type": "rd",
+            "edinet_code": "E04498",
+            "rank": 3,
+            "total_score": 0.6716,
+            "tech_prox": 0.6806,
+            "need_fit": 0.7361,
+            "abs_cap": 0.5793,
+            "past_ties": 0.9243,
+            "future_option": 0.15,
+            "open_inno": 0.4179,
+            "humanities_fit": 0.5945,
+            "ambition_fit": 0.3729,
+            "theme_breadth": 0.2667,
+            "synergy": 0.7168,
+            "hypothesis": "東京電力ホールディングス株式会社は技術ニーズとの一致度が高く(need_fit=0.74)、シーズが直接対応可能。 技術近接性(tech_prox=0.68)も適度な距離にあり、知識移転が期待できる。 知識吸収能力(abs_cap=0.58)が高く、共同研究契約に至りやすい候補。 過去の産学連携実績(past_ties=0.92)もあり。",
+            "created_at": "2026-04-12T17:36:57"
+          },
+          {
+            "id": 4,
+            "seed_id": "6be129a4-98d3-4a93-938b-9be57a370b3d",
+            "exit_type": "new_domain",
+            "edinet_code": "E00840",
+            "rank": 1,
+            "total_score": 0.5801,
+            "tech_prox": 0.5973,
+            "need_fit": 0.6877,
+            "abs_cap": 0.6276,
+            "past_ties": 0.9601,
+            "future_option": 0.15,
+            "open_inno": 0.4686,
+            "humanities_fit": 0.6141,
+            "ambition_fit": 0.6686,
+            "theme_breadth": 1.0,
+            "synergy": 0.7108,
+            "hypothesis": "三井化学株式会社は新領域への挑戦意欲が高い(ambition_fit=0.67)。40野心テーマ分析。高親和: ウェルネス・予防医療・機能性食品市場の拡大(96%); 未充足医療ニーズ対応・次世代医薬品開発(91%); 再生医療・細胞治療の実用化・事業化(89%)。 健康社会学・消費文化論の視点から、ウェルネス消費の社会的意味や健康リスクの個人化イデオロギーを批判的に検討し、予防医療の社会的公正性...",
+            "created_at": "2026-04-12T17:36:57"
+          },
+          {
+            "id": 5,
+            "seed_id": "6be129a4-98d3-4a93-938b-9be57a370b3d",
+            "exit_type": "new_domain",
+            "edinet_code": "E00989",
+            "rank": 2,
+            "total_score": 0.5678,
+            "tech_prox": 0.6474,
+            "need_fit": 0.5972,
+            "abs_cap": 0.5711,
+            "past_ties": 0.9543,
+            "future_option": 0.15,
+            "open_inno": 0.4232,
+            "humanities_fit": 0.5392,
+            "ambition_fit": 0.8218,
+            "theme_breadth": 1.0,
+            "synergy": 0.6155,
+            "hypothesis": "コニカミノルタ株式会社は新領域への挑戦意欲が高い(ambition_fit=0.82)。40野心テーマ分析。高親和: 半導体・電子部品・高機能素材の事業拡大(96%); 医療IT・デジタルヘルス・検査技術の事業化(96%); AI・生成AI活用による経営・営業革新(97%)。 科学技術政策論・経済安全保障研究の立場から、半導体サプライチェーンの地政学的再編が企業の戦略的意思決定と国家間技術覇権競争...",
+            "created_at": "2026-04-12T17:36:57"
+          }
+        ]
+      },
+      {
         "name": "patents_company",
         "columns": [
           {
@@ -3589,7 +5497,7 @@
             "notnull": true
           }
         ],
-        "row_count": 27,
+        "row_count": 62,
         "sample_rows": [
           {
             "seed_id": "76b1bb7b-f41f-4a95-b229-3b06ca93d58e",
@@ -3914,7 +5822,7 @@
     "name": "Future Insight",
     "path": "~/projects/apps/future-insight-app/data/future_insight.db",
     "desc": "CLAフレームワークによる未来洞察",
-    "size_mb": 141.1,
+    "size_mb": 141.9,
     "tables": [
       {
         "name": "articles",
@@ -4004,56 +5912,8 @@
             "notnull": true
           }
         ],
-        "row_count": 221641,
+        "row_count": 225382,
         "sample_rows": [
-          {
-            "id": 1,
-            "collection_id": 1,
-            "url_hash": "4d6d8629f155955b5c4c84c91d469df9bb687596606dd95928c117ffb3fd5c2c",
-            "title": "High times or low blows? Experts fail to clear air over German drug legalisation",
-            "summary": "Cannabis policy still divisive two years in, with SPD hailing it while CDU minister says it is risk to young people’s healthIt was a landmark piece of legislation passed by Germany’s previous, centre-...",
-            "url": "https://www.theguardian.com/society/2026/apr/01/report-germany-cannabis-legalisation-fails-settle-debate",
-            "source": "Guardian World",
-            "lang": "en",
-            "published": "Wed, 01 Apr 2026 16:48:07 GMT",
-            "published_date": "2026-04-01",
-            "pestle_category": "Political",
-            "relevance_score": 7.5,
-            "created_at": "2026-04-01 22:38:18",
-            "region": "global"
-          },
-          {
-            "id": 2,
-            "collection_id": 1,
-            "url_hash": "3df695a655ad930b5bdccd9abbbd105b8798a6b084948a091a65938025897d48",
-            "title": "Tuesday briefing: How to make sense of England’s local elections campaigns",
-            "summary": "In today’s newsletter: From breakthroughs to breakdowns, what we can expect to see – and what the consequences of the vote could beGood morning. On 7 May, voters in England will go to the polls for a ...",
-            "url": "https://www.theguardian.com/world/2026/mar/31/tuesday-briefing-first-edition-local-elections-campaigns-may",
-            "source": "Guardian Society",
-            "lang": "en",
-            "published": "Tue, 31 Mar 2026 05:45:32 GMT",
-            "published_date": "2026-03-31",
-            "pestle_category": "Political",
-            "relevance_score": 7.0,
-            "created_at": "2026-04-01 22:38:18",
-            "region": "global"
-          },
-          {
-            "id": 3,
-            "collection_id": 1,
-            "url_hash": "946ea5f0d30519271fbbb8d91fe5703cf3eb827a8038246e00aeca4bce1b08f4",
-            "title": "Stephen Lewis, Leftist Canadian Politician and AIDS Activist, Dies at 88",
-            "summary": "Part of a political dynasty, he led Ontario’s main progressive party, became Canada’s U.N. ambassador and campaigned against the spread of AIDS in Africa.",
-            "url": "https://www.nytimes.com/2026/04/01/world/canada/stephen-lewis-dead.html",
-            "source": "NYT World",
-            "lang": "en",
-            "published": "Wed, 01 Apr 2026 20:19:57 +0000",
-            "published_date": "2026-04-01",
-            "pestle_category": "Political",
-            "relevance_score": 5.7,
-            "created_at": "2026-04-01 22:38:18",
-            "region": "global"
-          },
           {
             "id": 4,
             "collection_id": 1,
@@ -4083,6 +5943,54 @@
             "published_date": "2026-04-01",
             "pestle_category": "Political",
             "relevance_score": 5.6,
+            "created_at": "2026-04-01 22:38:18",
+            "region": "global"
+          },
+          {
+            "id": 7,
+            "collection_id": 1,
+            "url_hash": "9cf7aaea72c2e8431b0eaf82fc295fe2535a44999b925d6b79f7ecd4bda91582",
+            "title": "Florida and Mississippi governors sign proof-of-citizenship voting bills",
+            "summary": "Four states have now signed such legislation as Trump’s Save Act languishes in Senate with little chance of passageThe governors of Florida and Mississippi signed legislation on Wednesday to require d...",
+            "url": "https://www.theguardian.com/us-news/2026/apr/01/florida-new-voter-id-laws-proof-citizenship",
+            "source": "Guardian World",
+            "lang": "en",
+            "published": "Wed, 01 Apr 2026 19:57:37 GMT",
+            "published_date": "2026-04-01",
+            "pestle_category": "Political",
+            "relevance_score": 5.1,
+            "created_at": "2026-04-01 22:38:18",
+            "region": "global"
+          },
+          {
+            "id": 8,
+            "collection_id": 1,
+            "url_hash": "08ddf1e1302ac98d93386c65381c20d1310214c88e4ccd24b82ea0cfb76cbdc2",
+            "title": "Keir Starmer to launch local elections campaign with focus on cost of living",
+            "summary": "PM will also cite Iran war as reason to stick with Labour, as party adopts new slogan: ‘Pride in Britain’ Keir Starmer will say that a vote for Reform UK will put at risk progress Labour is making on ...",
+            "url": "https://www.theguardian.com/politics/2026/mar/29/keir-starmer-labour-local-elections-campaign-cost-of-living-iran-war",
+            "source": "Guardian Society",
+            "lang": "en",
+            "published": "Sun, 29 Mar 2026 21:30:06 GMT",
+            "published_date": "2026-03-29",
+            "pestle_category": "Political",
+            "relevance_score": 5.0,
+            "created_at": "2026-04-01 22:38:18",
+            "region": "global"
+          },
+          {
+            "id": 12,
+            "collection_id": 1,
+            "url_hash": "1a1e54f0595d942bb9e48833eeff20d867d1f7069b28959895371e1ce74b0423",
+            "title": "‘This is an apartheid regime’: Critics decry Israel’s new death penalty law",
+            "summary": "Celebrations in the Israeli parliament mark the passing of legislation intended to apply to Palestinians only.",
+            "url": "https://www.aljazeera.com/news/2026/4/1/this-is-an-apartheid-regime-critics-decry-israels-new-death-penalty-law?traffic_source=rss",
+            "source": "Al Jazeera",
+            "lang": "en",
+            "published": "Wed, 01 Apr 2026 17:12:41 +0000",
+            "published_date": "2026-04-01",
+            "pestle_category": "Political",
+            "relevance_score": 4.1,
             "created_at": "2026-04-01 22:38:18",
             "region": "global"
           }
@@ -4234,7 +6142,7 @@
             "notnull": true
           }
         ],
-        "row_count": 137,
+        "row_count": 143,
         "sample_rows": [
           {
             "id": 1,
@@ -4324,7 +6232,7 @@
             "notnull": true
           }
         ],
-        "row_count": 2,
+        "row_count": 8,
         "sample_rows": [
           {
             "id": 1,
@@ -4343,6 +6251,33 @@
             "highlights": null,
             "trend_keywords": "[\"Computer science\", \"Sociology\", \"Political science\", \"Biology\", \"Business\", \"History\", \"Art\", \"Medicine\", \"Psychology\", \"Aesthetics\", \"Computational biology\", \"Humanities\", \"Context (archaeology)\", ...",
             "created_at": "2026-04-11 22:23:41"
+          },
+          {
+            "id": 5,
+            "digest_date": "2026-04-12",
+            "total_count": 10,
+            "field_counts": "{\"人文学\": 200, \"社会科学\": 200, \"自然科学\": 200, \"工学\": 200, \"芸術\": 200}",
+            "highlights": null,
+            "trend_keywords": "[\"Art\", \"Art history\", \"Computer science\", \"Philosophy\", \"Firmware\", \"Programming language\", \"Operating system\", \"Physics\", \"Dark energy\", \"Theoretical physics\", \"Gravitation\", \"Cosmology\", \"Falsifiab...",
+            "created_at": "2026-04-12 19:10:27"
+          },
+          {
+            "id": 6,
+            "digest_date": "2026-04-13",
+            "total_count": 6,
+            "field_counts": "{\"人文学\": 200, \"社会科学\": 200, \"自然科学\": 200, \"工学\": 200, \"芸術\": 200}",
+            "highlights": null,
+            "trend_keywords": "[\"Sociology\", \"Political science\", \"Physics\", \"Universe\", \"Ekpyrotic universe\", \"Theoretical physics\", \"Astronomy\", \"Steady State theory\", \"Cosmology\", \"Humanities\", \"Political economy\", \"Democracy\", ...",
+            "created_at": "2026-04-13 19:05:49"
+          },
+          {
+            "id": 7,
+            "digest_date": "2026-04-14",
+            "total_count": 4,
+            "field_counts": "{\"人文学\": 200, \"社会科学\": 200, \"自然科学\": 200, \"工学\": 200, \"芸術\": 200}",
+            "highlights": null,
+            "trend_keywords": "[\"Software deployment\", \"Smart grid\", \"Scope (computer science)\", \"Interim\", \"Dimension (graph theory)\", \"Public relations\", \"Management science\", \"Knowledge management\", \"Chemistry\", \"Docking (animal...",
+            "created_at": "2026-04-14 19:06:30"
           }
         ]
       },
@@ -4422,7 +6357,7 @@
             "notnull": false
           }
         ],
-        "row_count": 124,
+        "row_count": 131,
         "sample_rows": [
           {
             "id": 1,
@@ -4435,8 +6370,8 @@
             "language": "en",
             "tier": 1,
             "status": "active",
-            "articles_count": 222,
-            "last_fetched": "2026-04-11 19:05:56"
+            "articles_count": 223,
+            "last_fetched": "2026-04-17 19:04:56"
           },
           {
             "id": 2,
@@ -4449,8 +6384,8 @@
             "language": "en",
             "tier": 1,
             "status": "active",
-            "articles_count": 490,
-            "last_fetched": "2026-04-11 19:05:56"
+            "articles_count": 226,
+            "last_fetched": "2026-04-17 19:04:56"
           },
           {
             "id": 3,
@@ -4463,8 +6398,8 @@
             "language": "en",
             "tier": 1,
             "status": "active",
-            "articles_count": 125,
-            "last_fetched": "2026-04-11 19:05:56"
+            "articles_count": 73,
+            "last_fetched": "2026-04-17 19:04:56"
           },
           {
             "id": 4,
@@ -4596,7 +6531,7 @@
             "notnull": false
           }
         ],
-        "row_count": 799,
+        "row_count": 840,
         "sample_rows": [
           {
             "id": 365,
@@ -4736,7 +6671,7 @@
             "notnull": false
           }
         ],
-        "row_count": 1983,
+        "row_count": 2041,
         "sample_rows": [
           {
             "id": 1,
@@ -5034,7 +6969,7 @@
             "notnull": true
           }
         ],
-        "row_count": 3829,
+        "row_count": 7658,
         "sample_rows": [
           {
             "section_id": 1854,
@@ -5241,7 +7176,7 @@
     "name": "Secretary App (Plaud)",
     "path": "~/projects/apps/secretary-app/data/plaud.db",
     "desc": "音声録音・分析DB（Plaud連携）",
-    "size_mb": 25.9,
+    "size_mb": 28.4,
     "tables": [
       {
         "name": "analyses",
@@ -5319,7 +7254,7 @@
             "notnull": false
           }
         ],
-        "row_count": 64,
+        "row_count": 92,
         "sample_rows": [
           {
             "id": 2,
@@ -5469,7 +7404,7 @@
             "notnull": false
           }
         ],
-        "row_count": 251,
+        "row_count": 280,
         "sample_rows": [
           {
             "id": "0d6fc0fd6826713699cc0b6d90f13039",
@@ -5583,12 +7518,17 @@
             "notnull": false
           }
         ],
-        "row_count": 1,
+        "row_count": 2,
         "sample_rows": [
           {
+            "cache_key": "smart-compose:6231f8b5927252dc",
+            "value": "{\"purpose_summary\":\"メールマガジンの再開をお知らせし、読者に対して継続的な価値提供を約束するウェルカムメール。月次ニュースレターの再スタートを通じて、コミュニティとの関係を再構築する。\",\"title\":\"月次ニュースレター再開キャンペーン\",\"preheader\":\"月次ニュースレターが帰ってきました。新しい学びと出会いをお届けします。\",\"subjects\":[\"月次ニュー...",
+            "created_at": "2026-04-12 22:10:41"
+          },
+          {
             "cache_key": "dashboard_insights",
-            "value": "{\"insights\":[{\"type\":\"warning\",\"title\":\"配信活動が停止中\",\"body\":\"今月の配信数が0件です。全てのリストで配信実績がないため、早急に配信を再開してください。\"},{\"type\":\"warning\",\"title\":\"全リストが未配信状態\",\"body\":\"6つの配信リスト（all、crm、crm_candidates等）すべてが未配信のままです。リス...",
-            "created_at": "2026-04-12 07:57:01"
+            "value": "{\"insights\":[{\"type\":\"warning\",\"title\":\"メルマガ配信が実施されていません\",\"body\":\"今月・先月ともに配信数が0件です。すべてのリストが未配信状態のため、早急に配信を再開する必要があります。\"},{\"type\":\"warning\",\"title\":\"全リストが長期未配信状態\",\"body\":\"6つのリスト（all、crm、crm_candidates、...",
+            "created_at": "2026-04-18 04:22:29"
           }
         ]
       },
@@ -8667,7 +10607,7 @@
     "name": "Researcher Profiler",
     "path": "~/projects/apps/researcher-profiler/researcher.db",
     "desc": "研究者DB（Semantic Scholar連携）",
-    "size_mb": 0.7,
+    "size_mb": 0.8,
     "tables": [
       {
         "name": "committee_appointments",
@@ -9113,7 +11053,7 @@
             "notnull": false
           }
         ],
-        "row_count": 224,
+        "row_count": 317,
         "sample_rows": [
           {
             "id": 91,
@@ -9270,7 +11210,7 @@
             "notnull": false
           }
         ],
-        "row_count": 12,
+        "row_count": 15,
         "sample_rows": [
           {
             "id": 1,
@@ -9400,7 +11340,7 @@
             "notnull": false
           }
         ],
-        "row_count": 12,
+        "row_count": 18,
         "sample_rows": [
           {
             "id": 1,
@@ -9584,7 +11524,7 @@
             "notnull": false
           }
         ],
-        "row_count": 5,
+        "row_count": 9,
         "sample_rows": [
           {
             "id": 9,
@@ -9743,12 +11683,12 @@
             "research_summary": "池野英利教授の研究は、ミツバチの脳の中で情報がどのように伝わり、ダンスという特別なコミュニケーションが行われるかを調べています。ミツバチの脳の神経細胞（ニューロン）の形やつながりを詳しく調べるために、新しい方法を開発し、効率よく正確に脳の構造をモデル化しています。また、ミツバチが音やにおい、光などの刺激にどう反応して飛ぶかを実験し、その行動を制御する脳の仕組みを数式で表すモデルも作っています。これ...",
             "esse_url": "https://esse-sense.com/researchers/4893",
             "report_url": "https://esse-sense.com/researchers/4893/report/ikeno_hidetoshi.pdf?k=88b39a9780ee435296bac7f404c3a40e",
-            "career_history": null,
+            "career_history": "{\"semantic_scholar_id\": \"102694522\"}",
             "personality_traits": null,
             "problem_awareness": null,
-            "status": "complete",
+            "status": "step2",
             "created_at": "2026-04-05 03:40:14",
-            "updated_at": "2026-04-06T00:28:06.555475"
+            "updated_at": "2026-04-14T09:24:50.261666"
           },
           {
             "id": 3,
@@ -9778,9 +11718,9 @@
             "career_history": null,
             "personality_traits": null,
             "problem_awareness": null,
-            "status": "imported",
+            "status": "complete",
             "created_at": "2026-04-05 03:40:14",
-            "updated_at": "2026-04-05 03:40:14"
+            "updated_at": "2026-04-14T10:31:02.045811"
           },
           {
             "id": 5,
@@ -9791,12 +11731,12 @@
             "research_summary": "林隆介氏の研究は、人やサルの脳がどのように顔や物を見て認識するかを調べています。特に、自分と他の人の顔を区別するしくみや、文化によって顔の見え方がどう違うかをAIを使って分析しています。また、脳の神経活動を測って、見たものの情報をコンピューターに伝える技術も開発中です。これにより、認知症などの病気の早期発見や、多文化が共に暮らす社会での理解を深めることが期待されています。脳の働きとAIを組み合わせ...",
             "esse_url": "https://esse-sense.com/researchers/129718",
             "report_url": "https://esse-sense.com/researchers/129718/report/hayashi_ryusuke.pdf?k=5eb1d2b6211541c0924f0ecc4bc84e1c",
-            "career_history": null,
+            "career_history": "{\"semantic_scholar_id\": \"2066201367\"}",
             "personality_traits": null,
             "problem_awareness": null,
-            "status": "imported",
+            "status": "complete",
             "created_at": "2026-04-05 03:40:14",
-            "updated_at": "2026-04-05 03:40:14"
+            "updated_at": "2026-04-15T08:22:32.017545"
           }
         ]
       },
@@ -13465,6 +15405,298 @@
           },
           {
             "name": "notes",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "program_session_speakers",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "session_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "speaker_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "role",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "sort_order",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "program_sessions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "program_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "session_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "start_time",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "end_time",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "duration_minutes",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "sort_order",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_published",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "program_versions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "program_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "version_label",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "snapshot_json",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "programs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "purpose",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "overview",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "event_date",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "start_time",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "end_time",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "venue_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "venue_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "venue_access",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "registration_info",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "notes",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "cancellation_policy",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "plan_notes",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "slug",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "published_at",
             "type": "TEXT",
             "pk": false,
             "notnull": false
@@ -17987,6 +20219,1705 @@
           "newsletter_status",
           "tags"
         ],
+        "rows": []
+      }
+    ]
+  },
+  {
+    "id": "anthropology-concepts",
+    "name": "Anthropology Concepts",
+    "path": "~/projects/research/anthropology-concepts/data/anthropology.db",
+    "desc": "人類学概念系譜DB（概念・研究者・文献・OCM分類）",
+    "size_mb": 1.4,
+    "tables": [
+      {
+        "name": "concept_ocm",
+        "columns": [
+          {
+            "name": "concept_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "ocm_code",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          }
+        ],
+        "row_count": 44,
+        "sample_rows": [
+          {
+            "concept_id": "c001",
+            "ocm_code": "430"
+          },
+          {
+            "concept_id": "c001",
+            "ocm_code": "431"
+          },
+          {
+            "concept_id": "c001",
+            "ocm_code": "435"
+          },
+          {
+            "concept_id": "c001",
+            "ocm_code": "476"
+          },
+          {
+            "concept_id": "c002",
+            "ocm_code": "180"
+          }
+        ]
+      },
+      {
+        "name": "concept_publications",
+        "columns": [
+          {
+            "name": "concept_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "publication_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "relevance_type",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "is_primary",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "note",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 282,
+        "sample_rows": [
+          {
+            "concept_id": "c001",
+            "publication_id": "p001",
+            "relevance_type": "origin",
+            "is_primary": 1,
+            "note": null
+          },
+          {
+            "concept_id": "c002",
+            "publication_id": "p002",
+            "relevance_type": "origin",
+            "is_primary": 1,
+            "note": null
+          },
+          {
+            "concept_id": "c003",
+            "publication_id": "p003",
+            "relevance_type": "origin",
+            "is_primary": 1,
+            "note": null
+          },
+          {
+            "concept_id": "c004",
+            "publication_id": "p004",
+            "relevance_type": "origin",
+            "is_primary": 1,
+            "note": null
+          },
+          {
+            "concept_id": "c005",
+            "publication_id": "p005",
+            "relevance_type": "origin",
+            "is_primary": 1,
+            "note": null
+          }
+        ]
+      },
+      {
+        "name": "concept_relations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "source_concept_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "target_concept_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "relation_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "relation_description",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "evidence_publication_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "strength",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_confirmed",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 285,
+        "sample_rows": [
+          {
+            "id": "rel001",
+            "source_concept_id": "c001",
+            "target_concept_id": "c009",
+            "relation_type": "derived_from",
+            "relation_description": "モースの贈与経済論をサーリンズが互酬性の三類型として体系化",
+            "evidence_publication_id": "p008",
+            "strength": 5,
+            "is_confirmed": 1,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "rel002",
+            "source_concept_id": "c003",
+            "target_concept_id": "c013",
+            "relation_type": "derived_from",
+            "relation_description": "ターナーがリミナリティの概念からコムニタスを抽出",
+            "evidence_publication_id": "p003",
+            "strength": 5,
+            "is_confirmed": 1,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "rel003",
+            "source_concept_id": "c004",
+            "target_concept_id": "c014",
+            "relation_type": "derived_from",
+            "relation_description": "ブルデューがハビトゥス理論の中で文化資本を定式化",
+            "evidence_publication_id": "p004",
+            "strength": 5,
+            "is_confirmed": 1,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "rel004",
+            "source_concept_id": "c010",
+            "target_concept_id": "c015",
+            "relation_type": "complements",
+            "relation_description": "モラルエコノミーと日常的抵抗はともにスコットの農民研究から発展",
+            "evidence_publication_id": null,
+            "strength": 4,
+            "is_confirmed": 1,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "rel005",
+            "source_concept_id": "c011",
+            "target_concept_id": "c012",
+            "relation_type": "parallels",
+            "relation_description": "パースペクティビズムとアニミズム再定義は存在論的転回の双柱",
+            "evidence_publication_id": null,
+            "strength": 4,
+            "is_confirmed": 1,
+            "created_at": "2026-04-12 11:11:47"
+          }
+        ]
+      },
+      {
+        "name": "concept_researchers",
+        "columns": [
+          {
+            "name": "concept_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "researcher_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "role",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "year_associated",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "note",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 384,
+        "sample_rows": [
+          {
+            "concept_id": "c001",
+            "researcher_id": "r001",
+            "role": "creator",
+            "year_associated": 1925,
+            "note": null
+          },
+          {
+            "concept_id": "c002",
+            "researcher_id": "r002",
+            "role": "creator",
+            "year_associated": 1973,
+            "note": null
+          },
+          {
+            "concept_id": "c003",
+            "researcher_id": "r003",
+            "role": "creator",
+            "year_associated": 1969,
+            "note": null
+          },
+          {
+            "concept_id": "c004",
+            "researcher_id": "r004",
+            "role": "creator",
+            "year_associated": 1972,
+            "note": null
+          },
+          {
+            "concept_id": "c005",
+            "researcher_id": "r005",
+            "role": "creator",
+            "year_associated": 1972,
+            "note": null
+          }
+        ]
+      },
+      {
+        "name": "concepts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "name_ja",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "name_en",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "name_original",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "definition",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "impact_summary",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "subfield",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "school_of_thought",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "era_start",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "era_end",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "methodology_level",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "target_domain",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "pestle_categories",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "cla_layer_affinity",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "application_conditions",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "when_to_apply",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "framing_questions",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "opposing_concept_names",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "keywords_ja",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "keywords_en",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "embedding_vector",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "source_reliability",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "data_completeness",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 500,
+        "sample_rows": [
+          {
+            "id": "c001",
+            "name_ja": "贈与経済",
+            "name_en": "Gift Economy",
+            "name_original": "économie du don",
+            "definition": "対価の即時的な交換ではなく、贈り与えることで社会的紐帯を結ぶ経済の原理。モースが「贈る・受け取る・返す」の三重の義務として定式化。交換は経済行為ではなく「全体的社会的事実」であり、社会関係の構築そのものである。",
+            "impact_summary": "経済を「合理的交換」に還元する近代経済学の前提を根本から問い直した。経済社会学、組織論、コモンズ研究、シェアリングエコノミーの理論的基盤となっている。",
+            "subfield": "経済人類学",
+            "school_of_thought": "フランス社会学派",
+            "era_start": 1925,
+            "era_end": null,
+            "methodology_level": "middle-range",
+            "target_domain": "経済・交換",
+            "pestle_categories": "E,S",
+            "cla_layer_affinity": "systemic,worldview",
+            "application_conditions": "貨幣以外の価値交換が浮上しているとき。市場原理だけでは説明できない経済行動が観察されるとき。コミュニティの紐帯が経済活動と不可分であるとき。",
+            "when_to_apply": "非市場的な交換、シェアリング、互助ネットワーク、コモンズの議論が現れたときに適用する。「なぜ人はお金を介さずに価値を交換するのか」という問いに答える枠組み。",
+            "framing_questions": "[\"この交換関係において、何が返礼として期待されているか？\", \"返礼の失敗は何を引き起こすか？（関係の断絶？社会的排除？）\", \"この経済活動の本質は利潤の最大化か、それとも関係の維持か？\"]",
+            "opposing_concept_names": null,
+            "keywords_ja": "贈与,交換,互酬性,返礼,全体的社会的事実,コモンズ,シェアリング",
+            "keywords_en": "gift,exchange,reciprocity,total social fact,commons,sharing",
+            "embedding_vector": null,
+            "status": "active",
+            "source_reliability": "A",
+            "data_completeness": 85,
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "c002",
+            "name_ja": "厚い記述",
+            "name_en": "Thick Description",
+            "name_original": null,
+            "definition": "文化的行為の「意味」を多層的に記述する方法。単なる行動の記録（thin description）に対し、行為者にとっての意味・文脈・社会的含意まで含めた記述を指す。ギアツがギルバート・ライルの概念を人類学に導入した。",
+            "impact_summary": "人類学の方法論を「法則の発見」から「意味の解釈」へと転換させた。質的研究全般の方法論的基盤となり、教育学、組織研究、UXリサーチにも広く影響。",
+            "subfield": "文化人類学",
+            "school_of_thought": "解釈人類学",
+            "era_start": 1973,
+            "era_end": null,
+            "methodology_level": "method",
+            "target_domain": "知識・認識",
+            "pestle_categories": "S",
+            "cla_layer_affinity": "litany,systemic",
+            "application_conditions": "ニュースの表面的な事実だけでは意味が分からないとき。行為の背後にある文化的・社会的文脈を読み解く必要があるとき。",
+            "when_to_apply": "表面的な事実の背後にある「意味の層」を読み解きたいときに使う。「この出来事は当事者にとって何を意味するか」を問う枠組み。",
+            "framing_questions": "[\"この事象の表面的な記述（thin description）と、文脈を含めた記述（thick description）はどう異なるか？\", \"当事者はこの行為にどのような意味を付与しているか？\", \"観察者の解釈と当事者の解釈はどこで乖離するか？\"]",
+            "opposing_concept_names": null,
+            "keywords_ja": "厚い記述,薄い記述,意味,解釈,文脈,民族誌",
+            "keywords_en": "thick description,thin description,meaning,interpretation,ethnography",
+            "embedding_vector": null,
+            "status": "active",
+            "source_reliability": "A",
+            "data_completeness": 90,
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "c003",
+            "name_ja": "リミナリティ",
+            "name_en": "Liminality",
+            "name_original": null,
+            "definition": "通過儀礼における「閾（しきい）」の状態。既存の社会的地位を失い、まだ新しい地位を獲得していない「あいだ」の段階。ターナーがファン・ヘネップの通過儀礼論（分離・移行・統合）を発展させた。",
+            "impact_summary": "儀礼論を超えて、組織変革・移民研究・都市計画・コーチング理論など広範な分野で援用される。「変化の途中にある状態」を分析する汎用的な枠組みとして定着。",
+            "subfield": "文化人類学",
+            "school_of_thought": "象徴人類学",
+            "era_start": 1969,
+            "era_end": null,
+            "methodology_level": "middle-range",
+            "target_domain": "宗教・儀礼",
+            "pestle_categories": "S",
+            "cla_layer_affinity": "systemic,worldview",
+            "application_conditions": "社会的変化の途中にある状態が観察されるとき。古い秩序が崩壊し新しい秩序がまだ確立していない移行期。組織変革やアイデンティティの変容が起きているとき。",
+            "when_to_apply": "変化・移行・危機の局面で「今何が起きているか」を理解するために使う。「あいだ」の状態が持つ創造性と危険性の両面を照らす。",
+            "framing_questions": "[\"この状況は「分離」「移行」「統合」のどの段階にあるか？\", \"閾の状態にある人々は、どのような新しい可能性を創造しているか？\", \"リミナリティの状態を安全に保つための儀礼的装置は存在するか？\"]",
+            "opposing_concept_names": null,
+            "keywords_ja": "リミナリティ,閾,通過儀礼,移行,コムニタス,あいだ",
+            "keywords_en": "liminality,threshold,rites of passage,transition,communitas,betwixt and between",
+            "embedding_vector": null,
+            "status": "active",
+            "source_reliability": "A",
+            "data_completeness": 90,
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "c004",
+            "name_ja": "ハビトゥス",
+            "name_en": "Habitus",
+            "name_original": null,
+            "definition": "社会構造が個人に内面化された「身体化された性向のシステム」。意識的な計算なしに適切な行為を生み出す「構造化する構造であり構造化された構造」。ブルデューが構造主義と主観主義を統合するために提唱。",
+            "impact_summary": "教育社会学、消費行動研究、スポーツ科学、組織文化研究など広範な分野で中心的分析ツールとなった。「なぜ不平等が再生産されるか」を説明する最も影響力のある枠組みの一つ。",
+            "subfield": "文化人類学",
+            "school_of_thought": "実践理論",
+            "era_start": 1972,
+            "era_end": null,
+            "methodology_level": "theory",
+            "target_domain": "知識・認識",
+            "pestle_categories": "S,E",
+            "cla_layer_affinity": "systemic,worldview",
+            "application_conditions": "行為者が「当然のこと」として行っている実践の背後に、構造的な不平等や文化的前提が見えるとき。「なぜこの人々はこのように振る舞うのか」を問うとき。",
+            "when_to_apply": "行動パターンの背後にある構造的条件を分析するときに使う。特に「無意識の前提」「当たり前」を問い直す際に有効。",
+            "framing_questions": "[\"この行為の背後にある「当然の前提」は何か？\", \"どのような社会的条件がこのハビトゥスを形成したか？\", \"このハビトゥスは不平等の再生産に寄与しているか？\"]",
+            "opposing_concept_names": null,
+            "keywords_ja": "ハビトゥス,場,資本,実践,再生産,性向,構造化",
+            "keywords_en": "habitus,field,capital,practice,reproduction,disposition",
+            "embedding_vector": null,
+            "status": "active",
+            "source_reliability": "A",
+            "data_completeness": 85,
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "c005",
+            "name_ja": "犠牲の危機",
+            "name_en": "Sacrificial Crisis",
+            "name_original": "crise sacrificielle",
+            "definition": "何が神聖で何が冒涜かの区別が曖昧になり、社会秩序を維持してきた「差異」が崩壊する状態。ジラールが「暴力と聖なるもの」で提唱。この危機は暴力の連鎖を引き起こし、スケープゴートの犠牲によって一時的に解消される。",
+            "impact_summary": "文学批評から宗教学、政治学、紛争研究に至る広範な影響。テロリズム、ポピュリズム、テクノロジー恐怖の分析に援用される。",
+            "subfield": "宗教人類学",
+            "school_of_thought": "模倣理論",
+            "era_start": 1972,
+            "era_end": null,
+            "methodology_level": "middle-range",
+            "target_domain": "宗教・儀礼",
+            "pestle_categories": "P,S",
+            "cla_layer_affinity": "myth,worldview",
+            "application_conditions": "テクノロジーや社会変化が「聖なる領域」を侵犯しつつあるという集合的感覚が観察されるとき。暴力やスケープゴーティングが噴出するとき。",
+            "when_to_apply": "社会的暴力の根源を理解するために使う。特にテクノロジーへの暴力的反発や、「境界」をめぐる紛争を分析する際に有効。",
+            "framing_questions": "[\"この状況で「神聖なもの」と「冒涜」の区別はどこに引かれているか？\", \"この暴力は誰をスケープゴートにしようとしているか？\", \"失われた差異を回復するための儀礼的装置はあるか？\"]",
+            "opposing_concept_names": null,
+            "keywords_ja": "犠牲の危機,暴力,聖なるもの,スケープゴート,模倣的欲望,供犠",
+            "keywords_en": "sacrificial crisis,violence,sacred,scapegoat,mimetic desire,sacrifice",
+            "embedding_vector": null,
+            "status": "active",
+            "source_reliability": "A",
+            "data_completeness": 80,
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          }
+        ]
+      },
+      {
+        "name": "ocm_categories",
+        "columns": [
+          {
+            "name": "code",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "name_en",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "name_ja",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "parent_code",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "level",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": true
+          }
+        ],
+        "row_count": 401,
+        "sample_rows": [
+          {
+            "code": "100",
+            "name_en": "Orientation",
+            "name_ja": "オリエンテーション",
+            "parent_code": null,
+            "level": 1
+          },
+          {
+            "code": "101",
+            "name_en": "Identification",
+            "name_ja": "同定・概要記述",
+            "parent_code": "100",
+            "level": 2
+          },
+          {
+            "code": "102",
+            "name_en": "Maps",
+            "name_ja": "地図",
+            "parent_code": "100",
+            "level": 2
+          },
+          {
+            "code": "103",
+            "name_en": "Place Names",
+            "name_ja": "地名",
+            "parent_code": "100",
+            "level": 2
+          },
+          {
+            "code": "104",
+            "name_en": "Glossary",
+            "name_ja": "語彙集",
+            "parent_code": "100",
+            "level": 2
+          }
+        ]
+      },
+      {
+        "name": "publication_authors",
+        "columns": [
+          {
+            "name": "publication_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "researcher_id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "author_order",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 197,
+        "sample_rows": [
+          {
+            "publication_id": "p001",
+            "researcher_id": "r001",
+            "author_order": 1
+          },
+          {
+            "publication_id": "p002",
+            "researcher_id": "r002",
+            "author_order": 1
+          },
+          {
+            "publication_id": "p003",
+            "researcher_id": "r003",
+            "author_order": 1
+          },
+          {
+            "publication_id": "p004",
+            "researcher_id": "r004",
+            "author_order": 1
+          },
+          {
+            "publication_id": "p005",
+            "researcher_id": "r005",
+            "author_order": 1
+          }
+        ]
+      },
+      {
+        "name": "publications",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "title_ja",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "pub_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "pub_venue",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "pub_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "abstract_summary",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "doi_or_isbn",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "url",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 258,
+        "sample_rows": [
+          {
+            "id": "p001",
+            "title": "Essai sur le don",
+            "title_ja": "贈与論",
+            "pub_year": 1925,
+            "pub_venue": "Année Sociologique",
+            "pub_type": "paper",
+            "abstract_summary": "ポリネシア・メラネシア等の民族誌を比較分析し、贈与の「贈る・受け取る・返す」という三重の義務を明らかにした。交換は経済行為ではなく全体的社会的事実であることを示した。",
+            "doi_or_isbn": null,
+            "url": null,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "p002",
+            "title": "The Interpretation of Cultures",
+            "title_ja": "文化の解釈学",
+            "pub_year": 1973,
+            "pub_venue": "Basic Books",
+            "pub_type": "book",
+            "abstract_summary": "「厚い記述」を中心概念として、文化を意味の体系として解釈するアプローチを提唱。バリ島の闘鶏論文を含む。",
+            "doi_or_isbn": null,
+            "url": null,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "p003",
+            "title": "The Ritual Process: Structure and Anti-Structure",
+            "title_ja": "儀礼の過程",
+            "pub_year": 1969,
+            "pub_venue": "Aldine",
+            "pub_type": "book",
+            "abstract_summary": "ンデンブ族の儀礼分析からリミナリティとコムニタスの概念を精緻化。構造と反構造の弁証法を論じた。",
+            "doi_or_isbn": null,
+            "url": null,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "p004",
+            "title": "Le sens pratique",
+            "title_ja": "実践感覚",
+            "pub_year": 1980,
+            "pub_venue": "Les Éditions de Minuit",
+            "pub_type": "book",
+            "abstract_summary": "ハビトゥスと場の理論を体系化。構造主義的客観主義と現象学的主観主義の双方を乗り越える実践理論を展開。",
+            "doi_or_isbn": null,
+            "url": null,
+            "created_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "p005",
+            "title": "La violence et le sacré",
+            "title_ja": "暴力と聖なるもの",
+            "pub_year": 1972,
+            "pub_venue": "Grasset",
+            "pub_type": "book",
+            "abstract_summary": "犠牲の危機と供犠のメカニズムを理論化。暴力が聖なるものの源泉であり、社会秩序の基盤であることを論じた。",
+            "doi_or_isbn": null,
+            "url": null,
+            "created_at": "2026-04-12 11:11:47"
+          }
+        ]
+      },
+      {
+        "name": "researchers",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "name_full",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "name_ja",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "birth_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "death_year",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "nationality",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "primary_institution",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "research_themes",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "biography_brief",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 252,
+        "sample_rows": [
+          {
+            "id": "r001",
+            "name_full": "Marcel Mauss",
+            "name_ja": "マルセル・モース",
+            "birth_year": 1872,
+            "death_year": 1950,
+            "nationality": "France",
+            "primary_institution": "Collège de France",
+            "research_themes": "贈与・交換・身体技法・全体的社会的事実",
+            "biography_brief": "デュルケームの甥。「贈与論」で互酬性の原理を明らかにし、経済人類学の基礎を築いた。",
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "r002",
+            "name_full": "Clifford Geertz",
+            "name_ja": "クリフォード・ギアツ",
+            "birth_year": 1926,
+            "death_year": 2006,
+            "nationality": "USA",
+            "primary_institution": "Institute for Advanced Study, Princeton",
+            "research_themes": "解釈人類学・象徴体系・文化の理論",
+            "biography_brief": "文化を「意味の網」として捉え、解釈人類学を確立。「厚い記述」の概念を提唱し、人文科学全体に影響を与えた。",
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "r003",
+            "name_full": "Victor Turner",
+            "name_ja": "ヴィクター・ターナー",
+            "birth_year": 1920,
+            "death_year": 1983,
+            "nationality": "UK/USA",
+            "primary_institution": "University of Chicago",
+            "research_themes": "儀礼・象徴・社会的ドラマ・パフォーマンス",
+            "biography_brief": "ンデンブ族の儀礼研究からリミナリティとコムニタスの概念を発展させ、儀礼研究を社会変動論に接続した。",
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "r004",
+            "name_full": "Pierre Bourdieu",
+            "name_ja": "ピエール・ブルデュー",
+            "birth_year": 1930,
+            "death_year": 2002,
+            "nationality": "France",
+            "primary_institution": "Collège de France",
+            "research_themes": "実践理論・社会的再生産・文化資本・ハビトゥス",
+            "biography_brief": "構造主義と主観主義の統合を試み、ハビトゥス・場・資本の三概念で社会的不平等の再生産メカニズムを解明。",
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          },
+          {
+            "id": "r005",
+            "name_full": "René Girard",
+            "name_ja": "ルネ・ジラール",
+            "birth_year": 1923,
+            "death_year": 2015,
+            "nationality": "France/USA",
+            "primary_institution": "Stanford University",
+            "research_themes": "模倣的欲望・犠牲の危機・スケープゴート・暴力と聖なるもの",
+            "biography_brief": "「暴力と聖なるもの」で犠牲のメカニズムを理論化。文学批評から人類学・宗教学に至る独自の理論体系を構築。",
+            "created_at": "2026-04-12 11:11:47",
+            "updated_at": "2026-04-12 11:11:47"
+          }
+        ]
+      },
+      {
+        "name": "signal_concept_matches",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "signal_source",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "signal_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "concept_id",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "match_method",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "match_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "match_rationale",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "applied_framing",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      }
+    ],
+    "queries": [
+      {
+        "name": "概念一覧",
+        "sql": "SELECT name, field, era FROM concepts ORDER BY name LIMIT 20",
+        "error": "no such column: name",
+        "columns": [],
+        "rows": []
+      },
+      {
+        "name": "研究者一覧",
+        "sql": "SELECT name, nationality, birth_year FROM researchers ORDER BY name LIMIT 20",
+        "error": "no such column: name",
+        "columns": [],
+        "rows": []
+      }
+    ]
+  },
+  {
+    "id": "funding-database",
+    "name": "Funding Database",
+    "path": "~/projects/research/investment-signal-radar/data/funding_database.db",
+    "desc": "VC資金調達DB（企業・ラウンド・月次統計）",
+    "size_mb": 2.6,
+    "tables": [
+      {
+        "name": "companies",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "pr_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "funding_count",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "total_raised_text",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "first_seen",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "last_seen",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "sectors",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 1803,
+        "sample_rows": [
+          {
+            "id": 1,
+            "name": "フォースタートアップス",
+            "pr_count": 132,
+            "funding_count": 62,
+            "total_raised_text": null,
+            "first_seen": "2021-02-11",
+            "last_seen": "2026-04-17",
+            "sectors": null
+          },
+          {
+            "id": 2,
+            "name": "起業家支援",
+            "pr_count": 1,
+            "funding_count": 1,
+            "total_raised_text": null,
+            "first_seen": "2026-04-17",
+            "last_seen": "2026-04-17",
+            "sectors": null
+          },
+          {
+            "id": 3,
+            "name": "住宅向け太陽光発電PPA「シェアでんき」運営",
+            "pr_count": 1,
+            "funding_count": 1,
+            "total_raised_text": null,
+            "first_seen": "2026-04-17",
+            "last_seen": "2026-04-17",
+            "sectors": null
+          },
+          {
+            "id": 4,
+            "name": "飲食店向け予約・顧客管理",
+            "pr_count": 1,
+            "funding_count": 1,
+            "total_raised_text": null,
+            "first_seen": "2026-04-17",
+            "last_seen": "2026-04-17",
+            "sectors": null
+          },
+          {
+            "id": 5,
+            "name": "小規模分散型水循環システム",
+            "pr_count": 1,
+            "funding_count": 1,
+            "total_raised_text": null,
+            "first_seen": "2026-04-17",
+            "last_seen": "2026-04-17",
+            "sectors": null
+          }
+        ]
+      },
+      {
+        "name": "funding_releases",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "body_text",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "source",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "source_url",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "published_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "company_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_funding_related",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "amount_raw",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "amount_jpy",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "round_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "extracted_data",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "confidence_score",
+            "type": "REAL",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "search_keyword",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "collected_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 3658,
+        "sample_rows": [
+          {
+            "id": 1,
+            "title": "フォースタートアップス「STARTUP DB」と京都大学「スタートアップM&A寄附講座」による共同研究の成果として、松本茂特命教授が『スタートアップM&A 知られざる急成長の仕組み』を上梓｜News｜フォースタートアップス株式会社 - フォースタートアップス",
+            "body_text": "フォースタートアップス「STARTUP DB」と京都大学「スタートアップM&amp;A寄附講座」による共同研究の成果として、松本茂特命教授が『スタートアップM&amp;A 知られざる急成長の仕組み』を上梓｜News｜フォースタートアップス株式会社&nbsp;&nbsp;フォースタートアップス",
+            "source": "startupdb",
+            "source_url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBaWEpEQ0ZDbHNIZlN0Z05WX1NFTC13ci1OSGx4Wm5sOHh5ZUNHanZKWFJmaThtcElmMEg3Q1EwM2dHcUVUTnVWeU5WNzM5LUVOWWhRaDRkNEdEbjVL?oc=5&hl=en-US&gl=US&ceid=US:en",
+            "published_at": "2026-04-17",
+            "company_name": "フォースタートアップス株式会社",
+            "category": "exit",
+            "is_funding_related": 1,
+            "amount_raw": null,
+            "amount_jpy": null,
+            "round_type": null,
+            "extracted_data": "{\"company_name\": \"フォースタートアップス株式会社\", \"round_type\": null, \"amount_jpy\": null, \"amount_raw\": null, \"investors\": [], \"sector\": \"other\", \"announced_date\": null}",
+            "confidence_score": 0.7,
+            "search_keyword": "",
+            "collected_at": "2026-04-17 08:00:16",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 2,
+            "title": "起業家支援のSocialups、テレビ新潟放送網と木山産業から第三者割当増資を実施",
+            "body_text": "起業家支援および新規事業創出支援を手がける Socialups は17日、テレビ新潟放送網（TeNY）と木山産業を引受先とする第三者割当増資を実施したことを公表した。今回の資本業務提携により、TeNY 成長戦略本部 成長 [&#8230;]",
+            "source": "thebridge",
+            "source_url": "https://thebridge.jp/2026/04/socialups-raises-funding-from-teny-and-kiyama-sangyo",
+            "published_at": "2026-04-17",
+            "company_name": "株式会社Socialups",
+            "category": "funding",
+            "is_funding_related": 1,
+            "amount_raw": null,
+            "amount_jpy": null,
+            "round_type": "undisclosed",
+            "extracted_data": "{\"company_name\": \"株式会社Socialups\", \"round_type\": \"undisclosed\", \"amount_jpy\": null, \"amount_raw\": null, \"investors\": [{\"name\": \"テレビ新潟放送網\", \"type\": \"corporate\", \"is_lead\": false}, {\"name\": \"木山産業\", \"type...",
+            "confidence_score": 0.8,
+            "search_keyword": "",
+            "collected_at": "2026-04-17 07:54:26",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 3,
+            "title": "住宅向け太陽光発電PPA「シェアでんき」運営、シリーズCで8.62億円追加調達",
+            "body_text": "住宅向け太陽光発電 PPA サービス「シェアでんき」を運営するシェアリングエネルギーは17日、シリーズ C のセカンドクローズとして第三者割当増資により総額8億6,200万円を調達したことを公表した。これにより累計調達額 [&#8230;]",
+            "source": "thebridge",
+            "source_url": "https://thebridge.jp/2026/04/sharing-energy-raises-862-million-yen-series-c-second-close",
+            "published_at": "2026-04-17",
+            "company_name": "シェアリングエネルギー株式会社",
+            "category": "funding",
+            "is_funding_related": 1,
+            "amount_raw": "8億6,200万円",
+            "amount_jpy": 862000000,
+            "round_type": "series_c",
+            "extracted_data": "{\"company_name\": \"シェアリングエネルギー株式会社\", \"round_type\": \"series_c\", \"amount_jpy\": 862000000, \"amount_raw\": \"8億6,200万円\", \"investors\": [], \"sector\": \"cleantech\", \"announced_date\": null}",
+            "confidence_score": 0.8,
+            "search_keyword": "",
+            "collected_at": "2026-04-17 07:54:26",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 4,
+            "title": "飲食店向け予約・顧客管理のTableCheck、東邦ガス系CVCが出資",
+            "body_text": "飲食店向け予約・顧客管理プラットフォーム「TableCheck」は17日、東邦ガスとイグニション・ポイント ベンチャーパートナーズが共同運営するコーポレートベンチャーキャピタル「シン・インフラ ファンド by TOHO  [&#8230;]",
+            "source": "thebridge",
+            "source_url": "https://thebridge.jp/2026/04/tablecheck-receives-investment-from-toho-gas-cvc",
+            "published_at": "2026-04-17",
+            "company_name": "TableCheck",
+            "category": "funding",
+            "is_funding_related": 1,
+            "amount_raw": null,
+            "amount_jpy": null,
+            "round_type": "undisclosed",
+            "extracted_data": "{\"company_name\": \"TableCheck\", \"round_type\": \"undisclosed\", \"amount_jpy\": null, \"amount_raw\": null, \"investors\": [{\"name\": \"シン・インフラ ファンド by TOHO\", \"type\": \"cvc\", \"is_lead\": true}, {\"name\": \"東邦ガス\", \"ty...",
+            "confidence_score": 0.8,
+            "search_keyword": "",
+            "collected_at": "2026-04-17 07:54:26",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 5,
+            "title": "小規模分散型水循環システムのWOTA、シリーズC追加調達——能登半島地震で活躍",
+            "body_text": "生活排水を再生し水の循環利用を可能にする小規模分散型水循環システムを開発・提供する WOTA は17日、シリーズ C ラウンドのエクステンションによる資金調達を実施したことを公表した。 今回の資金調達は、優先株式の発行、 [&#8230;]",
+            "source": "thebridge",
+            "source_url": "https://thebridge.jp/2026/04/wota-raises-series-c-extension-for-distributed-water-recycling-system",
+            "published_at": "2026-04-17",
+            "company_name": "WOTA株式会社",
+            "category": "funding",
+            "is_funding_related": 1,
+            "amount_raw": null,
+            "amount_jpy": null,
+            "round_type": "series_c",
+            "extracted_data": "{\"company_name\": \"WOTA株式会社\", \"round_type\": \"series_c\", \"amount_jpy\": null, \"amount_raw\": null, \"investors\": [], \"sector\": \"cleantech\", \"announced_date\": null}",
+            "confidence_score": 0.8,
+            "search_keyword": "",
+            "collected_at": "2026-04-17 07:54:26",
+            "created_at": "2026-04-17 08:56:06"
+          }
+        ]
+      },
+      {
+        "name": "metadata",
+        "columns": [
+          {
+            "name": "key",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "value",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 3,
+        "sample_rows": [
+          {
+            "key": "exported_at",
+            "value": "2026-04-17T17:56:06.228625"
+          },
+          {
+            "key": "source_db",
+            "value": "/Users/nishimura+/projects/research/investment-signal-radar/data/investment_signal_v2.db"
+          },
+          {
+            "key": "include_all",
+            "value": "True"
+          }
+        ]
+      },
+      {
+        "name": "monthly_stats",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "total_releases",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "funding_releases",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "exit_releases",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "partnership_releases",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "accelerator_releases",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 63,
+        "sample_rows": [
+          {
+            "month": "2021-02",
+            "total_releases": 4,
+            "funding_releases": 1,
+            "exit_releases": 0,
+            "partnership_releases": 0,
+            "accelerator_releases": 0
+          },
+          {
+            "month": "2021-03",
+            "total_releases": 5,
+            "funding_releases": 2,
+            "exit_releases": 0,
+            "partnership_releases": 0,
+            "accelerator_releases": 0
+          },
+          {
+            "month": "2021-04",
+            "total_releases": 7,
+            "funding_releases": 3,
+            "exit_releases": 0,
+            "partnership_releases": 0,
+            "accelerator_releases": 0
+          },
+          {
+            "month": "2021-05",
+            "total_releases": 1,
+            "funding_releases": 1,
+            "exit_releases": 0,
+            "partnership_releases": 0,
+            "accelerator_releases": 0
+          },
+          {
+            "month": "2021-06",
+            "total_releases": 8,
+            "funding_releases": 2,
+            "exit_releases": 0,
+            "partnership_releases": 0,
+            "accelerator_releases": 0
+          }
+        ]
+      }
+    ],
+    "queries": [
+      {
+        "name": "最新ラウンド",
+        "sql": "SELECT company_name, round_type, amount_jpy FROM funding_rounds ORDER BY announced_date DESC LIMIT 20",
+        "error": "no such table: funding_rounds",
+        "columns": [],
+        "rows": []
+      },
+      {
+        "name": "月次統計",
+        "sql": "SELECT month, total_amount, deal_count FROM monthly_stats ORDER BY month DESC LIMIT 12",
+        "error": "no such column: total_amount",
+        "columns": [],
+        "rows": []
+      }
+    ]
+  },
+  {
+    "id": "sangaku-press-releases",
+    "name": "Sangaku Press Releases",
+    "path": "~/projects/research/investment-signal-radar/data/sangaku_press_releases.db",
+    "desc": "産学連携プレスリリースDB（sangaku-matcher-v2由来）",
+    "size_mb": 2.5,
+    "tables": [
+      {
+        "name": "metadata",
+        "columns": [
+          {
+            "name": "key",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "value",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 2,
+        "sample_rows": [
+          {
+            "key": "exported_at",
+            "value": "2026-04-17T17:56:06.315283"
+          },
+          {
+            "key": "source",
+            "value": "prtimes_sangaku from investment_signal_v2.db"
+          }
+        ]
+      },
+      {
+        "name": "press_releases",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "pk": true,
+            "notnull": false
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "source_url",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "published_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "company_name",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "is_funding_related",
+            "type": "INTEGER",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "collected_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 6581,
+        "sample_rows": [
+          {
+            "id": 1,
+            "title": "「一般社団法人スマートビルディング共創機構」年次成果フォーラム『SmartBuilding Conn…",
+            "source_url": "https://prtimes.jp/main/html/rd/p/000000005.000164091.html",
+            "published_at": "2026-04-14",
+            "company_name": "",
+            "category": "other",
+            "is_funding_related": 0,
+            "collected_at": "2026-04-17 06:00:12",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 2,
+            "title": "株式会社メンテル、神奈川県オープンイノベーション成果発表会「Kanagawa Innovators …",
+            "source_url": "https://prtimes.jp/main/html/rd/p/000000026.000130784.html",
+            "published_at": "2026-04-14",
+            "company_name": "",
+            "category": "other",
+            "is_funding_related": 0,
+            "collected_at": "2026-04-17 06:00:12",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 3,
+            "title": "「能登の太陽　ビタミンちくわカレー」4/15発売　能登・スギヨ　長野県の小学生と復興支援で共同開発",
+            "source_url": "https://prtimes.jp/main/html/rd/p/000000028.000085219.html",
+            "published_at": "2026-04-14",
+            "company_name": "",
+            "category": "other",
+            "is_funding_related": 0,
+            "collected_at": "2026-04-17 06:00:12",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 4,
+            "title": "Brilliaの住まいと暮らしの共創プロジェクト「bloomoi」「TOKYOROOMS展 〜40の…",
+            "source_url": "https://prtimes.jp/main/html/rd/p/000000526.000052843.html",
+            "published_at": "2026-04-14",
+            "company_name": "",
+            "category": "other",
+            "is_funding_related": 0,
+            "collected_at": "2026-04-17 06:00:12",
+            "created_at": "2026-04-17 08:56:06"
+          },
+          {
+            "id": 5,
+            "title": "暁電機製作所、東芝テック様、サンプラザ様で商品券読取装置とセルフレジシステムとの連動における実証実験…",
+            "source_url": "https://prtimes.jp/main/html/rd/p/000000013.000154721.html",
+            "published_at": "2026-04-14",
+            "company_name": "",
+            "category": "other",
+            "is_funding_related": 0,
+            "collected_at": "2026-04-17 06:00:12",
+            "created_at": "2026-04-17 08:56:06"
+          }
+        ]
+      }
+    ],
+    "queries": [
+      {
+        "name": "プレスリリース一覧",
+        "sql": "SELECT title, organization, published_date FROM press_releases ORDER BY published_date DESC LIMIT 20",
+        "error": "no such column: organization",
+        "columns": [],
         "rows": []
       }
     ]
