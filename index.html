@@ -1660,11 +1660,11 @@ const apps = [
     category: "ローカル Web アプリ",
     sectionType: "local",
     name: "Meeting Flow",
-    desc: "Plaud連携の会議TODO自動化アプリ。録音→文字起こし→Claude AI分析→TODO一覧をWebダッシュボードで管理",
+    desc: "Plaud連携の会議TODO自動化アプリ。録音→文字起こし→Claude AI分析→TODO一覧をWebダッシュボードで管理。デスクトップアプリ＋サイドバー対応",
     icon: "MF", color: "#0891b2",
-    localCmd: "cd ~/projects/apps/meeting-flow/backend && python3 server.py",
+    localCmd: "cd ~/projects/apps/meeting-flow && python3 desktop.py",
     localUrl: "http://localhost:5200",
-    hosting: "Python + Vite/React + SQLite",
+    hosting: "Python + Vite/React + SQLite + pywebview",
     badge: "ローカル", badgeType: "local"
   },
   {
@@ -2364,6 +2364,41 @@ const apps = [
     icon: "RD", color: "#0d9488",
     localCmd: "code ~/projects/research/research-agent-design",
     badge: "ローカル", badgeType: "local"
+  },
+
+  // --- デスクトップアプリ ---
+  {
+    category: "デスクトップアプリ",
+    sectionType: "local",
+    name: "MCP Dashboard",
+    desc: "MCP接続状況・導入ロードマップ・Workflow照合分析（90タスク）を管理するダッシュボード。36サーバーの接続状態を一覧表示。Dock登録済み",
+    icon: "MC", color: "#1a1a1a",
+    localCmd: "cd ~/projects/apps/data-access-map && python3 desktop.py --sidebar",
+    localUrl: "file:///Users/nishimura+/projects/apps/data-access-map/index.html#mcp-dashboard",
+    hosting: "pywebview (macOS native)",
+    badge: "デスクトップ", badgeType: "local"
+  },
+  {
+    category: "デスクトップアプリ",
+    sectionType: "local",
+    name: "Data Access Map",
+    desc: "Claude Codeがアクセスできるデータの一覧マップ。ファイル・クラウド・ブラウザ・MCP等のアクセス権限を可視化",
+    icon: "DA", color: "#333333",
+    localCmd: "cd ~/projects/apps/data-access-map && python3 desktop.py",
+    localUrl: "file:///Users/nishimura+/projects/apps/data-access-map/index.html#data-access",
+    hosting: "pywebview (macOS native)",
+    badge: "デスクトップ", badgeType: "local"
+  },
+  {
+    category: "デスクトップアプリ",
+    sectionType: "local",
+    name: "Meeting Flow (Desktop)",
+    desc: "会議TODO管理のデスクトップ版。サイドバーモードでカンバンボードを常時表示可能。LaunchAgent自動起動対応",
+    icon: "MF", color: "#0891b2",
+    localCmd: "cd ~/projects/apps/meeting-flow && python3 desktop.py --sidebar",
+    localUrl: "http://localhost:5200",
+    hosting: "pywebview (macOS native)",
+    badge: "デスクトップ", badgeType: "local"
   },
 ];
 
