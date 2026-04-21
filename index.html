@@ -1692,6 +1692,18 @@ const apps = [
   {
     category: "公開中の Web アプリ",
     sectionType: "released",
+    name: "月面生活リサーチDB",
+    desc: "月面基地での生活課題と技術・研究を10カテゴリに分類。JAXA Space Life on the Moon準拠（100件・10課題・8モジュール）",
+    icon: "LL", color: "#78552E",
+    url: "https://web-iota-seven-93.vercel.app",
+    localCmd: "cd ~/projects/research/lunar-life-db/web && npm run dev -- -p 3456",
+    localUrl: "http://localhost:3456",
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
+  },
+  {
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "KAKENHI Writer",
     desc: "科研費申請書自動生成ツール（研究計画・業績・予算を構造化出力）",
     icon: "KW", color: "#7c3aed",
@@ -2473,18 +2485,6 @@ const apps = [
     icon: "PS", color: "#b45309",
     localCmd: "code ~/projects/research/pestle-signal-db",
     badge: "ローカル", badgeType: "local"
-  },
-  {
-    category: "調査・リサーチ",
-    sectionType: "research",
-    name: "月面生活リサーチDB",
-    desc: "月面基地での生活課題と技術・研究を10カテゴリに分類したDB。JAXA Space Life on the Moon準拠。100エントリ・10課題・8モジュール",
-    icon: "LL", color: "#78552E",
-    url: "https://web-iota-seven-93.vercel.app",
-    localCmd: "code ~/projects/research/lunar-life-db",
-    localUrl: "http://localhost:3456",
-    hosting: "Vercel",
-    badge: "公開", badgeType: "released"
   },
 
   // --- デスクトップアプリ ---
