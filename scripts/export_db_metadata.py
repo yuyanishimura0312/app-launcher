@@ -196,6 +196,69 @@ DATABASES = [
          ("カテゴリ", "SELECT name, code FROM kakenhi_categories LIMIT 20"),
          ("審査区分", "SELECT name, category FROM review_sections LIMIT 20"),
      ]),
+    ("basho-db", "Basho DB", "~/projects/apps/basho-db/data/basho.db",
+     "場所性マッチング（飲食店・宿泊施設の場所性8軸評価）",
+     [
+         ("施設一覧", "SELECT name, type, prefecture FROM places LIMIT 20"),
+     ]),
+    ("great-figures-db", "Great Figures DB", "~/projects/research/great-figures-db/great_figures.db",
+     "歴史偉人DB（9,178人・568概念・1,050イベント・741リンク）",
+     [
+         ("偉人一覧", "SELECT name, birth_year, field FROM figures ORDER BY birth_year LIMIT 20"),
+         ("概念一覧", "SELECT name, category FROM concepts LIMIT 20"),
+     ]),
+    ("foresight-kb", "Foresight Knowledge Base", "~/projects/research/foresight-knowledge-base/foresight.db",
+     "未来洞察ナレッジベース（CLA分析・シナリオ・シグナル統合）",
+     [
+         ("記事一覧", "SELECT title, source, published_at FROM articles ORDER BY published_at DESC LIMIT 20"),
+     ]),
+    ("academic-knowledge-db", "Academic Knowledge DB", "~/projects/research/academic-knowledge-db/academic.db",
+     "5分野学術知識DB（人文1,203・社会851・自然1,761・工学420・芸術468）",
+     [
+         ("人文学概念", "SELECT name, field, era FROM humanities_concept LIMIT 20"),
+         ("社会科学理論", "SELECT name, field, era FROM social_theory LIMIT 20"),
+         ("自然科学発見", "SELECT name, field, era FROM natural_discovery LIMIT 20"),
+     ]),
+    ("lunar-life-db", "Lunar Life DB", "~/projects/research/lunar-life-db/data/lunar_life.db",
+     "月面生活リサーチDB（JAXA資料ベース・10カテゴリ）",
+     [
+         ("課題一覧", "SELECT title, category FROM challenges LIMIT 20"),
+     ]),
+    ("writing-craft-db", "Writing Craft DB", "~/projects/research/writing-craft-db/writing_craft.db",
+     "文章技法DB（288件・100技法・20巨匠・30メディア）",
+     [
+         ("技法一覧", "SELECT name, category FROM techniques LIMIT 20"),
+     ]),
+    ("yokai-sns", "Yokai SNS", "~/projects/apps/yokai-sns/data/yokai_utterances.db",
+     "妖怪百景 ── 1,010体の妖怪が自律的に対話するSNS",
+     [
+         ("発言一覧", "SELECT * FROM utterances LIMIT 10"),
+     ]),
+    ("human-activities-db", "Human Activities DB", "~/projects/research/human-activities-db/data/human_activities.db",
+     "人間活動データベース（活動分類・地域・時代）",
+     [
+         ("活動一覧", "SELECT name, category FROM activities LIMIT 20"),
+     ]),
+    ("pestle-pestle", "PESTLE Signal DB", "~/projects/research/pestle-signal-db/data/pestle.db",
+     "PESTLEニュース構造化DB（毎日6時自動収集・6カテゴリ）",
+     [
+         ("最新記事", "SELECT title, category, published_at FROM articles ORDER BY published_at DESC LIMIT 20"),
+     ]),
+    ("cla-db", "CLA DB", "~/projects/research/pestle-signal-db/data/cla.db",
+     "因果階層分析DB（36年分年次データ・22四半期・パラダイムシフト）",
+     [
+         ("年次分析", "SELECT year, title FROM annual_analyses ORDER BY year DESC LIMIT 20"),
+     ]),
+    ("signal-db", "Signal DB", "~/projects/research/pestle-signal-db/data/signal.db",
+     "弱いシグナル検出DB（アラート・シナリオ・PESTLE統合）",
+     [
+         ("シグナル一覧", "SELECT title, category, score FROM signals ORDER BY score DESC LIMIT 20"),
+     ]),
+    ("academic-pressure", "Academic Pressure Detector", "~/projects/research/academic-pressure-detector/academic_pressure.db",
+     "学術界の構造的圧力検出（研究動向・圧力源・影響分析）",
+     [
+         ("圧力一覧", "SELECT name, type FROM pressures LIMIT 20"),
+     ]),
 ]
 
 def export_db(db_id, name, path, desc, queries):

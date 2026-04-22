@@ -346,10 +346,10 @@
 
   <div id="overview-body">
     <div class="overview-intro">
-      このダッシュボードは、ミラツク / エッセンスの事業・研究活動を支える<strong>31のSQLiteデータベース</strong>を一覧しています。
+      このダッシュボードは、ミラツク / エッセンスの事業・研究活動を支える<strong>43のSQLiteデータベース</strong>を一覧しています。
       政策分析から産学連携、未来洞察、学術研究、日常の事業運営まで、組織の知的活動の全体像がここに集約されています。
-      合計<strong>100万件以上</strong>のレコードが蓄積されており、Claude Codeから<code>python3 ~/tools/db-agent.py</code>で横断検索・分析が可能です。
-      以下の6つの領域に分類して、各データベースの役割と格納データを解説します。
+      合計<strong>240万件以上</strong>のレコード、<strong>1.3GB</strong>のデータが蓄積されており、Claude Codeから<code>python3 ~/tools/db-agent.py</code>で横断検索・分析が可能です。
+      以下の7つの領域に分類して、各データベースの役割と格納データを解説します。
     </div>
 
     <div class="overview-grid">
@@ -432,7 +432,7 @@
             <div class="ov-card-label">未来洞察・シグナル検出</div>
             <div class="ov-card-sublabel">ニュース分析、構造的変化の予兆検出</div>
           </div>
-          <div class="ov-card-count">4 DB</div>
+          <div class="ov-card-count">7 DB</div>
         </div>
         <div class="ov-card-body">
           <p>グローバルなニュースや学術論文を日次で自動収集し、社会の構造的変化の予兆（シグナル）を検出する仕組みです。CLA（因果階層分析）で表層的な出来事の裏にある深層構造を読み解き、PESTLE 6カテゴリ（政治・経済・社会・技術・法律・環境）で分類しています。</p>
@@ -440,26 +440,44 @@
             <div class="ov-db-item">
               <span class="ov-db-badge" style="background:#b45309">FI</span>
               <span class="ov-db-name">Future Insight</span>
-              <span class="ov-db-desc">グローバルニュース225K件、CLA 4層分析546件</span>
-              <span class="ov-db-stat">142MB</span>
+              <span class="ov-db-desc">グローバルニュース237K件、CLA 4層分析546件</span>
+              <span class="ov-db-stat">148MB</span>
             </div>
             <div class="ov-db-item">
-              <span class="ov-db-badge" style="background:#0e7490">PE</span>
-              <span class="ov-db-name">PESTLE</span>
-              <span class="ov-db-desc">6カテゴリ別ニュース、毎朝6時に各50件ずつ自動収集</span>
-              <span class="ov-db-stat">日次更新</span>
+              <span class="ov-db-badge" style="background:#92400e">FK</span>
+              <span class="ov-db-name">Foresight KB</span>
+              <span class="ov-db-desc">未来洞察ナレッジベース（CLA分析・シナリオ・シグナル統合）145K件</span>
+              <span class="ov-db-stat">102MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#0e7490">PS</span>
+              <span class="ov-db-name">PESTLE Signal DB</span>
+              <span class="ov-db-desc">6カテゴリ別ニュース224K件、毎朝6時に各50件ずつ自動収集</span>
+              <span class="ov-db-stat">132MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#155e75">CL</span>
+              <span class="ov-db-name">CLA DB</span>
+              <span class="ov-db-desc">因果階層分析36年分年次データ・22四半期・パラダイムシフト</span>
+              <span class="ov-db-stat">1.5MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#475569">SG</span>
+              <span class="ov-db-name">Signal DB</span>
+              <span class="ov-db-desc">弱いシグナル検出・アラート・シナリオ1,081件</span>
+              <span class="ov-db-stat">0.8MB</span>
             </div>
             <div class="ov-db-item">
               <span class="ov-db-badge" style="background:#64748b">SI</span>
               <span class="ov-db-name">Structural Inflection</span>
               <span class="ov-db-desc">10ドメイン、閾値接近・外的圧力など5軸スコアリング</span>
-              <span class="ov-db-stat">180KB</span>
+              <span class="ov-db-stat">0.2MB</span>
             </div>
             <div class="ov-db-item">
               <span class="ov-db-badge" style="background:#c2410c">FR</span>
               <span class="ov-db-name">Frontier Detector</span>
               <span class="ov-db-desc">学術フロンティア検出、10ドメイン・323キーワード</span>
-              <span class="ov-db-stat">構築中</span>
+              <span class="ov-db-stat">0.6MB</span>
             </div>
           </div>
         </div>
@@ -473,11 +491,17 @@
             <div class="ov-card-label">研究・学術</div>
             <div class="ov-card-sublabel">論文、研究者、人類学概念、科研費</div>
           </div>
-          <div class="ov-card-count">6 DB</div>
+          <div class="ov-card-count">9 DB</div>
         </div>
         <div class="ov-card-body">
-          <p>学術研究に関わるデータを体系的に蓄積しています。人類学の概念体系を知的系譜として可視化するDB、学術論文の収集・分析基盤、科研費申請書の自動生成ツール、質的研究（GTA）のコーディングツールなど、研究活動の各段階を支援するデータが格納されています。</p>
+          <p>学術研究に関わるデータを体系的に蓄積しています。5分野の学術知識DB、人類学の概念体系、学術論文の収集・分析基盤、科研費申請書の自動生成ツール、質的研究（GTA）のコーディングツールなど、研究活動の各段階を支援するデータが格納されています。</p>
           <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#065f46">AK</span>
+              <span class="ov-db-name">Academic Knowledge</span>
+              <span class="ov-db-desc">5分野学術DB（人文1,203・社会851・自然1,761・工学420・芸術468）</span>
+              <span class="ov-db-stat">12MB</span>
+            </div>
             <div class="ov-db-item">
               <span class="ov-db-badge" style="background:#0f766e">AC</span>
               <span class="ov-db-name">人類学概念DB</span>
@@ -512,7 +536,19 @@
               <span class="ov-db-badge" style="background:#4d7c0f">HA</span>
               <span class="ov-db-name">Healthy Aging</span>
               <span class="ov-db-desc">健康長寿研究（健康要因・介入・エビデンス）</span>
-              <span class="ov-db-stat">構築中</span>
+              <span class="ov-db-stat">0.2MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#7e22ce">AP</span>
+              <span class="ov-db-name">Academic Pressure</span>
+              <span class="ov-db-desc">学術界の構造的圧力検出（研究動向・影響分析）</span>
+              <span class="ov-db-stat">0.2MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#1e3a5f">HA</span>
+              <span class="ov-db-name">Human Activities</span>
+              <span class="ov-db-desc">人間活動データベース（活動分類・地域・時代）</span>
+              <span class="ov-db-stat">0.3MB</span>
             </div>
           </div>
         </div>
@@ -572,6 +608,53 @@
               <span class="ov-db-name">PRTimes</span>
               <span class="ov-db-desc">プレスリリース収集（Investment Signal v2に統合済み）</span>
               <span class="ov-db-stat">統合済</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 知識基盤・コンテンツ -->
+      <div class="ov-card">
+        <div class="ov-card-header" style="background:linear-gradient(135deg,#fef9e7,#fff)">
+          <div class="ov-card-icon" style="background:#92400e">&#x1F4D6;</div>
+          <div class="ov-card-header-text">
+            <div class="ov-card-label">知識基盤・コンテンツ</div>
+            <div class="ov-card-sublabel">歴史偉人、文章技法、場所性、月面生活、妖怪</div>
+          </div>
+          <div class="ov-card-count">5 DB</div>
+        </div>
+        <div class="ov-card-body">
+          <p>特定領域の知識を深く構造化したデータベース群です。歴史上の偉人9,178人の意思決定構造、文章技法288件のパターン分析、場所性の8軸評価、月面生活の技術課題、そして1,010体の妖怪が自律的に対話するSNSまで、知的探究の多様な成果が蓄積されています。</p>
+          <div class="ov-db-list">
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#78350f">GF</span>
+              <span class="ov-db-name">Great Figures DB</span>
+              <span class="ov-db-desc">歴史偉人9,178人・568概念・1,050イベント・741リンク</span>
+              <span class="ov-db-stat">10MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#7c2d12">WC</span>
+              <span class="ov-db-name">Writing Craft DB</span>
+              <span class="ov-db-desc">文章技法288件・100技法・20巨匠・30メディア</span>
+              <span class="ov-db-stat">0.1MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#365314">BD</span>
+              <span class="ov-db-name">Basho DB</span>
+              <span class="ov-db-desc">場所性マッチング（飲食店・宿泊施設の場所性8軸評価）</span>
+              <span class="ov-db-stat">5.8MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#1e3a5f">LL</span>
+              <span class="ov-db-name">Lunar Life DB</span>
+              <span class="ov-db-desc">月面生活リサーチ（JAXA資料・10カテゴリ・472件）</span>
+              <span class="ov-db-stat">0.8MB</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#991b1b">YS</span>
+              <span class="ov-db-name">Yokai SNS</span>
+              <span class="ov-db-desc">妖怪百景 ── 1,010体の妖怪が自律的に対話するSNS</span>
+              <span class="ov-db-stat">構築中</span>
             </div>
           </div>
         </div>
@@ -692,6 +775,11 @@ const DB_COLORS = {
   'experts-db': '#9333ea', 'pestle': '#0e7490',
   'frontier-detector': '#c2410c', 'healthy-aging': '#4d7c0f',
   'structural-inflection': '#64748b', 'kakenhi-writer': '#a21caf',
+  'basho-db': '#365314', 'great-figures-db': '#78350f', 'foresight-kb': '#92400e',
+  'academic-knowledge-db': '#065f46', 'lunar-life-db': '#1e3a5f',
+  'writing-craft-db': '#7c2d12', 'yokai-sns': '#991b1b',
+  'human-activities-db': '#1e3a5f', 'pestle-pestle': '#0e7490',
+  'cla-db': '#155e75', 'signal-db': '#475569', 'academic-pressure': '#7e22ce',
 };
 
 const DB_ICONS = {
@@ -706,6 +794,11 @@ const DB_ICONS = {
   'investment-signal-v2': 'IS', 'experts-db': 'EX', 'pestle': 'PE',
   'frontier-detector': 'FR', 'healthy-aging': 'HA',
   'structural-inflection': 'SI', 'kakenhi-writer': 'KW',
+  'basho-db': 'BD', 'great-figures-db': 'GF', 'foresight-kb': 'FK',
+  'academic-knowledge-db': 'AK', 'lunar-life-db': 'LL',
+  'writing-craft-db': 'WC', 'yokai-sns': 'YS',
+  'human-activities-db': 'HA', 'pestle-pestle': 'PS',
+  'cla-db': 'CL', 'signal-db': 'SG', 'academic-pressure': 'AP',
 };
 
 function showToast(msg) {
