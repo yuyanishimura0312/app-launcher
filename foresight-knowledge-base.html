@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foresight Knowledge Base — Dashboard</title>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --brand:       #7A4033;
+  --brand-light: #9a5545;
+  --brand-bg:    #f5ede9;
+  --bg:          #f8f6f3;
+  --surface:     #ffffff;
+  --border:      #e7e0d9;
+  --text:        #2c2420;
+  --text-sub:    #6b5c56;
+  --text-muted:  #9e8e89;
+  --shadow:      0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:   0 2px 8px rgba(0,0,0,0.10);
+  --radius:      10px;
+  --radius-sm:   6px;
+  --font:        -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+}
+
+html { font-size: 15px; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 16px;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.logo-mark {
+  display: inline-block;
+  width: 4px;
+  height: 28px;
+  background: var(--brand);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.header-brand h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.header-brand .subtitle {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  font-weight: 400;
+  display: block;
+}
+.header-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Main */
+main { padding: 28px 20px 60px; max-width: 1200px; margin: 0 auto; }
+
+/* Section title */
+.section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Summary cards */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--brand);
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.summary-card .card-label {
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.summary-card .card-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.summary-card .card-unit {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Two-column grid */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+.card-title { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+
+/* Bar chart */
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 90px 1fr 52px; align-items: center; gap: 8px; }
+.bar-label {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-track { background: var(--bg); border-radius: 3px; height: 14px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--brand); border-radius: 3px; min-width: 2px; }
+.bar-fill.accent { background: linear-gradient(90deg, var(--brand), var(--brand-light)); }
+.bar-count { font-size: 0.75rem; color: var(--text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Year trend chart */
+.trend-section { margin-bottom: 28px; margin-top: 16px; }
+.year-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 140px;
+  padding-bottom: 24px;
+  position: relative;
+  overflow-x: auto;
+}
+.year-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; min-width: 30px; }
+.year-bar {
+  width: 100%;
+  background: var(--brand);
+  border-radius: 3px 3px 0 0;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.year-bar:hover { background: var(--brand-light); }
+.bar-tooltip {
+  display: none;
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+}
+.year-bar:hover .bar-tooltip { display: block; }
+.year-label {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  height: 24px;
+  line-height: 1;
+}
+
+/* Table */
+.table-section { margin-bottom: 28px; }
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+thead th {
+  background: var(--bg);
+  color: var(--text-sub);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody tr:nth-child(even) { background: #faf8f6; }
+tbody tr:hover { background: var(--brand-bg); }
+tbody td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-sub);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.rank-badge.top3 { background: var(--brand); color: #fff; }
+.type-tag {
+  display: inline-block;
+  background: var(--brand-bg);
+  color: var(--brand);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+.count-strong { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Convergence */
+.convergence-section { margin-bottom: 28px; }
+.convergence-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.consensus-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.consensus-item { display: flex; align-items: center; gap: 12px; }
+.consensus-rank { font-size: 0.68rem; color: var(--text-muted); font-weight: 700; width: 20px; flex-shrink: 0; text-align: right; }
+.consensus-info { flex: 1; min-width: 0; }
+.consensus-name { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.consensus-bar-wrap { margin-top: 4px; display: flex; align-items: center; gap: 8px; }
+.consensus-track { flex: 1; background: var(--bg); border-radius: 3px; height: 8px; overflow: hidden; }
+.consensus-fill { height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-light)); border-radius: 3px; }
+.consensus-score { font-size: 0.72rem; color: var(--text-sub); font-variant-numeric: tabular-nums; flex-shrink: 0; width: 36px; text-align: right; }
+.blind-spot-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.blind-spot-item {
+  background: #fff5f0;
+  border: 1px solid #f0d5c8;
+  border-left: 3px solid var(--brand);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.blind-spot-name { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.blind-spot-meta { font-size: 0.72rem; color: var(--text-sub); }
+.blind-spot-empty { color: var(--text-muted); font-size: 0.8rem; font-style: italic; }
+
+/* Latest reports */
+.reports-section { margin-bottom: 28px; }
+.report-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.report-item {
+  display: grid;
+  grid-template-columns: 88px 1fr auto;
+  gap: 14px;
+  align-items: start;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.report-item:last-child { border-bottom: none; }
+.report-item:hover { background: #faf8f6; }
+.report-date { font-size: 0.72rem; color: var(--text-muted); font-variant-numeric: tabular-nums; padding-top: 2px; white-space: nowrap; }
+.report-body { min-width: 0; }
+.report-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 4px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.report-meta { font-size: 0.72rem; color: var(--text-sub); display: flex; flex-wrap: wrap; gap: 8px; }
+.report-source { font-weight: 600; color: var(--brand); }
+.report-tags { display: flex; gap: 4px; flex-wrap: wrap; padding-top: 2px; align-self: start; }
+.tag { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 3px; background: var(--brand-bg); color: var(--brand); font-weight: 600; white-space: nowrap; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: repeat(3, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  .convergence-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  html { font-size: 14px; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .report-item { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="logo-mark"></span>
+      <div>
+        <h1>Foresight Knowledge Base</h1>
+        <span class="subtitle">世界のフォーサイト知見を集積する知識基盤</span>
+      </div>
+    </div>
+    <div class="header-meta">最終更新: 2026-04-19 22:28:31</div>
+  </div>
+</header>
+
+<main>
+
+  <div class="section-title">Overview</div>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="card-label">情報ソース</div>
+      <div class="card-value">309</div>
+      <div class="card-unit">機関・組織</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">レポート</div>
+      <div class="card-value">45,323</div>
+      <div class="card-unit">件</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">予測ステートメント</div>
+      <div class="card-value">23,272</div>
+      <div class="card-unit">件</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">シナリオ</div>
+      <div class="card-value">5,099</div>
+      <div class="card-unit">件</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-label">トレンド</div>
+      <div class="card-value">507</div>
+      <div class="card-unit">件</div>
+    </div>
+  </div>
+
+  <div class="section-title">データ分布</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">ドメイン別 予測数</div>
+      <div class="bar-chart" id="domain-chart"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">ソースタイプ別 機関数</div>
+      <div class="bar-chart" id="source-type-chart"></div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">VESTEG分類別 予測数</div>
+      <div class="bar-chart" id="vesteg-chart"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">地理的スコープ / 時間軸（レポート数）</div>
+      <div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:8px;font-weight:600;">地理的スコープ</div>
+      <div class="bar-chart" id="geo-chart"></div>
+      <div style="font-size:0.72rem;color:var(--text-sub);margin:14px 0 8px;font-weight:600;">時間軸</div>
+      <div class="bar-chart" id="horizon-chart"></div>
+    </div>
+  </div>
+
+  <div class="trend-section">
+    <div class="section-title">年代別 レポート数推移</div>
+    <div class="card">
+      <div class="card-title">収録レポート数の年次推移（2004–2026）</div>
+      <div class="year-chart" id="year-chart"></div>
+    </div>
+  </div>
+
+  <div class="table-section">
+    <div class="section-title">主要ソース TOP 20</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th>機関名</th>
+            <th>タイプ</th>
+            <th>国・地域</th>
+            <th style="text-align:right;">レポート数</th>
+            <th style="text-align:right;">予測数</th>
+          </tr>
+        </thead>
+        <tbody id="sources-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="convergence-section">
+    <div class="section-title">収束分析ハイライト</div>
+    <div class="convergence-grid">
+      <div class="card">
+        <div class="card-title">高合意テーマ TOP 10 — 機関間で最も意見が一致しているテーマ</div>
+        <ul class="consensus-list" id="consensus-list"></ul>
+      </div>
+      <div class="card">
+        <div class="card-title">盲点 — 予測が少ない / 未対応領域</div>
+        <ul class="blind-spot-list" id="blind-spot-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="reports-section">
+    <div class="section-title">最新追加レポート（直近20件）</div>
+    <div class="report-list" id="report-list"></div>
+  </div>
+
+</main>
+
+<script>
+var DATA = {"generated_at": "2026-04-19T22:28:31.321939", "summary": {"total_sources": 309, "total_reports": 45323, "total_predictions": 23272, "total_scenarios": 5099, "total_trends": 507}, "source_type_distribution": [{"type": "international_org", "label": "国際機関", "count": 63}, {"type": "think_tank", "label": "シンクタンク", "count": 58}, {"type": "government", "label": "政府機関", "count": 57}, {"type": "academic", "label": "学術機関", "count": 57}, {"type": "corporate", "label": "民間企業", "count": 39}, {"type": "ngo", "label": "NGO/NPO", "count": 35}], "domain_distribution": [{"domain": "technology", "label": "技術", "count": 10132}, {"domain": "governance", "label": "ガバナンス", "count": 3849}, {"domain": "economy", "label": "経済", "count": 2477}, {"domain": "environment", "label": "環境", "count": 1463}, {"domain": "society", "label": "社会", "count": 1405}, {"domain": "food", "label": "食料", "count": 1003}, {"domain": "health", "label": "健康", "count": 1003}, {"domain": "politics", "label": "政治", "count": 830}, {"domain": "education", "label": "education", "count": 587}, {"domain": "energy", "label": "エネルギー", "count": 444}], "yearly_trend": [{"year": "1931", "count": 1}, {"year": "1941", "count": 1}, {"year": "1942", "count": 1}, {"year": "1948", "count": 1}, {"year": "1950", "count": 1}, {"year": "1951", "count": 1}, {"year": "1952", "count": 1}, {"year": "1953", "count": 5}, {"year": "1955", "count": 2}, {"year": "1956", "count": 6}, {"year": "1957", "count": 2}, {"year": "1958", "count": 2}, {"year": "1959", "count": 2}, {"year": "1960", "count": 1}, {"year": "1961", "count": 3}, {"year": "1962", "count": 4}, {"year": "1963", "count": 7}, {"year": "1964", "count": 7}, {"year": "1965", "count": 9}, {"year": "1966", "count": 30}, {"year": "1967", "count": 7}, {"year": "1968", "count": 35}, {"year": "1969", "count": 101}, {"year": "1970", "count": 123}, {"year": "1971", "count": 134}, {"year": "1972", "count": 121}, {"year": "1973", "count": 171}, {"year": "1974", "count": 154}, {"year": "1975", "count": 179}, {"year": "1976", "count": 177}, {"year": "1977", "count": 158}, {"year": "1978", "count": 178}, {"year": "1979", "count": 276}, {"year": "1980", "count": 250}, {"year": "1981", "count": 225}, {"year": "1982", "count": 226}, {"year": "1983", "count": 235}, {"year": "1984", "count": 296}, {"year": "1985", "count": 270}, {"year": "1986", "count": 278}, {"year": "1987", "count": 251}, {"year": "1988", "count": 283}, {"year": "1989", "count": 290}, {"year": "1990", "count": 357}, {"year": "1991", "count": 361}, {"year": "1992", "count": 373}, {"year": "1993", "count": 358}, {"year": "1994", "count": 442}, {"year": "1995", "count": 335}, {"year": "1996", "count": 395}, {"year": "1997", "count": 363}, {"year": "1998", "count": 364}, {"year": "1999", "count": 438}, {"year": "2000", "count": 403}, {"year": "2001", "count": 446}, {"year": "2002", "count": 530}, {"year": "2003", "count": 603}, {"year": "2004", "count": 642}, {"year": "2005", "count": 678}, {"year": "2006", "count": 740}, {"year": "2007", "count": 770}, {"year": "2008", "count": 860}, {"year": "2009", "count": 988}, {"year": "2010", "count": 1123}, {"year": "2011", "count": 1169}, {"year": "2012", "count": 1214}, {"year": "2013", "count": 1391}, {"year": "2014", "count": 1360}, {"year": "2015", "count": 1454}, {"year": "2016", "count": 1666}, {"year": "2017", "count": 1765}, {"year": "2018", "count": 1924}, {"year": "2019", "count": 1916}, {"year": "2020", "count": 2480}, {"year": "2021", "count": 2785}, {"year": "2022", "count": 2509}, {"year": "2023", "count": 2661}, {"year": "2024", "count": 2728}, {"year": "2025", "count": 1662}, {"year": "2026", "count": 513}, {"year": "2033", "count": 1}], "top_sources": [{"name": "OpenAlex Keyword Search (Foresight/Futures)", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 16803, "prediction_count": 0}, {"name": "Technological Forecasting and Social Change", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 9541, "prediction_count": 2804}, {"name": "Futures (Elsevier)", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 6271, "prediction_count": 1560}, {"name": "World Economic Forum", "organization": "World Economic Forum", "country": "CH", "type": "国際機関", "report_count": 1905, "prediction_count": 1825}, {"name": "World Futures", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 1832, "prediction_count": 2314}, {"name": "Foresight (Emerald)", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 1367, "prediction_count": 3283}, {"name": "Foresight (Emerald)", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 984, "prediction_count": 1820}, {"name": "European Journal of Futures Research", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 914, "prediction_count": 0}, {"name": "JST CRDS 研究開発戦略センター", "organization": "Center for Research and Development Strategy, JST", "country": "JP", "type": "政府機関", "report_count": 853, "prediction_count": 0}, {"name": "OpenAlex Food Domain Papers", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 359, "prediction_count": 918}, {"name": "OpenAlex Health Domain Papers", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 358, "prediction_count": 781}, {"name": "Crossref (Horizon Scanning)", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 280, "prediction_count": 88}, {"name": "Crossref (Backcasting)", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 276, "prediction_count": 395}, {"name": "OpenAlex Politics Domain Papers", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 265, "prediction_count": 772}, {"name": "European Journal of Futures Research", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 255, "prediction_count": 846}, {"name": "World Futures Review", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 248, "prediction_count": 309}, {"name": "Futures & Foresight Science", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 248, "prediction_count": 0}, {"name": "OpenAlex Education Domain Papers", "organization": "OpenAlex", "country": "不明", "type": "学術機関", "report_count": 236, "prediction_count": 358}, {"name": "Crossref (CLA)", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 191, "prediction_count": 131}, {"name": "Crossref (Scenario Planning)", "organization": "Crossref", "country": "International", "type": "学術機関", "report_count": 189, "prediction_count": 135}], "vesteg_distribution": [{"category": "technology", "label": "技術 (Technology)", "count": 10245}, {"category": "governance", "label": "ガバナンス (Governance)", "count": 4407}, {"category": "society", "label": "社会 (Society)", "count": 3250}, {"category": "environment", "label": "環境 (Environment)", "count": 2086}, {"category": "economy", "label": "経済 (Economy)", "count": 1984}, {"category": "values", "label": "価値観 (Values)", "count": 105}], "geographic_scope_distribution": [{"scope": "global", "label": "グローバル", "count": 6204}, {"scope": "national", "label": "国別", "count": 1196}, {"scope": "regional", "label": "地域", "count": 232}], "time_horizon_distribution": [{"horizon": "near_2030", "label": "近期 (~2030)", "count": 2948}, {"horizon": "far_2050plus", "label": "遠期 (2050+)", "count": 272}, {"horizon": "medium_2040", "label": "中期 (~2040)", "count": 237}], "latest_reports": [{"title": "Title Pending 216", "title_en": "Title Pending 216", "published_date": "2033-02-20", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Backcasting)", "country": "International"}, {"title": "UNDP Future Trends and Signals System – Live Database", "title_en": "UNDP Future Trends and Signals System – Live Database", "published_date": "2026-04-18", "report_type": "signal_scan", "geographic_scope": "global", "time_horizon": "far_2050plus", "source_name": "UNDP Future Trends and Signals System", "country": "International"}, {"title": "Intelligent Industrial Operations Outlook 2026", "title_en": "Intelligent Industrial Operations Outlook 2026", "published_date": "2026-04-16", "report_type": "forecast", "geographic_scope": "global", "time_horizon": "near_2030", "source_name": "World Economic Forum", "country": "CH"}, {"title": "Growth in the New Economy: Towards a Blueprint", "title_en": "Growth in the New Economy: Towards a Blueprint", "published_date": "2026-04-15", "report_type": "strategy", "geographic_scope": "global", "time_horizon": "near_2030", "source_name": "World Economic Forum", "country": "CH"}, {"title": "Navigating the digital frontier: challenges and opportunities in sustainable manufacturing through digitalization", "title_en": "Navigating the digital frontier: challenges and opportunities in sustainable manufacturing through digitalization", "published_date": "2026-04-14", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Foresight (Emerald)", "country": "International"}, {"title": "Turning the Tide: A Financier’s Guide to Investing in Blue Carbon Ecosystems", "title_en": "Turning the Tide: A Financier’s Guide to Investing in Blue Carbon Ecosystems", "published_date": "2026-04-14", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": "near_2030", "source_name": "World Economic Forum", "country": "CH"}, {"title": "Quantum for Energy and Utilities: Key Opportunities for Energy Transition", "title_en": "Quantum for Energy and Utilities: Key Opportunities for Energy Transition", "published_date": "2026-04-14", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": "far_2050plus", "source_name": "World Economic Forum", "country": "CH"}, {"title": "Piloting the Quantum Economy Blueprint: Lessons from Saudi Arabia", "title_en": "Piloting the Quantum Economy Blueprint: Lessons from Saudi Arabia", "published_date": "2026-04-14", "report_type": "strategy", "geographic_scope": "global", "time_horizon": "near_2030", "source_name": "World Economic Forum", "country": "CH"}, {"title": "The Ocean Is Not a Machine: A Feminist Media Analysis of Oceanographic Models, Simulations, and Futures", "title_en": "The Ocean Is Not a Machine: A Feminist Media Analysis of Oceanographic Models, Simulations, and Futures", "published_date": "2026-04-13", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (CLA)", "country": "International"}, {"title": "Advancing Green Operations in Saudi Arabia: Sustainability Efforts and Future Prospects", "title_en": "Advancing Green Operations in Saudi Arabia: Sustainability Efforts and Future Prospects", "published_date": "2026-04-09", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Backcasting)", "country": "International"}, {"title": "Ranking AODV Routing Characteristics in MANETs: Fuzzy Delphi Method Application", "title_en": "Ranking AODV Routing Characteristics in MANETs: Fuzzy Delphi Method Application", "published_date": "2026-04-06", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Delphi Method)", "country": "International"}, {"title": "How innovation behavior and technology innovation strategy mediate the effect of competitor orientation on financial and market performance", "title_en": "How innovation behavior and technology innovation strategy mediate the effect of competitor orientation on financial and market performance", "published_date": "2026-04-06", "report_type": "strategy", "geographic_scope": "global", "time_horizon": null, "source_name": "Foresight (Emerald)", "country": "International"}, {"title": "Dynamical discontinuities in repeated weak measurements revealed by complex weak values", "title_en": "Dynamical discontinuities in repeated weak measurements revealed by complex weak values", "published_date": "2026-04-03", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Horizon Scanning)", "country": "International"}, {"title": "Rethinking Urban Planning for Uncertainty: Big Picture Planning as Urban Foresight Practice", "title_en": "Rethinking Urban Planning for Uncertainty: Big Picture Planning as Urban Foresight Practice", "published_date": "2026-04-03", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Scenario Planning)", "country": "International"}, {"title": "Foresight study to 2035 of the citrus agroindustrial chain. Alignment of scenarios, Delphi method and complement with python libraries", "title_en": "Foresight study to 2035 of the citrus agroindustrial chain. Alignment of scenarios, Delphi method and complement with python libraries", "published_date": "2026-04-03", "report_type": "scenario", "geographic_scope": "global", "time_horizon": null, "source_name": "Foresight (Emerald)", "country": "International"}, {"title": "多様な界面近傍における水分子の動的挙動と機能制御―低炭素社会のウォーターセキュリティを支える―", "title_en": "多様な界面近傍における水分子の動的挙動と機能制御―低炭素社会のウォーターセキュリティを支える―", "published_date": "2026-04-01", "report_type": "trend_analysis", "geographic_scope": "national", "time_horizon": null, "source_name": "JST CRDS 研究開発戦略センター", "country": "JP"}, {"title": "Sustainable Soil Fertility Management: Recent Advances and Future Directions", "title_en": "Sustainable Soil Fertility Management: Recent Advances and Future Directions", "published_date": "2026-03-31", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Backcasting)", "country": "International"}, {"title": "Transportation and Sustainable Mobility: Users’ Transitions for a Greener Future", "title_en": "Transportation and Sustainable Mobility: Users’ Transitions for a Greener Future", "published_date": "2026-03-31", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": null, "source_name": "Crossref (Backcasting)", "country": "International"}, {"title": "Carbon Dioxide Removal Technologies: Market Overview and Offtake", "title_en": "Carbon Dioxide Removal Technologies: Market Overview and Offtake", "published_date": "2026-03-31", "report_type": "trend_analysis", "geographic_scope": "global", "time_horizon": "near_2030", "source_name": "World Economic Forum", "country": "CH"}, {"title": "The Future of Materials Systems: Cooperation Opportunities in a Multipolar World", "title_en": "The Future of Materials Systems: Cooperation Opportunities in a Multipolar World", "published_date": "2026-03-31", "report_type": "scenario", "geographic_scope": "global", "time_horizon": "far_2050plus", "source_name": "World Economic Forum", "country": "CH"}], "convergence": {"top_themes": [], "blind_spots": [{"name": "environment:values", "name_en": "environment:values", "prediction_count": 21, "convergence_score": 0.642, "description": "environment:valuesクラスターの21件の予測。合意度: 0.64。"}]}};
+
+(function() {
+  function fmt(n) { return (n || 0).toLocaleString('ja-JP'); }
+  function pct(val, max) { if (!max) return 0; return Math.min(100, Math.round((val / max) * 100)); }
+
+  function renderBarChart(containerId, items, labelKey, countKey, accentTop) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    if (!items || !items.length) {
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;">データなし</p>';
+      return;
+    }
+    var max = Math.max.apply(null, items.map(function(d) { return d[countKey]; }));
+    items.forEach(function(item, i) {
+      var row = document.createElement('div');
+      row.className = 'bar-row';
+      var fillClass = (accentTop && i < 3) ? 'bar-fill accent' : 'bar-fill';
+      var label = item[labelKey] || '';
+      var count = item[countKey] || 0;
+      row.innerHTML =
+        '<span class="bar-label" title="' + label + '">' + label + '</span>' +
+        '<div class="bar-track"><div class="' + fillClass + '" style="width:' + pct(count, max) + '%"></div></div>' +
+        '<span class="bar-count">' + fmt(count) + '</span>';
+      container.appendChild(row);
+    });
+  }
+
+  renderBarChart('domain-chart', DATA.domain_distribution, 'label', 'count', true);
+  renderBarChart('source-type-chart', DATA.source_type_distribution, 'label', 'count', false);
+  renderBarChart('vesteg-chart', DATA.vesteg_distribution, 'label', 'count', true);
+  renderBarChart('geo-chart', DATA.geographic_scope_distribution, 'label', 'count', false);
+  renderBarChart('horizon-chart', DATA.time_horizon_distribution, 'label', 'count', false);
+
+  // Year trend chart
+  (function() {
+    var container = document.getElementById('year-chart');
+    if (!DATA.yearly_trend || !DATA.yearly_trend.length) {
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;">データなし</p>';
+      return;
+    }
+    var maxCount = Math.max.apply(null, DATA.yearly_trend.map(function(d) { return d.count; }));
+    var chartHeight = 110;
+    DATA.yearly_trend.forEach(function(item) {
+      var h = maxCount > 0 ? Math.max(2, Math.round((item.count / maxCount) * chartHeight)) : 2;
+      var wrap = document.createElement('div');
+      wrap.className = 'year-bar-wrap';
+      var bar = document.createElement('div');
+      bar.className = 'year-bar';
+      bar.style.height = h + 'px';
+      var tooltip = document.createElement('span');
+      tooltip.className = 'bar-tooltip';
+      tooltip.textContent = item.year + ': ' + fmt(item.count) + '件';
+      bar.appendChild(tooltip);
+      var label = document.createElement('span');
+      label.className = 'year-label';
+      label.textContent = item.year;
+      wrap.appendChild(bar);
+      wrap.appendChild(label);
+      container.appendChild(wrap);
+    });
+  })();
+
+  // Top sources table
+  (function() {
+    var tbody = document.getElementById('sources-table');
+    if (!DATA.top_sources || !DATA.top_sources.length) {
+      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-muted);padding:16px;">データなし</td></tr>';
+      return;
+    }
+    DATA.top_sources.forEach(function(src, i) {
+      var rank = i + 1;
+      var badgeClass = rank <= 3 ? 'rank-badge top3' : 'rank-badge';
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><span class="' + badgeClass + '">' + rank + '</span></td>' +
+        '<td style="font-weight:600;">' + (src.name || '') + '</td>' +
+        '<td><span class="type-tag">' + (src.type || '') + '</span></td>' +
+        '<td style="color:var(--text-sub);">' + (src.country || '') + '</td>' +
+        '<td style="text-align:right;" class="count-strong">' + fmt(src.report_count) + '</td>' +
+        '<td style="text-align:right;color:var(--text-sub);">' + fmt(src.prediction_count) + '</td>';
+      tbody.appendChild(tr);
+    });
+  })();
+
+  // Convergence top themes
+  (function() {
+    var list = document.getElementById('consensus-list');
+    var themes = DATA.convergence && DATA.convergence.top_themes;
+    if (!themes || !themes.length) {
+      list.innerHTML = '<li style="color:var(--text-muted);font-size:0.8rem;">データなし</li>';
+      return;
+    }
+    themes.forEach(function(theme, i) {
+      var score = theme.convergence_score || 0;
+      var li = document.createElement('li');
+      li.className = 'consensus-item';
+      li.innerHTML =
+        '<span class="consensus-rank">' + (i + 1) + '</span>' +
+        '<div class="consensus-info">' +
+          '<div class="consensus-name" title="' + (theme.name || '') + '">' + (theme.name || '') + '</div>' +
+          '<div class="consensus-bar-wrap">' +
+            '<div class="consensus-track"><div class="consensus-fill" style="width:' + Math.round(score * 100) + '%"></div></div>' +
+            '<span class="consensus-score">' + (score * 100).toFixed(0) + '%</span>' +
+          '</div>' +
+        '</div>';
+      list.appendChild(li);
+    });
+  })();
+
+  // Blind spots
+  (function() {
+    var list = document.getElementById('blind-spot-list');
+    var spots = DATA.convergence && DATA.convergence.blind_spots;
+    if (!spots || !spots.length) {
+      list.innerHTML = '<li class="blind-spot-empty">検出された盲点はありません</li>';
+      return;
+    }
+    spots.forEach(function(spot) {
+      var li = document.createElement('li');
+      li.className = 'blind-spot-item';
+      li.innerHTML =
+        '<div class="blind-spot-name">' + (spot.name || '') + '</div>' +
+        '<div class="blind-spot-meta">予測数: ' + fmt(spot.prediction_count) + '件 &nbsp;|&nbsp; 収束スコア: ' + (spot.convergence_score * 100).toFixed(0) + '%</div>';
+      list.appendChild(li);
+    });
+  })();
+
+  // Latest reports
+  (function() {
+    var container = document.getElementById('report-list');
+    if (!DATA.latest_reports || !DATA.latest_reports.length) {
+      container.innerHTML = '<div style="padding:20px;color:var(--text-muted);">データなし</div>';
+      return;
+    }
+    var horizonMap = { 'near_2030': '近期', 'medium_2040': '中期', 'far_2050plus': '遠期' };
+    var scopeMap = { 'global': 'グローバル', 'national': '国別', 'regional': '地域', 'local': 'ローカル' };
+    DATA.latest_reports.forEach(function(rep) {
+      var item = document.createElement('div');
+      item.className = 'report-item';
+      var tags = [];
+      if (rep.geographic_scope && scopeMap[rep.geographic_scope]) tags.push(scopeMap[rep.geographic_scope]);
+      if (rep.time_horizon && horizonMap[rep.time_horizon]) tags.push(horizonMap[rep.time_horizon]);
+      var tagsHtml = tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
+      item.innerHTML =
+        '<span class="report-date">' + (rep.published_date || '') + '</span>' +
+        '<div class="report-body">' +
+          '<div class="report-title">' + (rep.title || '(タイトルなし)') + '</div>' +
+          '<div class="report-meta">' +
+            '<span class="report-source">' + (rep.source_name || '') + '</span>' +
+            '<span>' + (rep.country || '') + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="report-tags">' + tagsHtml + '</div>';
+      container.appendChild(item);
+    });
+  })();
+
+})();
+
+</script>
+</body>
+</html>
