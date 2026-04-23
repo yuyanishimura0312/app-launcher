@@ -49062,5 +49062,87 @@
         "rows": []
       }
     ]
+  },
+  {
+    "id": "yokai-database",
+    "name": "Yokai Database",
+    "path": "~/projects/apps/yokai-database/lib/yokai-data.json",
+    "desc": "妖怪カタログ ── 世界1,010体の妖怪を地域・存在論・生態で構造化（JSON形式）",
+    "size_mb": 2.5,
+    "tables": [
+      {
+        "name": "yokai",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "pk": true,
+            "notnull": true
+          },
+          {
+            "name": "name_ja",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": true
+          },
+          {
+            "name": "name_en",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "origin_culture",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "region_category",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "descola_classification",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "moral_alignment",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "habitat_type",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "supernatural_abilities",
+            "type": "JSON",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "personality",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          },
+          {
+            "name": "scholarly_summary",
+            "type": "TEXT",
+            "pk": false,
+            "notnull": false
+          }
+        ],
+        "row_count": 1010,
+        "sample_rows": []
+      }
+    ]
   }
 ]

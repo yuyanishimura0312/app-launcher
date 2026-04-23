@@ -1,0 +1,704 @@
+{
+  "domains": [
+    {
+      "id": "foresight",
+      "name": "フォーサイト（未来洞察）",
+      "coverage_pct": 12.5,
+      "owned_dbs": [
+        "future-insight",
+        "foresight-kb",
+        "pestle-pestle",
+        "cla-db",
+        "signal-db",
+        "structural-inflection",
+        "frontier-detector"
+      ],
+      "owned_summary": "7 DB / 610K行 / 386MB",
+      "categories": [
+        {
+          "name": "ニュースストリーム・シグナル",
+          "world_estimate": "50TB+",
+          "owned_pct": 32.5,
+          "access": "open",
+          "sources": [
+            {
+              "name": "GDELT Project",
+              "provider": "Google Jigsaw",
+              "size_estimate": "年2.5TB",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            },
+            {
+              "name": "Event Registry",
+              "provider": "NewsAPI.ai",
+              "size_estimate": "150K+パブリッシャー",
+              "access": "paid",
+              "owned": false,
+              "priority": "low",
+              "buildable": false
+            }
+          ]
+        },
+        {
+          "name": "CLA・パラダイム分析",
+          "world_estimate": "独自領域",
+          "owned_pct": 65,
+          "access": "proprietary",
+          "sources": [
+            {
+              "name": "CLA DB (36年分)",
+              "provider": "ミラツク",
+              "size_estimate": "2,568行",
+              "access": "proprietary",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "Thompson Motif-Index",
+              "provider": "Internet Archive",
+              "size_estimate": "45,496モチーフ",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            }
+          ]
+        },
+        {
+          "name": "政府・国際機関フォーサイトレポート",
+          "world_estimate": "0.1-1TB",
+          "owned_pct": 7,
+          "access": "open",
+          "sources": [
+            {
+              "name": "OECD Strategic Foresight",
+              "provider": "OECD",
+              "size_estimate": "10-20件/年",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            },
+            {
+              "name": "WEF Global Risks Report",
+              "provider": "WEF",
+              "size_estimate": "年次",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "NISTEP デルファイ調査",
+              "provider": "NISTEP",
+              "size_estimate": "5年周期",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "EU Strategic Foresight Report",
+              "provider": "EU JRC",
+              "size_estimate": "年次",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            },
+            {
+              "name": "UN Futures Lab Guide",
+              "provider": "UNESCO/UN",
+              "size_estimate": "50-100件",
+              "access": "open",
+              "owned": true,
+              "priority": "medium",
+              "buildable": false
+            }
+          ]
+        },
+        {
+          "name": "学術フォーサイト文献",
+          "world_estimate": "1-3TB (10万本+)",
+          "owned_pct": 3,
+          "access": "mixed",
+          "sources": [
+            {
+              "name": "Futures (Elsevier)",
+              "provider": "Elsevier",
+              "size_estimate": "数千本",
+              "access": "paid",
+              "owned": false,
+              "priority": "medium",
+              "buildable": false
+            },
+            {
+              "name": "TFSC",
+              "provider": "Elsevier",
+              "size_estimate": "7,145本+",
+              "access": "paid",
+              "owned": false,
+              "priority": "medium",
+              "buildable": false
+            }
+          ]
+        },
+        {
+          "name": "社会変化定量データ",
+          "world_estimate": "数十GB",
+          "owned_pct": 40,
+          "access": "open",
+          "sources": [
+            {
+              "name": "World Values Survey",
+              "provider": "WVS Association",
+              "size_estimate": "64カ国×400変数×7波",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            },
+            {
+              "name": "World Bank Open Data",
+              "provider": "World Bank",
+              "size_estimate": "1,600指標×200カ国",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "HDR Data",
+              "provider": "UNDP",
+              "size_estimate": "150指標×193カ国",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "Eurobarometer",
+              "provider": "GESIS",
+              "size_estimate": "EU27カ国×年2回",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "特許トレンド",
+          "world_estimate": "10-50TB",
+          "owned_pct": 5,
+          "access": "open",
+          "sources": [
+            {
+              "name": "WIPO PatentScope",
+              "provider": "WIPO",
+              "size_estimate": "370万件/年",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            },
+            {
+              "name": "USPTO PatentsView",
+              "provider": "USPTO",
+              "size_estimate": "40年分",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "気候・環境シナリオ",
+          "world_estimate": "1-10TB",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "IPCC DDC (SSPシナリオ)",
+              "provider": "IPCC",
+              "size_estimate": "5パス",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "ソーシャルメディア・デジタルトレース",
+          "world_estimate": "数十TB/年",
+          "owned_pct": 0,
+          "access": "mixed",
+          "sources": [
+            {
+              "name": "Reddit/X/ニッチコミュニティ",
+              "provider": "各プラットフォーム",
+              "size_estimate": "無限",
+              "access": "api",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "人口動態・疫学データ",
+          "world_estimate": "数TB",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "UN Population Data",
+              "provider": "UN",
+              "size_estimate": "全カ国",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "文化的テキスト・民族誌・先住民知識",
+          "world_estimate": "定量化困難",
+          "owned_pct": 5,
+          "access": "mixed",
+          "sources": [
+            {
+              "name": "UNESCO ICH",
+              "provider": "UNESCO",
+              "size_estimate": "849件",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "Google Ngram (20概念)",
+              "provider": "Google",
+              "size_estimate": "73年×20概念",
+              "access": "open",
+              "owned": true,
+              "priority": "high",
+              "buildable": false
+            },
+            {
+              "name": "Sacred Texts Archive",
+              "provider": "sacred-texts.com",
+              "size_estimate": "1,700件",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        }
+      ],
+      "gaps": [
+        "CLA深層（世界観・神話層）のデータ",
+        "ソーシャルメディアからの萌芽的シグナル",
+        "特許トレンド構造化",
+        "気候シナリオとの接続"
+      ],
+      "buildable_dbs": [
+        {
+          "name": "特許フォーサイトDB",
+          "sources": "WIPO + USPTO",
+          "estimate": "5-20GB",
+          "cost": "無料"
+        },
+        {
+          "name": "社会価値観変化トラッキングDB",
+          "sources": "WVS + Eurobarometer",
+          "estimate": "1-5GB",
+          "cost": "無料"
+        },
+        {
+          "name": "ソーシャルメディアシグナルDB",
+          "sources": "Reddit/X API",
+          "estimate": "中規模",
+          "cost": "API費用"
+        }
+      ]
+    },
+    {
+      "id": "industry-academia",
+      "name": "産学連携",
+      "coverage_pct": 35,
+      "owned_dbs": [
+        "sangaku-matcher-v2",
+        "investment-signal-v2",
+        "funding-database",
+        "sangaku-press-releases"
+      ],
+      "owned_summary": "4 DB / 508K行 / 249MB",
+      "categories": [
+        {
+          "name": "日本の産学連携実績",
+          "world_estimate": "1,049機関",
+          "owned_pct": 75,
+          "access": "partial",
+          "sources": [
+            {
+              "name": "文科省 産学連携実施状況調査",
+              "provider": "文部科学省",
+              "size_estimate": "年次",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            },
+            {
+              "name": "大学ファクトブック",
+              "provider": "経産省/文科省/経団連",
+              "size_estimate": "784大学",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "日本の特許・知財",
+          "world_estimate": "数百万件",
+          "owned_pct": 5,
+          "access": "open",
+          "sources": [
+            {
+              "name": "J-PlatPat",
+              "provider": "INPIT",
+              "size_estimate": "全件",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "大学発ベンチャー",
+          "world_estimate": "5,074社",
+          "owned_pct": 35,
+          "access": "open",
+          "sources": [
+            {
+              "name": "経産省 大学発ベンチャーDB",
+              "provider": "経産省",
+              "size_estimate": "5,074社",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "米国産学連携 (HERD/AUTM)",
+          "world_estimate": "925機関",
+          "owned_pct": 0,
+          "access": "mixed",
+          "sources": [
+            {
+              "name": "NSF HERD Survey",
+              "provider": "NSF",
+              "size_estimate": "925機関",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "EU研究プロジェクト (CORDIS)",
+          "world_estimate": "全件",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "CORDIS Horizon Europe",
+              "provider": "EU",
+              "size_estimate": "数万件",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "グローバルVC投資",
+          "world_estimate": "100万社+",
+          "owned_pct": 3,
+          "access": "paid",
+          "sources": [
+            {
+              "name": "Crunchbase / PitchBook",
+              "provider": "民間",
+              "size_estimate": "100万社+",
+              "access": "paid",
+              "owned": false,
+              "priority": "low",
+              "buildable": false
+            }
+          ]
+        }
+      ],
+      "gaps": [
+        "縦の統合（論文・特許・研究者・投資の未接続）",
+        "国際比較データ",
+        "中小企業の産学連携"
+      ],
+      "buildable_dbs": [
+        {
+          "name": "日本全大学×全上場企業 共同研究マトリクス",
+          "sources": "文科省+EDINET+J-PlatPat+KAKEN",
+          "estimate": "20-50万件",
+          "cost": "無料"
+        },
+        {
+          "name": "研究者ネットワーク×産学連携ブリッジDB",
+          "sources": "ResearchMap+ORCID+OpenAlex",
+          "estimate": "大規模",
+          "cost": "無料"
+        }
+      ]
+    },
+    {
+      "id": "academic",
+      "name": "学術",
+      "coverage_pct": 0.5,
+      "owned_dbs": [
+        "academic-knowledge-db",
+        "anthropology-concepts",
+        "paper-database",
+        "researcher-profiler",
+        "qualitative-research"
+      ],
+      "owned_summary": "8 DB / ~6K行 / ~12MB",
+      "categories": [
+        {
+          "name": "学術文献 (OpenAlex)",
+          "world_estimate": "2.71億件",
+          "owned_pct": 0.0001,
+          "access": "open",
+          "sources": [
+            {
+              "name": "OpenAlex",
+              "provider": "OurResearch",
+              "size_estimate": "2.71億件",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "研究者ID (ORCID)",
+          "world_estimate": "2,000万人+",
+          "owned_pct": 0.004,
+          "access": "open",
+          "sources": [
+            {
+              "name": "ORCID",
+              "provider": "ORCID",
+              "size_estimate": "2,000万+",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "研究者 (ResearchMap/日本)",
+          "world_estimate": "30万人+",
+          "owned_pct": 0.08,
+          "access": "open",
+          "sources": [
+            {
+              "name": "researchmap",
+              "provider": "JST/NII",
+              "size_estimate": "30万+",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "知識体系 (Wikidata)",
+          "world_estimate": "16.5億トリプル",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "Wikidata",
+              "provider": "Wikimedia",
+              "size_estimate": "16.5億",
+              "access": "open",
+              "owned": false,
+              "priority": "low",
+              "buildable": false
+            }
+          ]
+        }
+      ],
+      "gaps": [
+        "引用ネットワーク未構築",
+        "日本語学術リソースとの未接続",
+        "分野別網羅的収集"
+      ],
+      "buildable_dbs": [
+        {
+          "name": "分野別引用ネットワークDB",
+          "sources": "OpenAlex API",
+          "estimate": "分野依存",
+          "cost": "無料"
+        },
+        {
+          "name": "日本語学術知識グラフ",
+          "sources": "CiNii+J-STAGE+ResearchMap",
+          "estimate": "大規模",
+          "cost": "無料"
+        }
+      ]
+    },
+    {
+      "id": "academic-funding",
+      "name": "学術資金・インパクト",
+      "coverage_pct": 2,
+      "owned_dbs": [
+        "kakenhi-writer",
+        "grant-db",
+        "great-figures-db"
+      ],
+      "owned_summary": "3 DB / ~9K行",
+      "categories": [
+        {
+          "name": "科研費 KAKEN",
+          "world_estimate": "80万件+",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "KAKEN",
+              "provider": "NII",
+              "size_estimate": "80万件+ (1965年〜)",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "NSF Awards (米国)",
+          "world_estimate": "52.6万件",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "NSF Awards",
+              "provider": "NSF",
+              "size_estimate": "52.6万件",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "日本民間助成",
+          "world_estimate": "1,200プログラム",
+          "owned_pct": 50,
+          "access": "open",
+          "sources": [
+            {
+              "name": "助成財団センター",
+              "provider": "助成財団センター",
+              "size_estimate": "1,200+",
+              "access": "open",
+              "owned": false,
+              "priority": "medium",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "引用インパクト (OpenAlex)",
+          "world_estimate": "271億エッジ",
+          "owned_pct": 0,
+          "access": "open",
+          "sources": [
+            {
+              "name": "OpenAlex Citations",
+              "provider": "OurResearch",
+              "size_estimate": "271億",
+              "access": "open",
+              "owned": false,
+              "priority": "high",
+              "buildable": true
+            }
+          ]
+        },
+        {
+          "name": "Dimensions Grants (グローバル)",
+          "world_estimate": "700万件+",
+          "owned_pct": 0,
+          "access": "paid",
+          "sources": [
+            {
+              "name": "Dimensions",
+              "provider": "Digital Science",
+              "size_estimate": "700万+",
+              "access": "paid",
+              "owned": false,
+              "priority": "low",
+              "buildable": false
+            }
+          ]
+        }
+      ],
+      "gaps": [
+        "KAKEN全件未収録",
+        "インパクト指標の未整備",
+        "国際研究資金データ不在"
+      ],
+      "buildable_dbs": [
+        {
+          "name": "KAKEN全件構造化DB",
+          "sources": "KAKEN OAI-PMH",
+          "estimate": "80万件+",
+          "cost": "無料"
+        },
+        {
+          "name": "政策引用トラッキングDB",
+          "sources": "Overton",
+          "estimate": "2,800万文書",
+          "cost": "有料"
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-04-23T22:00:57.857772",
+  "academic_sources": [
+    "OECD/WEF (2025) AI in Strategic Foresight",
+    "Sustainability Science (2025) N=790 Delphi",
+    "Wahab (2024) Two Decades of CLA",
+    "Inayatullah (2024-2025) Embodied CLA"
+  ]
+}

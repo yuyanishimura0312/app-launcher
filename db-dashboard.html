@@ -8,18 +8,18 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, 'Helvetica Neue', 'Hiragino Sans', sans-serif;
-    background: #f8f6f3;
-    color: #1c1917;
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', -apple-system, 'Helvetica Neue', sans-serif;
+    background: #faf8f5;
+    color: #1a1a1a;
     line-height: 1.5;
   }
-  a { color: #7A4033; text-decoration: none; }
+  a { color: #783c28; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
   /* Header */
   .header {
     background: #fff;
-    border-bottom: 1px solid #e7e0d9;
+    border-bottom: 1px solid #e8e2da;
     padding: 12px 20px;
     display: flex;
     align-items: center;
@@ -28,23 +28,23 @@
     top: 0;
     z-index: 100;
   }
-  .header-title { font-size: 16px; font-weight: 700; color: #1c1917; }
-  .header-title span { color: #7A4033; }
+  .header-title { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+  .header-title span { color: #783c28; }
   .header-back {
-    font-size: 13px; color: #78716c;
+    font-size: 13px; color: #6b635b;
     display: flex; align-items: center; gap: 4px;
   }
-  .header-back:hover { color: #7A4033; text-decoration: none; }
+  .header-back:hover { color: #783c28; text-decoration: none; }
   .header-links {
     margin-left: auto;
     display: flex; gap: 8px;
   }
   .header-link {
     font-size: 12px; padding: 5px 14px; border-radius: 6px;
-    border: 1px solid #e7e0d9; background: #fff; color: #57534e;
+    border: 1px solid #e8e2da; background: #fff; color: #57534e;
     cursor: pointer; transition: all 0.15s; text-decoration: none;
   }
-  .header-link:hover { background: #f5f0eb; color: #7A4033; border-color: #7A4033; text-decoration: none; }
+  .header-link:hover { background: #f5f0eb; color: #783c28; border-color: #783c28; text-decoration: none; }
 
   /* Summary */
   .summary {
@@ -52,14 +52,14 @@
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
   }
   .summary-card {
-    background: #fff; border: 1px solid #e7e0d9; border-radius: 10px;
+    background: #fff; border: 1px solid #e8e2da; border-radius: 10px;
     padding: 16px 20px; text-align: center;
   }
   .summary-value {
-    font-size: 28px; font-weight: 700; color: #7A4033;
+    font-size: 28px; font-weight: 700; color: #783c28;
     font-family: 'SF Mono', monospace;
   }
-  .summary-label { font-size: 12px; color: #78716c; margin-top: 2px; }
+  .summary-label { font-size: 12px; color: #6b635b; margin-top: 2px; }
 
   /* Overview section */
   .overview {
@@ -70,25 +70,25 @@
     margin-bottom: 16px;
   }
   .overview-title {
-    font-size: 18px; font-weight: 700; color: #1c1917;
+    font-size: 18px; font-weight: 700; color: #1a1a1a;
   }
   .overview-collapse-btn {
     font-size: 12px; padding: 5px 14px; border-radius: 6px;
-    border: 1px solid #e7e0d9; background: #fff; color: #78716c;
+    border: 1px solid #e8e2da; background: #fff; color: #6b635b;
     cursor: pointer; transition: all 0.15s;
   }
-  .overview-collapse-btn:hover { border-color: #7A4033; color: #7A4033; }
+  .overview-collapse-btn:hover { border-color: #783c28; color: #783c28; }
 
   .overview-intro {
     font-size: 14px; color: #44403c; line-height: 1.85;
     margin-bottom: 20px;
     padding: 20px 24px;
-    background: #fff; border: 1px solid #e7e0d9; border-radius: 12px;
+    background: #fff; border: 1px solid #e8e2da; border-radius: 12px;
   }
-  .overview-intro strong { color: #7A4033; font-weight: 600; }
+  .overview-intro strong { color: #783c28; font-weight: 600; }
   .overview-intro code {
     font-size: 12px; background: #f5f0eb; padding: 2px 6px;
-    border-radius: 4px; color: #7A4033;
+    border-radius: 4px; color: #783c28;
   }
 
   .overview-grid {
@@ -99,7 +99,7 @@
   }
 
   .ov-card {
-    background: #fff; border: 1px solid #e7e0d9; border-radius: 12px;
+    background: #fff; border: 1px solid #e8e2da; border-radius: 12px;
     overflow: hidden; transition: box-shadow 0.2s;
   }
   .ov-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
@@ -115,13 +115,13 @@
   }
   .ov-card-header-text { flex: 1; }
   .ov-card-label {
-    font-size: 14px; font-weight: 700; color: #1c1917;
+    font-size: 14px; font-weight: 700; color: #1a1a1a;
   }
   .ov-card-sublabel {
-    font-size: 12px; color: #78716c; margin-top: 1px;
+    font-size: 12px; color: #6b635b; margin-top: 1px;
   }
   .ov-card-count {
-    font-size: 11px; font-weight: 600; color: #78716c;
+    font-size: 11px; font-weight: 600; color: #6b635b;
     background: #f5f0eb; padding: 3px 10px; border-radius: 12px;
     flex-shrink: 0;
   }
@@ -149,7 +149,7 @@
     flex-shrink: 0; text-align: center; min-width: 26px;
   }
   .ov-db-name { font-weight: 600; color: #44403c; flex-shrink: 0; }
-  .ov-db-desc { color: #78716c; flex: 1; }
+  .ov-db-desc { color: #6b635b; flex: 1; }
   .ov-db-stat {
     font-family: 'SF Mono', monospace; font-size: 10px;
     color: #a8a29e; flex-shrink: 0; white-space: nowrap;
@@ -162,7 +162,7 @@
   .search-bar input {
     width: 100%; padding: 10px 16px; background: #fff;
     border: 1px solid #e8e2da; border-radius: 8px;
-    color: #1c1917; font-size: 14px; outline: none;
+    color: #1a1a1a; font-size: 14px; outline: none;
     transition: border-color 0.2s;
   }
   .search-bar input:focus { border-color: #c87864; }
@@ -173,14 +173,14 @@
     max-width: 1200px; margin: 16px auto 0; padding: 0 20px;
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   }
-  .control-label { font-size: 12px; color: #78716c; }
+  .control-label { font-size: 12px; color: #6b635b; }
   .control-btn {
     font-size: 12px; padding: 4px 12px; border-radius: 6px;
-    border: 1px solid #e7e0d9; background: #fff; color: #57534e;
+    border: 1px solid #e8e2da; background: #fff; color: #57534e;
     cursor: pointer; transition: all 0.15s;
   }
-  .control-btn:hover { border-color: #7A4033; color: #7A4033; }
-  .control-btn.active { background: #7A4033; color: #fff; border-color: #7A4033; }
+  .control-btn:hover { border-color: #783c28; color: #783c28; }
+  .control-btn.active { background: #783c28; color: #fff; border-color: #783c28; }
 
   /* Size chart */
   .size-chart {
@@ -208,7 +208,7 @@
     min-width: 2px;
   }
   .size-bar-value {
-    width: 60px; font-size: 11px; color: #78716c;
+    width: 60px; font-size: 11px; color: #6b635b;
     font-family: 'SF Mono', monospace; flex-shrink: 0;
   }
 
@@ -220,7 +220,7 @@
 
   /* DB Card */
   .db-card {
-    background: #fff; border: 1px solid #e7e0d9; border-radius: 12px;
+    background: #fff; border: 1px solid #e8e2da; border-radius: 12px;
     overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s;
   }
   .db-card:hover { border-color: #c5b9ad; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
@@ -235,11 +235,11 @@
   }
   .card-info { flex: 1; min-width: 0; }
   .card-name {
-    font-size: 15px; font-weight: 700; color: #1c1917;
+    font-size: 15px; font-weight: 700; color: #1a1a1a;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .card-desc {
-    font-size: 12px; color: #78716c; margin-top: 1px;
+    font-size: 12px; color: #6b635b; margin-top: 1px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -284,11 +284,11 @@
   }
   .copy-btn {
     font-size: 11px; padding: 4px 10px; border-radius: 6px;
-    border: 1px solid #e7e0d9; background: #faf9f7; color: #57534e;
+    border: 1px solid #e8e2da; background: #faf9f7; color: #57534e;
     cursor: pointer; transition: all 0.15s;
     display: flex; align-items: center; gap: 4px;
   }
-  .copy-btn:hover { border-color: #7A4033; color: #7A4033; background: #fff; }
+  .copy-btn:hover { border-color: #783c28; color: #783c28; background: #fff; }
   .copy-btn:active { background: #f0ede8; }
   .copy-icon { font-size: 10px; }
 
@@ -296,7 +296,7 @@
   .card-detail-link {
     display: block; text-align: center; padding: 8px;
     border-top: 1px solid #f0ede8; font-size: 12px;
-    color: #7A4033; transition: background 0.15s;
+    color: #783c28; transition: background 0.15s;
   }
   .card-detail-link:hover { background: #faf9f7; text-decoration: none; }
 
@@ -346,7 +346,7 @@
 
   <div id="overview-body">
     <div class="overview-intro">
-      このダッシュボードは、ミラツク / エッセンスの事業・研究活動を支える<strong>43のSQLiteデータベース</strong>を一覧しています。
+      このダッシュボードは、ミラツク / エッセンスの事業・研究活動を支える<strong>44のデータベース（SQLite + JSON）</strong>を一覧しています。
       政策分析から産学連携、未来洞察、学術研究、日常の事業運営まで、組織の知的活動の全体像がここに集約されています。
       合計<strong>240万件以上</strong>のレコード、<strong>1.3GB</strong>のデータが蓄積されており、Claude Codeから<code>python3 ~/tools/db-agent.py</code>で横断検索・分析が可能です。
       以下の7つの領域に分類して、各データベースの役割と格納データを解説します。
@@ -357,7 +357,7 @@
       <!-- 政策・行政 -->
       <div class="ov-card">
         <div class="ov-card-header" style="background:linear-gradient(135deg,#f5e6e2,#fff)">
-          <div class="ov-card-icon" style="background:#7A4033">&#x1F3DB;</div>
+          <div class="ov-card-icon" style="background:#783c28">&#x1F3DB;</div>
           <div class="ov-card-header-text">
             <div class="ov-card-label">政策・行政</div>
             <div class="ov-card-sublabel">中央省庁の審議会・有識者データ</div>
@@ -368,7 +368,7 @@
           <p>日本の中央省庁23省庁が設置する審議会・委員会の構造と、そこに参加する有識者のネットワークを体系的に記録しています。「どの専門家が、どの省庁の、どの政策議論に関わっているか」を横断的に把握でき、政策形成プロセスの可視化に活用されています。</p>
           <div class="ov-db-list">
             <div class="ov-db-item">
-              <span class="ov-db-badge" style="background:#7A4033">PD</span>
+              <span class="ov-db-badge" style="background:#783c28">PD</span>
               <span class="ov-db-name">Policy DB</span>
               <span class="ov-db-desc">審議会1,541件、有識者3,995名、委員任命7,047件、予算事業</span>
               <span class="ov-db-stat">108MB</span>
@@ -621,10 +621,10 @@
             <div class="ov-card-label">知識基盤・コンテンツ</div>
             <div class="ov-card-sublabel">歴史偉人、文章技法、場所性、月面生活、妖怪</div>
           </div>
-          <div class="ov-card-count">5 DB</div>
+          <div class="ov-card-count">6 DB</div>
         </div>
         <div class="ov-card-body">
-          <p>特定領域の知識を深く構造化したデータベース群です。歴史上の偉人9,178人の意思決定構造、文章技法288件のパターン分析、場所性の8軸評価、月面生活の技術課題、そして1,010体の妖怪が自律的に対話するSNSまで、知的探究の多様な成果が蓄積されています。</p>
+          <p>特定領域の知識を深く構造化したデータベース群です。歴史上の偉人9,178人の意思決定構造、文章技法288件のパターン分析、場所性の8軸評価、月面生活の技術課題、世界1,010体の妖怪構造化カタログ、そして妖怪が自律的に対話するSNSまで、知的探究の多様な成果が蓄積されています。</p>
           <div class="ov-db-list">
             <div class="ov-db-item">
               <span class="ov-db-badge" style="background:#78350f">GF</span>
@@ -655,6 +655,12 @@
               <span class="ov-db-name">Yokai SNS</span>
               <span class="ov-db-desc">妖怪百景 ── 1,010体の妖怪が自律的に対話するSNS</span>
               <span class="ov-db-stat">構築中</span>
+            </div>
+            <div class="ov-db-item">
+              <span class="ov-db-badge" style="background:#7c2d12">YD</span>
+              <span class="ov-db-name">Yokai Database</span>
+              <span class="ov-db-desc">世界1,010体の妖怪を地域・存在論・生態で構造化（JSON）</span>
+              <span class="ov-db-stat">2.5MB</span>
             </div>
           </div>
         </div>
@@ -743,6 +749,19 @@
 
 <div class="size-chart" id="size-chart"></div>
 
+<!-- Data Coverage Analysis -->
+<div class="overview" id="coverage-section" style="margin-top:24px">
+  <div class="overview-header">
+    <div class="overview-title">データカバレッジ分析</div>
+    <button class="overview-collapse-btn" id="coverage-toggle" onclick="var b=document.getElementById('coverage-body');var t=this;if(b.style.display==='none'){b.style.display='block';t.textContent='閉じる'}else{b.style.display='none';t.textContent='展開'}">閉じる</button>
+  </div>
+  <div id="coverage-body">
+    <div id="coverage-map" style="margin-bottom:20px"></div>
+    <div id="coverage-gaps" style="margin-bottom:20px"></div>
+    <div id="coverage-buildable"></div>
+  </div>
+</div>
+
 <div class="grid" id="grid"></div>
 
 <div class="toast" id="toast"></div>
@@ -761,7 +780,7 @@ function toggleOverview() {
 }
 
 const DB_COLORS = {
-  'policy-db': '#7A4033', 'sangaku-matcher': '#6d28d9', 'future-insight': '#b45309',
+  'policy-db': '#783c28', 'sangaku-matcher': '#6d28d9', 'future-insight': '#b45309',
   'ir-collector': '#0369a1', 'mail-contacts': '#4f46e5', 'secretary-plaud': '#059669',
   'newsletter': '#dc2626', 'paper-database': '#7c3aed', 'essence-crm': '#2563eb',
   'researcher-profiler': '#0891b2', 'keyword-analyzer': '#ea580c',
@@ -780,6 +799,7 @@ const DB_COLORS = {
   'writing-craft-db': '#7c2d12', 'yokai-sns': '#991b1b',
   'human-activities-db': '#1e3a5f', 'pestle-pestle': '#0e7490',
   'cla-db': '#155e75', 'signal-db': '#475569', 'academic-pressure': '#7e22ce',
+  'yokai-database': '#7c2d12',
 };
 
 const DB_ICONS = {
@@ -799,6 +819,7 @@ const DB_ICONS = {
   'writing-craft-db': 'WC', 'yokai-sns': 'YS',
   'human-activities-db': 'HA', 'pestle-pestle': 'PS',
   'cla-db': 'CL', 'signal-db': 'SG', 'academic-pressure': 'AP',
+  'yokai-database': 'YD',
 };
 
 function showToast(msg) {
@@ -856,7 +877,7 @@ function renderSizeChart() {
   el.innerHTML = `
     <div class="size-chart-title">データベースサイズ分布</div>
     ${sorted.map(db => {
-      const color = DB_COLORS[db.id] || '#78716c';
+      const color = DB_COLORS[db.id] || '#6b635b';
       const pct = (db.size_mb / maxSize * 100).toFixed(1);
       return `<div class="size-bar-row" onclick="scrollToCard('${db.id}')">
         <span class="size-bar-label">${escapeHtml(db.name)}</span>
@@ -913,7 +934,7 @@ function renderGrid() {
   }
 
   el.innerHTML = sorted.map(db => {
-    const color = DB_COLORS[db.id] || '#78716c';
+    const color = DB_COLORS[db.id] || '#6b635b';
     const icon = DB_ICONS[db.id] || db.id.substring(0, 2).toUpperCase();
     const stats = getDbStats(db);
     const topTables = db.tables
@@ -990,14 +1011,89 @@ document.addEventListener('keydown', e => {
   }
 });
 
+function renderCoverageAnalysis(covData) {
+  if (!covData || !covData.domains) return;
+
+  // Coverage Map
+  const mapEl = document.getElementById('coverage-map');
+  const domainColors = {foresight:'#b45309','industry-academia':'#6d28d9',academic:'#0f766e','academic-funding':'#2563eb'};
+  let mapHtml = '<div class="size-chart-title">領域別カバレッジマップ</div>';
+  mapHtml += '<div style="font-size:13px;color:#6b635b;margin-bottom:12px">世界に存在するデータの全体像に対して、現在どの程度を保有しているか</div>';
+
+  covData.domains.forEach(domain => {
+    const color = domainColors[domain.id] || '#783c28';
+    mapHtml += `<div style="margin-bottom:20px;padding:16px 20px;background:#fff;border:1px solid #e8e2da;border-radius:10px">`;
+    mapHtml += `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">`;
+    mapHtml += `<div style="font-size:15px;font-weight:700;color:#1a1a1a;flex:1">${domain.name}</div>`;
+    mapHtml += `<div style="font-size:12px;color:#6b635b">${domain.owned_summary}</div>`;
+    mapHtml += `<div style="font-size:20px;font-weight:700;color:${color};font-family:'SF Mono',monospace">${domain.coverage_pct}%</div>`;
+    mapHtml += `</div>`;
+
+    // Category bars
+    domain.categories.forEach(cat => {
+      const pct = Math.max(cat.owned_pct, 0.5);
+      const barColor = cat.owned_pct > 50 ? '#16a34a' : cat.owned_pct > 10 ? '#d97706' : cat.owned_pct > 0 ? '#dc2626' : '#e5e7eb';
+      const accessBadge = cat.access === 'open' ? '<span style="font-size:9px;background:#dcfce7;color:#166534;padding:1px 6px;border-radius:3px;margin-left:4px">Open</span>' :
+                          cat.access === 'paid' ? '<span style="font-size:9px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px;margin-left:4px">Paid</span>' :
+                          cat.access === 'mixed' ? '<span style="font-size:9px;background:#f3e8ff;color:#7c3aed;padding:1px 6px;border-radius:3px;margin-left:4px">Mixed</span>' : '';
+      mapHtml += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">`;
+      mapHtml += `<span style="width:200px;font-size:11px;color:#44403c;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat.name}${accessBadge}</span>`;
+      mapHtml += `<div style="flex:1;height:14px;background:#f0ede8;border-radius:3px;overflow:hidden;position:relative">`;
+      mapHtml += `<div style="width:${Math.min(pct, 100)}%;height:100%;background:${barColor};border-radius:3px;min-width:2px"></div>`;
+      mapHtml += `</div>`;
+      mapHtml += `<span style="width:45px;font-size:10px;color:#6b635b;font-family:'SF Mono',monospace;flex-shrink:0">${cat.owned_pct}%</span>`;
+      mapHtml += `</div>`;
+    });
+    mapHtml += `</div>`;
+  });
+  mapEl.innerHTML = mapHtml;
+
+  // Gaps summary
+  const gapsEl = document.getElementById('coverage-gaps');
+  let gapsHtml = '<div class="size-chart-title">主要なギャップ</div>';
+  gapsHtml += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px">';
+  covData.domains.forEach(domain => {
+    const color = domainColors[domain.id] || '#783c28';
+    domain.gaps.forEach(gap => {
+      gapsHtml += `<div style="padding:10px 14px;background:#fff;border:1px solid #e8e2da;border-left:3px solid ${color};border-radius:6px;font-size:12px">`;
+      gapsHtml += `<span style="font-weight:600;color:${color}">${domain.name}</span><br>`;
+      gapsHtml += `<span style="color:#44403c">${gap}</span></div>`;
+    });
+  });
+  gapsHtml += '</div>';
+  gapsEl.innerHTML = gapsHtml;
+
+  // Buildable DBs
+  const buildEl = document.getElementById('coverage-buildable');
+  let buildHtml = '<div class="size-chart-title">構築可能なDB（散在データから統合で価値創出）</div>';
+  buildHtml += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px">';
+  covData.domains.forEach(domain => {
+    const color = domainColors[domain.id] || '#783c28';
+    (domain.buildable_dbs || []).forEach(db => {
+      buildHtml += `<div style="padding:12px 16px;background:#fff;border:1px solid #e8e2da;border-radius:8px">`;
+      buildHtml += `<div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">${db.name}</div>`;
+      buildHtml += `<div style="font-size:11px;color:#6b635b;margin-bottom:6px">${db.sources}</div>`;
+      buildHtml += `<div style="display:flex;gap:6px">`;
+      buildHtml += `<span style="font-size:10px;background:#f0ede8;padding:2px 8px;border-radius:8px;font-family:'SF Mono',monospace">${db.estimate}</span>`;
+      buildHtml += `<span style="font-size:10px;background:${db.cost === '無料' ? '#dcfce7' : '#fef3c7'};padding:2px 8px;border-radius:8px">${db.cost}</span>`;
+      buildHtml += `</div></div>`;
+    });
+  });
+  buildHtml += '</div>';
+  buildEl.innerHTML = buildHtml;
+}
+
 // Load data
-fetch('data/db_metadata.json')
-  .then(r => r.json())
-  .then(data => {
-    allDbs = data;
+Promise.all([
+  fetch('data/db_metadata.json').then(r => r.json()),
+  fetch('data/coverage_data.json').then(r => r.json()).catch(() => null)
+])
+  .then(([dbData, covData]) => {
+    allDbs = dbData;
     renderSummary();
     renderSizeChart();
     renderGrid();
+    if (covData) renderCoverageAnalysis(covData);
   })
   .catch(e => {
     document.getElementById('grid').innerHTML = `<div style="text-align:center;padding:40px;color:#c62828;grid-column:1/-1">Error: ${e.message}</div>`;
