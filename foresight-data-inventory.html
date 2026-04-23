@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来洞察データ資産棚卸し — MIRA TUKU</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+:root {
+  --accent: #783c28; --accent-light: #9a5545; --bg: #faf8f5; --surface: #fff;
+  --border: #e8e0d8; --text: #1a1a1a; --text-sub: #6b5c56; --text-muted: #9e8e89;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --foresight: #1e6b4f; --history: #8b5e3c; --anthropology: #6b4c8a;
+  --academic: #2c5f8a; --signal: #b85c2f; --executive: #4a4a6a;
+  --infra: #5a7060; --business: #7a6040;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, 'Hiragino Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; font-size: 15px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+header { background: var(--accent); color: #fff; padding: 2rem 0; text-align: center; }
+header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: .06em; }
+header .sub { font-size: .85rem; opacity: .75; margin-top: .3rem; }
+header .updated { font-size: .72rem; opacity: .5; margin-top: .5rem; }
+
+.nav-back { padding: 12px 20px; max-width: 1100px; margin: 0 auto; }
+.nav-back a { font-size: 12px; color: var(--accent); text-decoration: none; }
+.nav-back a:hover { text-decoration: underline; }
+
+/* Summary */
+.summary-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 24px auto; max-width: 1100px; padding: 0 20px; }
+.summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; box-shadow: var(--shadow); }
+.summary-card .label { font-size: .72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.summary-card .value { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin: 4px 0; font-variant-numeric: tabular-nums; }
+.summary-card .unit { font-size: .72rem; color: var(--text-sub); }
+
+/* Section */
+.section { margin: 28px auto; max-width: 1100px; padding: 0 20px; }
+.section-title { font-size: 1rem; font-weight: 700; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section-badge { font-size: .68rem; background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+
+/* DB Card */
+.db-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.db-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); border-left: 4px solid var(--accent); transition: border-color .15s; }
+.db-card:hover { border-color: var(--accent-light); }
+.db-card.foresight { border-left-color: var(--foresight); }
+.db-card.history { border-left-color: var(--history); }
+.db-card.anthropology { border-left-color: var(--anthropology); }
+.db-card.academic { border-left-color: var(--academic); }
+.db-card.signal { border-left-color: var(--signal); }
+.db-card.executive { border-left-color: var(--executive); }
+.db-card.infra { border-left-color: var(--infra); }
+.db-card.business { border-left-color: var(--business); }
+.db-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.db-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.db-name { font-size: .88rem; font-weight: 700; }
+.db-name-ja { font-size: .72rem; color: var(--text-sub); }
+.db-desc { font-size: .78rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 8px; }
+.db-stats { display: flex; flex-wrap: wrap; gap: 6px; }
+.db-stat { font-size: .68rem; background: #f5f0ea; color: var(--accent); padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+.db-stat.highlight { background: var(--accent); color: #fff; }
+.db-link { font-size: .68rem; color: var(--accent); text-decoration: none; margin-top: 6px; display: inline-block; }
+.db-link:hover { text-decoration: underline; }
+.db-status { font-size: .65rem; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+.db-status.active { background: #e8f5e9; color: #2e7d32; }
+.db-status.dev { background: #fff3e0; color: #e65100; }
+.db-status.archive { background: #f5f5f5; color: #999; }
+
+/* Pipeline */
+.pipeline { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; overflow-x: auto; }
+.pipeline-flow { display: flex; align-items: center; gap: 0; min-width: 700px; }
+.pipeline-step { background: #f5f0ea; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; text-align: center; flex: 1; min-width: 120px; }
+.pipeline-step .step-label { font-size: .65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+.pipeline-step .step-name { font-size: .78rem; font-weight: 700; color: var(--text); margin: 4px 0; }
+.pipeline-step .step-data { font-size: .68rem; color: var(--text-sub); }
+.pipeline-arrow { font-size: 1.2rem; color: var(--accent); flex-shrink: 0; padding: 0 4px; }
+
+/* 5 Steps */
+.steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; box-shadow: var(--shadow); }
+.step-num { font-size: 1.8rem; font-weight: 900; color: var(--accent); opacity: .3; }
+.step-title { font-size: .82rem; font-weight: 700; margin: 4px 0 8px; }
+.step-tools { text-align: left; }
+.step-tool { font-size: .68rem; color: var(--text-sub); padding: 2px 0; border-bottom: 1px solid #f5f0ea; }
+.step-tool:last-child { border-bottom: none; }
+
+@media (max-width: 768px) {
+  .summary-row { grid-template-columns: repeat(3, 1fr); }
+  .db-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>未来洞察データ資産棚卸し</h1>
+  <div class="sub">ミラツク未来洞察プロジェクトに寄与する全データ資産の可視化</div>
+  <div class="updated">最終更新: 2026-04-24</div>
+</header>
+
+<div class="nav-back"><a href="index.html">&larr; App Launcher</a> | <a href="reports.html">Special Reports</a></div>
+
+<div class="summary-row">
+  <div class="summary-card">
+    <div class="label">データベース総数</div>
+    <div class="value">26</div>
+    <div class="unit">SQLite DB</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">総レコード数</div>
+    <div class="value">1.8M+</div>
+    <div class="unit">件</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">総データサイズ</div>
+    <div class="value">~970</div>
+    <div class="unit">MB</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">公開ダッシュボード</div>
+    <div class="value">8</div>
+    <div class="unit">サイト</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">日次自動収集</div>
+    <div class="value">600+</div>
+    <div class="unit">記事/日</div>
+  </div>
+</div>
+
+<!-- ミラツク5ステップ -->
+<div class="section">
+  <div class="section-title">ミラツク未来洞察 5ステップとデータ資産マッピング</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">情報収集</div>
+      <div class="step-tools">
+        <div class="step-tool">PESTLE DB (225K記事)</div>
+        <div class="step-tool">Future Insight App (241K記事)</div>
+        <div class="step-tool">Foresight KB (51K レポート)</div>
+        <div class="step-tool">Investment Signal Radar</div>
+        <div class="step-tool">OpenAlex / Semantic Scholar</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">構造分析</div>
+      <div class="step-tools">
+        <div class="step-tool">CLA DB (324分析・36年)</div>
+        <div class="step-tool">Foresight KB (23K予測)</div>
+        <div class="step-tool">Structural Inflection Radar</div>
+        <div class="step-tool">Frontier Detector</div>
+        <div class="step-tool">Academic Knowledge DB (4.7K)</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">シグナル検出</div>
+      <div class="step-tools">
+        <div class="step-tool">Signal DB (104シグナル)</div>
+        <div class="step-tool">Foresight KB (650トレンド)</div>
+        <div class="step-tool">Investment Signal Radar</div>
+        <div class="step-tool">Inflection Scorer</div>
+        <div class="step-tool">PESTLE日次パイプライン</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-title">シナリオ構築</div>
+      <div class="step-tools">
+        <div class="step-tool">Foresight KB (5,099シナリオ)</div>
+        <div class="step-tool">未来予測カード (1,141予測)</div>
+        <div class="step-tool">CLA パラダイムシフト (10)</div>
+        <div class="step-tool">FIW シナリオワークスペース</div>
+        <div class="step-tool">Great Figures DB (歴史的先例)</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div class="step-title">意思決定</div>
+      <div class="step-tools">
+        <div class="step-tool">Foresight Board (CxO会議)</div>
+        <div class="step-tool">CxO Team (6人AI)</div>
+        <div class="step-tool">Research Dashboard</div>
+        <div class="step-tool">Policy DB (221K任命)</div>
+        <div class="step-tool">Experts DB (4K専門家)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- データパイプライン -->
+<div class="section">
+  <div class="section-title">日次データパイプライン</div>
+  <div class="pipeline">
+    <div class="pipeline-flow">
+      <div class="pipeline-step">
+        <div class="step-label">04:00 JST</div>
+        <div class="step-name">RSS収集</div>
+        <div class="step-data">145ソース<br>600記事/日</div>
+      </div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step">
+        <div class="step-label">AI分析</div>
+        <div class="step-name">PESTLE分類</div>
+        <div class="step-data">6カテゴリ<br>100記事/カテゴリ</div>
+      </div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step">
+        <div class="step-label">構造化</div>
+        <div class="step-name">CLA分析</div>
+        <div class="step-data">4層構造<br>日次/四半期/年次</div>
+      </div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step">
+        <div class="step-label">検出</div>
+        <div class="step-name">シグナル検出</div>
+        <div class="step-data">弱シグナル<br>アラート生成</div>
+      </div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-step">
+        <div class="step-label">05:00 JST</div>
+        <div class="step-name">公開・配信</div>
+        <div class="step-data">GitHub Pages<br>ダッシュボード更新</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 未来洞察系DB -->
+<div class="section">
+  <div class="section-title">未来洞察・フォーサイト系 <span class="section-badge">8 DB</span></div>
+  <div class="db-grid">
+    <div class="db-card foresight">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--foresight)">FK</div>
+        <div><div class="db-name">Foresight Knowledge Base</div><div class="db-name-ja">グローバル・フォーサイトDB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">世界323機関のフォーサイト情報を集約。予測・シナリオ・トレンドを横断分析。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">51K レポート</span>
+        <span class="db-stat">23K 予測</span>
+        <span class="db-stat">5K シナリオ</span>
+        <span class="db-stat">650 トレンド</span>
+        <span class="db-stat">136MB</span>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--foresight)">PE</div>
+        <div><div class="db-name">PESTLE DB</div><div class="db-name-ja">PESTLE構造化ニュースDB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">6カテゴリに分類された日次ニュース。145メディアソースから自動収集。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">225K 記事</span>
+        <span class="db-stat">145 ソース</span>
+        <span class="db-stat">147 四半期</span>
+        <span class="db-stat">133MB</span>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--foresight)">CL</div>
+        <div><div class="db-name">CLA DB</div><div class="db-name-ja">因果階層分析DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">36年分のCLA分析。リタニー→システム→世界観→神話の4層構造。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">324 CLA分析</span>
+        <span class="db-stat">10 パラダイムシフト</span>
+        <span class="db-stat">2,078 キーワード</span>
+        <span class="db-stat">13.5MB</span>
+      </div>
+    </div>
+    <div class="db-card signal">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--signal)">SG</div>
+        <div><div class="db-name">Signal DB</div><div class="db-name-ja">弱シグナル検出DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">AI検出された弱シグナルとアラート。シナリオ変種との連携。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">104 シグナル</span>
+        <span class="db-stat">29 アラート</span>
+        <span class="db-stat">4 シナリオ変種</span>
+        <span class="db-stat">1.5MB</span>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--foresight)">FI</div>
+        <div><div class="db-name">Future Insight App</div><div class="db-name-ja">未来洞察プラットフォーム</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">日次ニュース収集+CLA分析+学術論文追跡の統合プラットフォーム。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">241K 記事</span>
+        <span class="db-stat">日次ダイジェスト</span>
+        <span class="db-stat">151MB</span>
+      </div>
+    </div>
+    <div class="db-card signal">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--signal)">IR</div>
+        <div><div class="db-name">Investment Signal Radar</div><div class="db-name-ja">VC投資シグナル検出</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">スタートアップ資金調達の急増を検出。PR TIMES/The Bridge RSS連携。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">3,658 資金調達</span>
+        <span class="db-stat">1,803 企業</span>
+        <span class="db-stat">2.6MB</span>
+      </div>
+    </div>
+    <div class="db-card signal">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--signal)">SI</div>
+        <div><div class="db-name">Structural Inflection Radar</div><div class="db-name-ja">構造的変化点検出レーダー</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">5軸フレームワークで新興技術の構造的変化点を検出。OpenAlex+HackerNews。</div>
+      <div class="db-stats">
+        <span class="db-stat">5軸スコアリング</span>
+        <span class="db-stat">週次更新</span>
+        <span class="db-stat">公開ダッシュボード</span>
+      </div>
+    </div>
+    <div class="db-card signal">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--signal)">FD</div>
+        <div><div class="db-name">Frontier Detector</div><div class="db-name-ja">技術フロンティア分析</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">5エージェント並列分析（学術・特許・メディア・資金・キーワード）。</div>
+      <div class="db-stats">
+        <span class="db-stat">12 技術</span>
+        <span class="db-stat">156 シグナル</span>
+        <span class="db-stat">225 研究者</span>
+        <span class="db-stat">7次元スコア</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 歴史・人文系DB -->
+<div class="section">
+  <div class="section-title">歴史・人文学・人類学系 <span class="section-badge">4 DB</span></div>
+  <div class="db-grid">
+    <div class="db-card history">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--history)">GF</div>
+        <div><div class="db-name">Great Figures DB</div><div class="db-name-ja">歴史偉人DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">古代から現代までの起業家・経済学者・科学者の意思決定と概念の系譜。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">9,178 人物</span>
+        <span class="db-stat">1,050 イベント</span>
+        <span class="db-stat">568 概念</span>
+        <span class="db-stat">741 リンク</span>
+        <span class="db-stat">10MB</span>
+      </div>
+    </div>
+    <div class="db-card anthropology">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--anthropology)">AN</div>
+        <div><div class="db-name">Anthropology Concepts DB</div><div class="db-name-ja">人類学概念系譜DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">40+サブフィールドの人類学概念系譜。OCM分類・PESTLEシグナルマッチング。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">500 概念</span>
+        <span class="db-stat">252 研究者</span>
+        <span class="db-stat">258 出版物</span>
+        <span class="db-stat">401 OCMカテゴリ</span>
+        <span class="db-stat">1.4MB</span>
+      </div>
+    </div>
+    <div class="db-card history">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--history)">WC</div>
+        <div><div class="db-name">Writing Craft DB</div><div class="db-name-ja">文章技法DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">30メディア・100技法・20巨匠のプロファイル。メディア別スタイルガイド。</div>
+      <div class="db-stats">
+        <span class="db-stat">30 メディア</span>
+        <span class="db-stat">100 技法</span>
+        <span class="db-stat">20 巨匠</span>
+        <span class="db-stat">288 件</span>
+      </div>
+    </div>
+    <div class="db-card history">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--infra)">LL</div>
+        <div><div class="db-name">Lunar Life DB</div><div class="db-name-ja">月面生活リサーチDB</div></div>
+        <span class="db-status dev">開発中</span>
+      </div>
+      <div class="db-desc">JAXA資料ベースの月面生活課題・技術・研究DB。10カテゴリ。</div>
+      <div class="db-stats">
+        <span class="db-stat">10 カテゴリ</span>
+        <span class="db-stat">472 件</span>
+        <span class="db-stat">0.8MB</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 学術系DB -->
+<div class="section">
+  <div class="section-title">学術・研究系 <span class="section-badge">5 DB</span></div>
+  <div class="db-grid">
+    <div class="db-card academic">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--academic)">AK</div>
+        <div><div class="db-name">Academic Knowledge DB</div><div class="db-name-ja">5分野学術知識DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">人文学・社会科学・自然科学・工学・芸術の5分野を体系的に収集。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">4,703 知識単位</span>
+        <span class="db-stat">851 社会理論</span>
+        <span class="db-stat">1,761 自然科学発見</span>
+        <span class="db-stat">1,203 人文概念</span>
+        <span class="db-stat">12MB</span>
+      </div>
+    </div>
+    <div class="db-card academic">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--academic)">PP</div>
+        <div><div class="db-name">Paper Database</div><div class="db-name-ja">学術論文DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">OpenAlex・Semantic Scholar・CiNii連携の論文管理。</div>
+      <div class="db-stats">
+        <span class="db-stat">299 論文</span>
+        <span class="db-stat">7.2MB</span>
+      </div>
+    </div>
+    <div class="db-card academic">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--academic)">RP</div>
+        <div><div class="db-name">Researcher Profiler</div><div class="db-name-ja">研究者プロファイラー</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">研究者プロファイル・性格スコアリング・マッチングアルゴリズム。</div>
+      <div class="db-stats">
+        <span class="db-stat">702 プロファイル</span>
+        <span class="db-stat">0.8MB</span>
+      </div>
+    </div>
+    <div class="db-card academic">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--academic)">HA</div>
+        <div><div class="db-name">Healthy Aging DB</div><div class="db-name-ja">健康長寿リサーチDB</div></div>
+        <span class="db-status dev">開発中</span>
+      </div>
+      <div class="db-desc">加齢因子・介入策・理論フレームワークの統合研究DB。</div>
+      <div class="db-stats">
+        <span class="db-stat">82 因子</span>
+        <span class="db-stat">10 介入策</span>
+        <span class="db-stat">10 理論枠組</span>
+      </div>
+    </div>
+    <div class="db-card academic">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--academic)">SP</div>
+        <div><div class="db-name">Sangaku Press Releases</div><div class="db-name-ja">産学連携プレスリリースDB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">産学連携プレスリリース6,581件。sangaku-matcherとの連携。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">6,581 件</span>
+        <span class="db-stat">2.5MB</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ビジネス・政策系DB -->
+<div class="section">
+  <div class="section-title">ビジネス・政策系 <span class="section-badge">5 DB</span></div>
+  <div class="db-grid">
+    <div class="db-card business">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--business)">PD</div>
+        <div><div class="db-name">Policy DB</div><div class="db-name-ja">政策データベース</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">23省庁の審議会・委員会・予算事業。185K+の専門家任命データ。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">221K レコード</span>
+        <span class="db-stat">23 省庁</span>
+        <span class="db-stat">108MB</span>
+      </div>
+    </div>
+    <div class="db-card business">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--business)">SM</div>
+        <div><div class="db-name">Sangaku Matcher</div><div class="db-name-ja">産学連携マッチングDB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">企業・特許・技術シーズの産学連携マッチング。最大規模DB。</div>
+      <div class="db-stats">
+        <span class="db-stat highlight">492K レコード</span>
+        <span class="db-stat">3,872 企業</span>
+        <span class="db-stat">251MB</span>
+      </div>
+    </div>
+    <div class="db-card business">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--business)">EX</div>
+        <div><div class="db-name">Experts DB</div><div class="db-name-ja">政策専門家ネットワークDB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">省庁横断の専門家ネットワーク分析。ブリッジパーソン検出。</div>
+      <div class="db-stats">
+        <span class="db-stat">3,995 専門家</span>
+        <span class="db-stat">1,541 審議会</span>
+        <span class="db-stat">7,047 任命</span>
+      </div>
+    </div>
+    <div class="db-card executive">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--executive)">FB</div>
+        <div><div class="db-name">Foresight Board</div><div class="db-name-ja">CxO経営会議シミュレータ</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">7人のバーチャルC-suite（CFO/COO/CMO/CTO/CHRO/CSO/CEO）による意思決定支援。</div>
+      <div class="db-stats">
+        <span class="db-stat">5 会議モード</span>
+        <span class="db-stat">6 レポート形式</span>
+        <span class="db-stat">公開ツール</span>
+      </div>
+    </div>
+    <div class="db-card business">
+      <div class="db-head">
+        <div class="db-icon" style="background:var(--business)">IC</div>
+        <div><div class="db-name">IR Collector</div><div class="db-name-ja">企業IR情報DB</div></div>
+        <span class="db-status active">稼働中</span>
+      </div>
+      <div class="db-desc">EDINET公開企業の有価証券報告書から抽出した財務開示データ。</div>
+      <div class="db-stats">
+        <span class="db-stat">7,658 セクション</span>
+        <span class="db-stat">144MB</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 公開ダッシュボード -->
+<div class="section">
+  <div class="section-title">公開ダッシュボード一覧 <span class="section-badge">8 サイト</span></div>
+  <div class="db-grid">
+    <div class="db-card foresight">
+      <div class="db-desc" style="margin:0">
+        <strong>Miratuku News</strong> — PESTLE日次ニュース<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/miratuku-news" target="_blank">yuyanishimura0312.github.io/miratuku-news &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-desc" style="margin:0">
+        <strong>Future Insight Workspace</strong> — 協働フォーサイトツール<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/future-insight-workspace" target="_blank">yuyanishimura0312.github.io/future-insight-workspace &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card executive">
+      <div class="db-desc" style="margin:0">
+        <strong>Foresight Board</strong> — CxO経営会議シミュレータ<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/foresight-board/" target="_blank">yuyanishimura0312.github.io/foresight-board &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card signal">
+      <div class="db-desc" style="margin:0">
+        <strong>Structural Inflection Radar</strong> — 構造的変化点検出<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/structural-inflection-radar/" target="_blank">yuyanishimura0312.github.io/structural-inflection-radar &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card signal">
+      <div class="db-desc" style="margin:0">
+        <strong>Inflection Scorer</strong> — 5軸インタラクティブスコアラー<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/structural-inflection-scorer/" target="_blank">yuyanishimura0312.github.io/structural-inflection-scorer &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-desc" style="margin:0">
+        <strong>Foresight KB Dashboard</strong> — グローバルフォーサイトDB<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/app-launcher/foresight-knowledge-base.html" target="_blank">app-launcher/foresight-knowledge-base.html &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-desc" style="margin:0">
+        <strong>Research Dashboard</strong> — リサーチ統合ダッシュボード<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/research-dashboard/" target="_blank">yuyanishimura0312.github.io/research-dashboard &rarr;</a>
+      </div>
+    </div>
+    <div class="db-card foresight">
+      <div class="db-desc" style="margin:0">
+        <strong>Special Reports</strong> — 調査レポート一覧<br>
+        <a class="db-link" href="https://yuyanishimura0312.github.io/app-launcher/reports.html" target="_blank">app-launcher/reports.html &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
