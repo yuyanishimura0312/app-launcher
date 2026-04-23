@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special Reports — App Launcher</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #faf8f5;
+    color: #1a1a1a;
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .header {
+    padding: 32px 24px 16px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #783c28;
+    letter-spacing: -0.3px;
+  }
+  .header p {
+    font-size: 13px;
+    color: #6b635b;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .nav-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .nav-links a {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #fff;
+    border: 1px solid #e8e2da;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #783c28;
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: border-color 0.15s;
+  }
+  .nav-links a:hover { border-color: #c87864; }
+  .nav-links a.active {
+    background: #783c28;
+    border-color: #783c28;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #783c28;
+    margin: 32px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e8e2da;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .count {
+    font-size: 12px;
+    font-weight: 400;
+    color: #6b635b;
+    background: #f0ebe5;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .report-card {
+    background: #fff;
+    border: 1px solid #e8e2da;
+    border-radius: 12px;
+    padding: 20px 24px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .report-card:hover {
+    border-color: #c87864;
+    box-shadow: 0 2px 12px rgba(120, 60, 40, 0.08);
+  }
+  .report-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .report-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    letter-spacing: -1px;
+  }
+  .report-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .report-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+  }
+  .report-source {
+    font-size: 12px;
+    color: #6b635b;
+    margin-top: 2px;
+  }
+  .report-desc {
+    font-size: 13px;
+    color: #5c534b;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+  .report-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .report-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #f5f0ea;
+    color: #783c28;
+    font-weight: 500;
+  }
+  .report-date {
+    font-size: 11px;
+    color: #999;
+    margin-top: 10px;
+  }
+  .report-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge-new {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 14px;
+  }
+
+  @media (max-width: 640px) {
+    .header { padding: 20px 16px 12px; }
+    .container { padding: 0 16px 40px; }
+    .report-card { padding: 16px; }
+    .report-icon { width: 40px; height: 40px; font-size: 15px; }
+    .nav-links { gap: 6px; }
+    .nav-links a { padding: 6px 10px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Special Reports</h1>
+      <p>Claude Code で生成した調査レポート・分析レポート一覧</p>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">App Launcher →</a>
+      <a href="futurology.html">未来学データ →</a>
+      <a href="db-dashboard.html">DB Dashboard →</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title">
+    調査・分析レポート <span class="count" id="report-count"></span>
+  </div>
+  <div class="report-grid" id="report-grid"></div>
+</div>
+
+<script>
+const REPORTS = [
+  {
+    title: '民間助成最適配分仮説レポート',
+    desc: '企業財団・民間助成金データベース（3,669件）の横断分析に基づき、NPO・研究者が助成金獲得を最大化するための最適配分戦略を仮説提示するレポート。分野別・財団別の採択傾向、申請タイミング、金額帯分析を含む。',
+    url: 'https://yuyanishimura0312.github.io/corporate-foundation-grants/report/',
+    icon: 'JK',
+    color: '#783c28',
+    source: 'corporate-foundation-grants',
+    tags: ['助成金', 'データ分析', '戦略'],
+    date: '2026-04-21',
+    isNew: true,
+  },
+];
+
+function renderReports() {
+  const grid = document.getElementById('report-grid');
+  const count = document.getElementById('report-count');
+  count.textContent = REPORTS.length + ' 件';
+
+  if (REPORTS.length === 0) {
+    grid.innerHTML = '<div class="empty-state">レポートはまだありません</div>';
+    return;
+  }
+
+  grid.innerHTML = REPORTS.map(r => {
+    const newBadge = r.isNew ? '<span class="report-badge badge-new">NEW</span>' : '';
+    const tags = r.tags.map(t => `<span class="report-tag">${escapeHtml(t)}</span>`).join('');
+    return `
+      <a class="report-card" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">
+        <div class="report-card-header">
+          <div class="report-icon" style="background:${r.color}">${escapeHtml(r.icon)}</div>
+          <div class="report-meta">
+            <div class="report-title">${escapeHtml(r.title)}${newBadge}</div>
+            <div class="report-source">${escapeHtml(r.source)}</div>
+          </div>
+        </div>
+        <div class="report-desc">${escapeHtml(r.desc)}</div>
+        <div class="report-tags">${tags}</div>
+        <div class="report-date">${r.date}</div>
+      </a>
+    `;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+renderReports();
+</script>
+</body>
+</html>
