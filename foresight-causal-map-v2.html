@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foresight Data Causal Map v2 — MIRA TUKU</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+:root {
+  --ci-9: #DC8766; --ci-10: #B07256; --ci-11: #966D5E; --ci-12: #7A4033;
+  --bg: #faf8f5;
+  --text: #1a1a1a;
+  --text-sub: #5a4a3a;
+  --text-muted: #9e8e89;
+  --border: #e8e0d8;
+  --surface: #ffffff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+.header {
+  background: linear-gradient(135deg, var(--ci-12) 0%, var(--ci-10) 40%, var(--ci-9) 100%);
+  color: #fff;
+  padding: 48px 0 36px;
+}
+.header-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.header-logo { font-size: .75rem; letter-spacing: .4em; font-weight: 300; opacity: .7; margin-bottom: .4rem; }
+.header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: .03em; }
+.header-sub { font-size: .88rem; opacity: .75; margin-top: .4rem; max-width: 700px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.legend {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 1rem;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: .78rem; color: var(--text-sub); }
+.legend-line { width: 36px; height: 3px; border-radius: 2px; }
+
+.diagram-wrap { width: 100%; overflow-x: auto; padding: 1rem 0 2rem; }
+
+/* Explanation */
+.explanation { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+.explanation h2 { font-size: 1.15rem; font-weight: 700; color: var(--ci-12); margin-bottom: 1.2rem; }
+.structure-text { font-size: .88rem; color: var(--text-sub); line-height: 1.8; max-width: 800px; }
+.structure-text p { margin-bottom: 1rem; }
+.structure-text strong { color: var(--ci-12); }
+
+.footer {
+  background: var(--ci-12); color: rgba(255,255,255,.6);
+  padding: 1.5rem 0; text-align: center; font-size: .72rem; letter-spacing: .06em;
+}
+.footer strong { color: #fff; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-logo">MIRA TUKU</div>
+    <h1>Foresight Data Causal Map v2</h1>
+    <div class="header-sub">データ間の因果関係を整理。基軸DB（FK・PE）を中心に、6系統のシグナル検出が並列し、Mega-Analysisで合流する構造。</div>
+  </div>
+</div>
+
+<section style="padding:2rem 0;">
+  <div class="container">
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-line" style="background:#c0392b;"></div>
+        自動パイプライン（データ供給）
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#2980b9; opacity:.7;"></div>
+        クロスリンク / 共有キー
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#7f8c8d; opacity:.4;"></div>
+        分析時参照（間接的）
+      </div>
+      <div class="legend-item">
+        <div style="width:18px;height:18px;border-radius:4px;background:#c0392b;"></div>
+        基軸DB
+      </div>
+      <div class="legend-item">
+        <div style="width:18px;height:18px;border-radius:4px;background:#e67e22;"></div>
+        下流工程（派生）
+      </div>
+      <div class="legend-item">
+        <div style="width:18px;height:18px;border-radius:4px;background:#2c3e50;"></div>
+        並列シグナル系
+      </div>
+    </div>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1140 820" width="1140" height="820" xmlns="http://www.w3.org/2000/svg" style="font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#c0392b"/>
+          </marker>
+          <marker id="ab" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#2980b9"/>
+          </marker>
+          <marker id="ag" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#95a5a6"/>
+          </marker>
+          <filter id="sh" x="-4%" y="-4%" width="108%" height="112%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#7A4033" flood-opacity="0.08"/>
+          </filter>
+        </defs>
+
+        <!-- ===== LAYER BACKGROUNDS ===== -->
+        <!-- Layer: 基軸DB -->
+        <rect x="15" y="50" width="280" height="400" rx="16" fill="#fef9f4" stroke="#e8d5c5" stroke-width="1"/>
+        <text x="155" y="78" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">基軸データベース</text>
+
+        <!-- Layer: 下流工程 -->
+        <rect x="320" y="50" width="240" height="400" rx="16" fill="#f8f2ec" stroke="#e0d0c0" stroke-width="1"/>
+        <text x="440" y="78" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">下流工程（派生）</text>
+
+        <!-- Layer: 並列シグナル系 -->
+        <rect x="585" y="50" width="280" height="750" rx="16" fill="#f0ebe5" stroke="#d8c8b8" stroke-width="1"/>
+        <text x="725" y="78" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">並列シグナル検出系</text>
+
+        <!-- Layer: 統合 -->
+        <rect x="890" y="50" width="235" height="400" rx="16" fill="#e8e2dc" stroke="#d0c0b0" stroke-width="1"/>
+        <text x="1008" y="78" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">統合・意思決定</text>
+
+        <!-- Layer: 知識基盤 -->
+        <rect x="15" y="480" width="545" height="310" rx="16" fill="#f5f0ea" stroke="#e0d8d0" stroke-width="1"/>
+        <text x="288" y="508" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">知識基盤（分析支援）</text>
+
+        <!-- ===== ARROWS (behind nodes) ===== -->
+
+        <!-- FI → PE -->
+        <path d="M 155,195 L 155,240" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ar)"/>
+        <text x="168" y="222" font-size="7.5" fill="#c0392b" font-weight="600">daily_sync</text>
+
+        <!-- PE → SG -->
+        <path d="M 270,300 C 340,300 370,180 400,160" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ar)"/>
+        <text x="320" y="225" font-size="7" fill="#c0392b" font-weight="600">AI+統計検出</text>
+
+        <!-- PE → CL -->
+        <path d="M 270,320 C 330,340 370,340 400,330" stroke="#2980b9" stroke-width="2" fill="none" marker-end="url(#ab)" stroke-dasharray="6,3"/>
+        <text x="320" y="348" font-size="7" fill="#2980b9" font-weight="600">共有期間キー</text>
+
+        <!-- SG ↔ CL -->
+        <path d="M 430,200 L 430,300" stroke="#2980b9" stroke-width="1.5" fill="none" marker-end="url(#ab)" stroke-dasharray="5,3"/>
+
+        <!-- PE,SG,CL,FK,FI → Mega -->
+        <path d="M 270,290 C 500,260 800,250 920,260" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+        <path d="M 480,160 C 650,150 800,200 920,240" stroke="#c0392b" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+        <path d="M 480,340 C 650,330 800,290 920,270" stroke="#c0392b" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+        <path d="M 155,420 C 300,440 700,340 920,280" stroke="#c0392b" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+
+        <!-- Signal systems → Mega (gray, indirect) -->
+        <path d="M 830,140 C 870,180 900,220 920,240" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+        <path d="M 830,240 C 870,250 900,260 920,260" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+        <path d="M 830,340 C 870,330 900,300 920,280" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+        <path d="M 830,440 C 870,410 900,340 920,300" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+        <path d="M 830,540 C 880,480 910,380 920,320" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+        <path d="M 830,640 C 880,560 910,420 920,340" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+        <path d="M 830,740 C 880,640 910,460 920,360" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".5"/>
+
+        <!-- Knowledge → Mega (gray) -->
+        <path d="M 270,580 C 500,520 800,380 920,320" stroke="#95a5a6" stroke-width="1.2" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".4"/>
+        <path d="M 270,660 C 500,600 800,420 920,340" stroke="#95a5a6" stroke-width="1.2" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".4"/>
+        <path d="M 270,740 C 500,680 800,460 920,360" stroke="#95a5a6" stroke-width="1.2" fill="none" marker-end="url(#ag)" stroke-dasharray="4,4" opacity=".4"/>
+
+        <!-- AN ↔ PE -->
+        <path d="M 175,540 C 190,480 200,440 210,380" stroke="#2980b9" stroke-width="1.5" fill="none" marker-end="url(#ab)" stroke-dasharray="5,3" opacity=".6"/>
+        <text x="205" y="470" font-size="7" fill="#2980b9" font-weight="600" opacity=".7">OCM×PESTLE</text>
+
+
+        <!-- ===== NODES ===== -->
+
+        <!-- FI -->
+        <g transform="translate(55,100)">
+          <rect width="200" height="85" rx="12" fill="#7A4033" filter="url(#sh)"/>
+          <text x="100" y="22" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.5)" font-weight="600">収集エンジン（上流）</text>
+          <text x="100" y="44" text-anchor="middle" font-size="15" font-weight="900" fill="#fff">FI</text>
+          <text x="100" y="60" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">Future Insight Platform</text>
+          <text x="100" y="76" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">241K記事 | 145メディア | 日次600件</text>
+        </g>
+
+        <!-- PE -->
+        <g transform="translate(40,250)">
+          <rect width="230" height="100" rx="12" fill="#c0392b" filter="url(#sh)"/>
+          <rect x="5" y="5" width="220" height="90" rx="9" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="115" y="22" text-anchor="middle" font-size="7.5" fill="#ffd700" font-weight="700" letter-spacing="1">CORE / 基軸DB</text>
+          <text x="115" y="44" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">PE</text>
+          <text x="115" y="60" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.9)" font-weight="600">PESTLE DB</text>
+          <text x="115" y="75" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.6)">225K記事 | PESTLE 6軸分類</text>
+          <text x="115" y="88" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.5)">日次ニュースの基軸</text>
+        </g>
+
+        <!-- FK -->
+        <g transform="translate(40,370)">
+          <rect width="230" height="80" rx="12" fill="#c0392b" filter="url(#sh)"/>
+          <rect x="5" y="5" width="220" height="70" rx="9" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="115" y="22" text-anchor="middle" font-size="7.5" fill="#ffd700" font-weight="700" letter-spacing="1">CORE / 基軸DB</text>
+          <text x="115" y="42" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">FK</text>
+          <text x="115" y="56" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.9)" font-weight="600">Foresight Knowledge Base</text>
+          <text x="115" y="70" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.6)">51Kレポート | 23K予測 | 5Kシナリオ | 650トレンド</text>
+        </g>
+
+        <!-- SG -->
+        <g transform="translate(350,110)">
+          <rect width="180" height="85" rx="12" fill="#e67e22" filter="url(#sh)"/>
+          <text x="90" y="20" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.6)" font-weight="600">PE下流工程</text>
+          <text x="90" y="40" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">SG</text>
+          <text x="90" y="55" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.85)">Signal DB</text>
+          <text x="90" y="68" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.55)">511シグナル | 145アラート</text>
+          <text x="90" y="80" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.5)">AI抽出 + 統計異常検出</text>
+        </g>
+
+        <!-- CL -->
+        <g transform="translate(360,295)">
+          <rect width="160" height="70" rx="12" fill="#e67e22" filter="url(#sh)"/>
+          <text x="80" y="20" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.6)" font-weight="600">PE並行分析</text>
+          <text x="80" y="40" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">CL</text>
+          <text x="80" y="55" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.85)">CLA DB</text>
+          <text x="80" y="66" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.55)">324分析 | 36年分 | 4層構造</text>
+        </g>
+
+        <!-- ===== PARALLEL SIGNAL SYSTEMS ===== -->
+
+        <!-- SG (in signal column) -->
+        <g transform="translate(610,100)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#e74c3c" font-weight="700">1</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">SG — ニュースシグナル</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">PE記事 → AI + 統計</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">社会全般の弱シグナル・アラート</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#e74c3c">PE由来（唯一）</text>
+        </g>
+
+        <!-- IR -->
+        <g transform="translate(610,200)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#3498db" font-weight="700">2</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">IR — 投資シグナル</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">RSS → 資金調達検出</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">3,658調達 | 1,803企業</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#3498db">独立ソース: PR TIMES, The Bridge</text>
+        </g>
+
+        <!-- SI -->
+        <g transform="translate(610,300)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#3498db" font-weight="700">3</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">SI — 構造変化点</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">5軸理論スコアリング</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">技術の構造的変化点を検出</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#3498db">独立ソース: ユーザー入力</text>
+        </g>
+
+        <!-- PD -->
+        <g transform="translate(610,400)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#3498db" font-weight="700">4</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">PD — 政策シグナル</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">23省庁 → 政策変化検出</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">221K件 | 審議会・予算・専門家</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#3498db">独立ソース: RSシステム</text>
+        </g>
+
+        <!-- IC -->
+        <g transform="translate(610,500)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#3498db" font-weight="700">5</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">IC — 企業IRシグナル</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">EDINET → 企業戦略変化</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">4,000社 | 有報・四半期報告</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#3498db">独立ソース: EDINET API</text>
+        </g>
+
+        <!-- AL -->
+        <g transform="translate(610,600)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#3498db" font-weight="700">6</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">AL — 各国科技政策シグナル</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">114カ国 → 科技予算シフト</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">126政策文書 | 605重点領域</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#3498db">独立ソース: 各国政府</text>
+        </g>
+
+        <!-- FD -->
+        <g transform="translate(610,700)">
+          <rect width="220" height="65" rx="10" fill="#2c3e50" filter="url(#sh)"/>
+          <text x="18" y="18" font-size="7" fill="#3498db" font-weight="700">7</text>
+          <text x="35" y="18" font-size="9" fill="rgba(255,255,255,.6)" font-weight="600">FD — 技術フロンティア</text>
+          <text x="110" y="36" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">OpenAlex → 成熟度判定</text>
+          <text x="110" y="52" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.5)">7次元スコア | 225研究者</text>
+          <text x="110" y="62" text-anchor="middle" font-size="7" fill="#3498db">独立ソース: OpenAlex API</text>
+        </g>
+
+        <!-- ===== MEGA-ANALYSIS ===== -->
+        <g transform="translate(900,200)">
+          <rect width="210" height="200" rx="14" fill="#7A4033" filter="url(#sh)"/>
+          <rect x="6" y="6" width="198" height="188" rx="10" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <text x="105" y="30" text-anchor="middle" font-size="7.5" fill="#ffd700" font-weight="700" letter-spacing="1">AGGREGATOR</text>
+          <text x="105" y="55" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">Mega-Analysis</text>
+          <text x="105" y="75" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.75)">全DB横断統合分析</text>
+          <text x="105" y="100" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">直接JOIN:</text>
+          <text x="105" y="114" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">PE + SG + CL + FK + FI</text>
+          <text x="105" y="140" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">参照可能:</text>
+          <text x="105" y="154" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">IR, SI, PD, IC, AL, FD</text>
+          <text x="105" y="168" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">GF, AN, AK</text>
+          <text x="105" y="190" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.4)">→ CxO会議AI / Dashboard</text>
+        </g>
+
+        <!-- ===== KNOWLEDGE FOUNDATIONS ===== -->
+
+        <!-- AN -->
+        <g transform="translate(40,535)">
+          <rect width="170" height="55" rx="10" fill="#966D5E" filter="url(#sh)"/>
+          <text x="85" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">AN</text>
+          <text x="85" y="38" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">人類学概念DB</text>
+          <text x="85" y="50" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.55)">500概念 | OCM×PESTLE</text>
+        </g>
+
+        <!-- AK -->
+        <g transform="translate(40,620)">
+          <rect width="170" height="55" rx="10" fill="#966D5E" filter="url(#sh)"/>
+          <text x="85" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">AK</text>
+          <text x="85" y="38" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">学術知識DB</text>
+          <text x="85" y="50" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.55)">4,703知識単位 | 5分野</text>
+        </g>
+
+        <!-- GF -->
+        <g transform="translate(40,705)">
+          <rect width="170" height="55" rx="10" fill="#966D5E" filter="url(#sh)"/>
+          <text x="85" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">GF</text>
+          <text x="85" y="38" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">歴史偉人DB</text>
+          <text x="85" y="50" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.55)">9,178人 | 1,050意思決定</text>
+        </g>
+
+        <!-- Summary box -->
+        <g transform="translate(260,540)">
+          <rect width="280" height="220" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+          <text x="140" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#7A4033">構造まとめ</text>
+          <line x1="20" y1="34" x2="260" y2="34" stroke="#e8e0d8" stroke-width="1"/>
+          <text x="20" y="54" font-size="8.5" fill="#5a4a3a" font-weight="600">基軸DB（2つ）</text>
+          <text x="20" y="70" font-size="8" fill="#5a4a3a">  FK = フォーサイト知識の基軸</text>
+          <text x="20" y="84" font-size="8" fill="#5a4a3a">  PE = 日次ニュースの基軸</text>
+          <text x="20" y="106" font-size="8.5" fill="#5a4a3a" font-weight="600">下流工程（PEから派生）</text>
+          <text x="20" y="122" font-size="8" fill="#5a4a3a">  SG = PE記事からシグナル検出</text>
+          <text x="20" y="136" font-size="8" fill="#5a4a3a">  CL = PE記事のCLA分析</text>
+          <text x="20" y="158" font-size="8.5" fill="#5a4a3a" font-weight="600">並列シグナル系（7系統）</text>
+          <text x="20" y="174" font-size="8" fill="#5a4a3a">  各系統が独立ソースから変化を検出</text>
+          <text x="20" y="188" font-size="8" fill="#5a4a3a">  SG(ニュース), IR(投資), SI(技術),</text>
+          <text x="20" y="202" font-size="8" fill="#5a4a3a">  PD(政策), IC(企業IR), AL(科技), FD(学術)</text>
+        </g>
+
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="explanation">
+  <div class="container">
+    <h2>データ構造の因果関係</h2>
+    <div class="structure-text">
+      <p><strong>基軸DBは2つ。</strong>FK（Foresight Knowledge Base）は世界323機関のフォーサイト知識を集約した基軸DB。PE（PESTLE DB）は日次600件のニュース記事を6軸で分類した基軸DB。この2つがフォーサイトデータ基盤の中心にある。</p>
+
+      <p><strong>PEから2つの下流工程が派生する。</strong>SG（Signal DB）はPE記事をAIと統計で分析してウィークシグナル・アラートを検出した結果。CL（CLA DB）はPE記事を因果階層分析の4層レンズで分析した結果。どちらもPE記事がなければ存在しない派生データ。</p>
+
+      <p><strong>7系統のシグナル検出が並列に存在する。</strong>SGはPE記事由来だが、残り6系統はそれぞれ独立したデータソースから変化の兆候を捉える。IR（投資）、SI（技術変化点）、PD（日本の政策）、IC（企業IR）、AL（各国科技政策）、FD（学術フロンティア）。異なる角度から同じ「変化」を検出する多眼的構造。</p>
+
+      <p><strong>Mega-Analysisが最終合流点。</strong>基軸DB（FK, PE）、下流工程（SG, CL）、並列シグナル系、知識基盤（AN, AK, GF）のすべてが、横断統合分析で合流し、CxO会議AIやダッシュボードによる意思決定を支える。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>MIRA TUKU</strong> &mdash; Foresight Data Causal Map v2<br>
+  NPO法人ミラツク &nbsp;|&nbsp; 2026-04-24
+</footer>
+
+</body>
+</html>

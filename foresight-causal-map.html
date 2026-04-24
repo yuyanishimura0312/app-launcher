@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foresight Data Causal Map — MIRA TUKU</title>
+<link rel="icon" href="https://esse-sense.com/favicon.ico">
+<style>
+:root {
+  --ci-9: #DC8766; --ci-10: #B07256; --ci-11: #966D5E; --ci-12: #7A4033;
+  --bg: #faf8f5;
+  --text: #1a1a1a;
+  --text-sub: #5a4a3a;
+  --text-muted: #9e8e89;
+  --border: #e8e0d8;
+  --surface: #ffffff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--ci-12) 0%, var(--ci-10) 40%, var(--ci-9) 100%);
+  color: #fff;
+  padding: 48px 0 36px;
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.header-logo {
+  font-size: .75rem;
+  letter-spacing: .4em;
+  font-weight: 300;
+  opacity: .7;
+  margin-bottom: .4rem;
+}
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+.header-sub {
+  font-size: .88rem;
+  opacity: .75;
+  margin-top: .4rem;
+  max-width: 640px;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .78rem;
+  color: var(--text-sub);
+}
+.legend-line {
+  width: 36px;
+  height: 3px;
+  border-radius: 2px;
+}
+.legend-arrow {
+  width: 0; height: 0;
+  border-left: 6px solid;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+/* SVG Diagram */
+.diagram-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding: 1rem 0 2rem;
+}
+.diagram-wrap svg {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Node tooltip */
+.node-group { cursor: pointer; }
+.node-group:hover .node-box { filter: brightness(1.08); }
+.node-group:hover .node-label { font-weight: 800; }
+
+/* Explanation */
+.explanation {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border);
+}
+.explanation h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ci-12);
+  margin-bottom: 1.2rem;
+}
+.flow-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.flow-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 22px;
+}
+.flow-title {
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--ci-12);
+  margin-bottom: 4px;
+}
+.flow-desc {
+  font-size: .82rem;
+  color: var(--text-sub);
+  line-height: 1.65;
+}
+.flow-arrow {
+  display: inline-block;
+  color: var(--ci-9);
+  font-weight: 700;
+  margin: 0 4px;
+}
+
+/* Footer */
+.footer {
+  background: var(--ci-12);
+  color: rgba(255,255,255,.6);
+  padding: 1.5rem 0;
+  text-align: center;
+  font-size: .72rem;
+  letter-spacing: .06em;
+}
+.footer strong { color: #fff; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-logo">MIRA TUKU</div>
+    <h1>Foresight Data Causal Map</h1>
+    <div class="header-sub">26のデータベース間のデータフロー（因果関係）を図解。どのデータがどのデータを生み出し、どこに流れているかを可視化する。</div>
+  </div>
+</div>
+
+<section style="padding:2rem 0;">
+  <div class="container">
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-line" style="background:#c0392b;"></div>
+        <div class="legend-arrow" style="border-left-color:#c0392b;"></div>
+        直接データ供給（自動パイプライン）
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#2980b9;"></div>
+        <div class="legend-arrow" style="border-left-color:#2980b9;"></div>
+        クロスリンク参照（共有キーで結合）
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#7f8c8d; opacity:.5;"></div>
+        <div class="legend-arrow" style="border-left-color:#7f8c8d; opacity:.5;"></div>
+        分析時参照（手動/間接的）
+      </div>
+    </div>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1060 720" width="1060" height="720" xmlns="http://www.w3.org/2000/svg" style="font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;">
+        <defs>
+          <!-- Arrow markers -->
+          <marker id="arr-red" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#c0392b"/>
+          </marker>
+          <marker id="arr-blue" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#2980b9"/>
+          </marker>
+          <marker id="arr-gray" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#95a5a6"/>
+          </marker>
+          <!-- Glow filter -->
+          <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#7A4033" flood-opacity="0.08"/>
+          </filter>
+        </defs>
+
+        <!-- ===== LAYER BACKGROUNDS ===== -->
+        <!-- Step 1: Collection -->
+        <rect x="10" y="10" width="240" height="700" rx="16" fill="#fdf5ef" stroke="#e8d5c5" stroke-width="1"/>
+        <text x="130" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">STEP 1: 情報収集</text>
+
+        <!-- Step 2: Structural Analysis -->
+        <rect x="270" y="10" width="220" height="700" rx="16" fill="#f5efe8" stroke="#e0d0c0" stroke-width="1"/>
+        <text x="380" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">STEP 2: 構造分析</text>
+
+        <!-- Step 3: Signal Detection -->
+        <rect x="510" y="10" width="220" height="700" rx="16" fill="#eee8e0" stroke="#d8c8b8" stroke-width="1"/>
+        <text x="620" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">STEP 3: シグナル検出</text>
+
+        <!-- Step 4-5: Scenario & Decision -->
+        <rect x="750" y="10" width="300" height="700" rx="16" fill="#e8e0d8" stroke="#d0c0b0" stroke-width="1"/>
+        <text x="900" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#B07256" letter-spacing="2">STEP 4-5: シナリオ・意思決定</text>
+
+        <!-- ===== DATA FLOW ARROWS (drawn first, behind nodes) ===== -->
+
+        <!-- FI → PE (direct pipeline) -->
+        <path d="M 195,140 L 195,175" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arr-red)"/>
+
+        <!-- PE → SG (PESTLE articles → Signal detection) -->
+        <path d="M 230,230 C 380,230 480,120 560,120" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arr-red)"/>
+
+        <!-- PE → CL (shared period keys) -->
+        <path d="M 230,250 C 300,270 330,290 340,310" stroke="#2980b9" stroke-width="2" fill="none" marker-end="url(#arr-blue)" stroke-dasharray="6,3"/>
+
+        <!-- PE → IR (PESTLE classification applied) -->
+        <path d="M 230,210 C 400,180 510,200 560,240" stroke="#2980b9" stroke-width="2" fill="none" marker-end="url(#arr-blue)" stroke-dasharray="6,3"/>
+
+        <!-- SG ↔ CL (signal_cla_links) -->
+        <path d="M 560,140 C 500,180 450,280 420,310" stroke="#2980b9" stroke-width="1.5" fill="none" marker-end="url(#arr-blue)" stroke-dasharray="5,3"/>
+
+        <!-- PE, SG, CL, FK, FI → Mega-Analysis -->
+        <path d="M 195,280 C 195,600 750,580 810,500" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arr-red)"/>
+        <path d="M 620,160 C 700,300 750,420 810,480" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+        <path d="M 420,360 C 550,440 700,460 810,480" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+        <path d="M 160,420 C 200,520 500,540 810,500" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+
+        <!-- FK → Mega-Analysis -->
+        <path d="M 160,500 C 300,560 600,540 810,500" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+
+        <!-- AN ↔ PE (OCM × PESTLE cross-matching) -->
+        <path d="M 335,530 C 280,460 230,360 210,280" stroke="#2980b9" stroke-width="1.5" fill="none" marker-end="url(#arr-blue)" stroke-dasharray="5,3"/>
+
+        <!-- GF → Scenario (historical precedent) -->
+        <path d="M 400,650 C 600,650 700,400 810,370" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#arr-gray)" stroke-dasharray="4,4" opacity=".6"/>
+
+        <!-- PD → Decision (policy intelligence) -->
+        <path d="M 640,640 C 720,600 780,500 810,480" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#arr-gray)" stroke-dasharray="4,4" opacity=".6"/>
+
+        <!-- FI → CL (analysis supply) -->
+        <path d="M 200,155 C 260,200 310,260 350,310" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+
+        <!-- AK → Scenario (academic knowledge) -->
+        <path d="M 400,540 C 600,500 750,400 810,380" stroke="#95a5a6" stroke-width="1.5" fill="none" marker-end="url(#arr-gray)" stroke-dasharray="4,4" opacity=".6"/>
+
+
+        <!-- ===== NODES ===== -->
+
+        <!-- FI: Future Insight Platform -->
+        <g class="node-group" transform="translate(105,80)">
+          <rect class="node-box" x="0" y="0" width="180" height="60" rx="12" fill="#7A4033" filter="url(#shadow)"/>
+          <text x="90" y="24" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">FI</text>
+          <text x="90" y="42" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">未来洞察統合PF</text>
+          <text x="90" y="54" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">241K記事 | 日次パイプライン</text>
+        </g>
+
+        <!-- PE: PESTLE Database (central hub) -->
+        <g class="node-group" transform="translate(80,185)">
+          <rect class="node-box" x="0" y="0" width="150" height="95" rx="12" fill="#c0392b" filter="url(#shadow)"/>
+          <rect x="6" y="6" width="138" height="83" rx="9" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+          <text x="75" y="30" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">PE</text>
+          <text x="75" y="48" text-anchor="middle" font-size="10" font-weight="700" fill="rgba(255,255,255,.9)">PESTLE DB</text>
+          <text x="75" y="62" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.6)">225,881 記事</text>
+          <text x="75" y="74" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.6)">145ソース | 600/日</text>
+          <text x="75" y="87" text-anchor="middle" font-size="7.5" font-weight="700" fill="#ffd700">CENTRAL HUB</text>
+        </g>
+
+        <!-- FK: Foresight Knowledge Base -->
+        <g class="node-group" transform="translate(50,395)">
+          <rect class="node-box" x="0" y="0" width="180" height="60" rx="12" fill="#B07256" filter="url(#shadow)"/>
+          <text x="90" y="24" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">FK</text>
+          <text x="90" y="42" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">フォーサイトKB</text>
+          <text x="90" y="54" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">51K報告 | 23K予測 | 5Kシナリオ</text>
+        </g>
+
+        <!-- CL: CLA Database -->
+        <g class="node-group" transform="translate(310,310)">
+          <rect class="node-box" x="0" y="0" width="150" height="60" rx="12" fill="#966D5E" filter="url(#shadow)"/>
+          <text x="75" y="24" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">CL</text>
+          <text x="75" y="42" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">因果階層分析DB</text>
+          <text x="75" y="54" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">324分析 | 10パラダイム</text>
+        </g>
+
+        <!-- SG: Signal Database -->
+        <g class="node-group" transform="translate(540,80)">
+          <rect class="node-box" x="0" y="0" width="160" height="70" rx="12" fill="#DC8766" filter="url(#shadow)"/>
+          <text x="80" y="24" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">SG</text>
+          <text x="80" y="42" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">弱シグナル検出DB</text>
+          <text x="80" y="56" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">104シグナル | 29アラート</text>
+          <text x="80" y="66" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.5)">PE記事からAI自動検出</text>
+        </g>
+
+        <!-- IR: Investment Signal Radar -->
+        <g class="node-group" transform="translate(540,200)">
+          <rect class="node-box" x="0" y="0" width="160" height="60" rx="12" fill="#b85c2f" filter="url(#shadow)"/>
+          <text x="80" y="24" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">IR</text>
+          <text x="80" y="42" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">投資シグナルレーダー</text>
+          <text x="80" y="54" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">3,658調達 | 1,803企業</text>
+        </g>
+
+        <!-- SI: Structural Inflection Radar -->
+        <g class="node-group" transform="translate(540,310)">
+          <rect class="node-box" x="0" y="0" width="160" height="55" rx="12" fill="#b85c2f" filter="url(#shadow)"/>
+          <text x="80" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">SI</text>
+          <text x="80" y="38" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">構造変化点レーダー</text>
+          <text x="80" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">5軸理論 | 週次更新</text>
+        </g>
+
+        <!-- FD: Frontier Detector -->
+        <g class="node-group" transform="translate(540,410)">
+          <rect class="node-box" x="0" y="0" width="160" height="55" rx="12" fill="#b85c2f" filter="url(#shadow)"/>
+          <text x="80" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">FD</text>
+          <text x="80" y="38" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">フロンティア検出</text>
+          <text x="80" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">7次元スコア | 225研究者</text>
+        </g>
+
+        <!-- AN: Anthropology DB -->
+        <g class="node-group" transform="translate(275,500)">
+          <rect class="node-box" x="0" y="0" width="155" height="55" rx="12" fill="#966D5E" filter="url(#shadow)"/>
+          <text x="78" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">AN</text>
+          <text x="78" y="38" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">人類学概念DB</text>
+          <text x="78" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">500概念 | OCM×PESTLE</text>
+        </g>
+
+        <!-- AK: Academic Knowledge DB -->
+        <g class="node-group" transform="translate(275,580)">
+          <rect class="node-box" x="0" y="0" width="155" height="50" rx="12" fill="#966D5E" filter="url(#shadow)"/>
+          <text x="78" y="20" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">AK</text>
+          <text x="78" y="36" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">学術知識DB</text>
+          <text x="78" y="47" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">4,703知識単位 | 5分野</text>
+        </g>
+
+        <!-- GF: Great Figures DB -->
+        <g class="node-group" transform="translate(275,650)">
+          <rect class="node-box" x="0" y="0" width="155" height="50" rx="12" fill="#966D5E" filter="url(#shadow)"/>
+          <text x="78" y="20" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">GF</text>
+          <text x="78" y="36" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">歴史偉人DB</text>
+          <text x="78" y="47" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">9,178人 | 1,050意思決定</text>
+        </g>
+
+        <!-- PD: Policy Database -->
+        <g class="node-group" transform="translate(530,600)">
+          <rect class="node-box" x="0" y="0" width="160" height="55" rx="12" fill="#966D5E" filter="url(#shadow)"/>
+          <text x="80" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">PD</text>
+          <text x="80" y="38" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.8)">政策DB</text>
+          <text x="80" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">221K件 | 23省庁</text>
+        </g>
+
+        <!-- MEGA: Foresight Mega-Analysis (Aggregator) -->
+        <g class="node-group" transform="translate(780,440)">
+          <rect class="node-box" x="0" y="0" width="200" height="80" rx="14" fill="#7A4033" filter="url(#shadow)"/>
+          <rect x="6" y="6" width="188" height="68" rx="10" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">Mega-Analysis</text>
+          <text x="100" y="45" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.75)">5DB横断統合分析</text>
+          <text x="100" y="58" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">PE + SG + CL + FK + FI</text>
+          <text x="100" y="72" text-anchor="middle" font-size="7.5" font-weight="700" fill="#ffd700">AGGREGATOR</text>
+        </g>
+
+        <!-- Scenario -->
+        <g class="node-group" transform="translate(800,330)">
+          <rect class="node-box" x="0" y="0" width="180" height="55" rx="12" fill="#B07256" filter="url(#shadow)"/>
+          <text x="90" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Scenario DB</text>
+          <text x="90" y="38" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">5,099シナリオ + 1,141カード</text>
+          <text x="90" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">FK由来 + 歴史先例</text>
+        </g>
+
+        <!-- CxO / Decision -->
+        <g class="node-group" transform="translate(800,220)">
+          <rect class="node-box" x="0" y="0" width="180" height="55" rx="12" fill="#7A4033" filter="url(#shadow)"/>
+          <text x="90" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">CxO Decision AI</text>
+          <text x="90" y="38" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">経営会議AI + Dashboard</text>
+          <text x="90" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.55)">意思決定支援</text>
+        </g>
+
+        <!-- Independent labels -->
+        <text x="625" y="405" text-anchor="middle" font-size="7.5" fill="#95a5a6" font-style="italic">独立系</text>
+        <text x="625" y="465" text-anchor="middle" font-size="7.5" fill="#95a5a6" font-style="italic">独立系</text>
+
+        <!-- RSS label for IR -->
+        <g transform="translate(540,170)">
+          <text x="0" y="0" font-size="7.5" fill="#95a5a6">RSS (PR TIMES, The Bridge)</text>
+        </g>
+
+        <!-- OpenAlex label for FD -->
+        <g transform="translate(540,405)">
+          <text x="0" y="0" font-size="7.5" fill="#95a5a6">OpenAlex API</text>
+        </g>
+
+        <!-- Flow label: PE → SG -->
+        <g transform="translate(400,165)">
+          <rect x="-4" y="-10" width="120" height="16" rx="3" fill="rgba(192,57,43,.1)"/>
+          <text x="56" y="1" text-anchor="middle" font-size="7.5" font-weight="700" fill="#c0392b">記事→AI弱シグナル検出</text>
+        </g>
+
+        <!-- Flow label: PE → CL -->
+        <g transform="translate(260,260)">
+          <rect x="-4" y="-10" width="88" height="16" rx="3" fill="rgba(41,128,185,.1)"/>
+          <text x="40" y="1" text-anchor="middle" font-size="7.5" font-weight="700" fill="#2980b9">共有期間キー</text>
+        </g>
+
+        <!-- Flow label: AN ↔ PE -->
+        <g transform="translate(228,430)">
+          <rect x="-4" y="-10" width="100" height="16" rx="3" fill="rgba(41,128,185,.1)"/>
+          <text x="46" y="1" text-anchor="middle" font-size="7.5" font-weight="700" fill="#2980b9">OCM×PESTLEマッチ</text>
+        </g>
+
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="explanation">
+  <div class="container">
+    <h2>因果関係の詳細</h2>
+    <div class="flow-list">
+
+      <div class="flow-item">
+        <div class="flow-title">1. 中核パイプライン: FI <span class="flow-arrow">→</span> PE <span class="flow-arrow">→</span> SG</div>
+        <div class="flow-desc">
+          <strong>Future Insight Platform (FI)</strong> が145メディアソースから日次600記事を自動収集し、<strong>PESTLE DB (PE)</strong> に構造化データとして格納する。PE内の記事はAIによる弱シグナル検出の入力となり、<strong>Signal DB (SG)</strong> にシグナル・アラートが生成される。この3段階が自動パイプラインの骨格。
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-title">2. クロスリンク: PE <span class="flow-arrow">↔</span> CL <span class="flow-arrow">↔</span> SG</div>
+        <div class="flow-desc">
+          <strong>CLA DB (CL)</strong> はPESTLEと共有期間キー（年次・四半期・日次）で結合され、同じ時期の記事を因果階層分析の4層（リタニー→システム→世界観→神話）で深掘りする。SGとCLもsignal_cla_linksテーブルでクロスリンク可能だが、現在はまだ空の状態。CLはPE記事を直接消費するのではなく、同じ時期を「別の分析レンズ」で見る並行分析。
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-title">3. 統合集約: 5DB <span class="flow-arrow">→</span> Mega-Analysis</div>
+        <div class="flow-desc">
+          <strong>Foresight Mega-Analysis</strong> が pestle.db, signal.db, cla.db, foresight.db (FK), future_insight.db (FI) の5つのSQLiteを同時に読み込み、クロスデータベースJOINで横断分析を実行する。これがデータ統合の最終合流点。
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-title">4. 独立系レーダー: IR, SI, FD</div>
+        <div class="flow-desc">
+          <strong>Investment Signal Radar (IR)</strong> はPR TIMES・The BridgeのRSSから独自に資金調達情報を収集（PESTLEと並行だが、PESTLE分類を付与）。<strong>Structural Inflection Radar (SI)</strong> はユーザー入力テーマに対して5軸理論でリアルタイムスコアリング（DB不要）。<strong>Frontier Detector (FD)</strong> はOpenAlex APIから学術論文を分析する独立系。これら3つはPESTLE-Signal-CLAのコアパイプラインとは独立したデータソースで動作する。
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-title">5. 知識基盤: GF, AN, AK <span class="flow-arrow">→</span> シナリオ・分析支援</div>
+        <div class="flow-desc">
+          <strong>Great Figures DB (GF)</strong> の歴史的意思決定パターンはシナリオ構築時の先例参照として、<strong>Anthropology Concepts DB (AN)</strong> のOCM分類はPESTLEシグナルの深層構造解釈として、<strong>Academic Knowledge DB (AK)</strong> は学術的裏付けとして、それぞれ間接的に分析を支える。自動パイプラインではなく、分析者が参照する知的基盤。
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-title">6. FK: 外部機関フォーサイト <span class="flow-arrow">→</span> シナリオ + Mega-Analysis</div>
+        <div class="flow-desc">
+          <strong>Foresight Knowledge Base (FK)</strong> は323機関から独立に収集した51Kレポート・23K予測・5Kシナリオを保持。PESTLEとは別系統の入力ソースだが、Mega-Analysisの統合分析対象として合流し、FKのシナリオDB（5,099件）はStep 4のシナリオ構築の中核素材。
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-title">7. PD: 政策データ <span class="flow-arrow">→</span> 意思決定支援</div>
+        <div class="flow-desc">
+          <strong>Policy Database (PD)</strong> は23省庁・221K件の審議会・専門家任命データを保持する独立DB。フォーサイトパイプラインには直接接続されていないが、政策関連のシナリオ分析や意思決定支援（CxO会議AI）の参照データとして活用される。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>MIRA TUKU</strong> &mdash; Foresight Data Causal Map<br>
+  NPO法人ミラツク &nbsp;|&nbsp; 2026-04-24
+</footer>
+
+</body>
+</html>
