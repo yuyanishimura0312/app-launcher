@@ -412,6 +412,286 @@ section + section { border-top: 1px solid var(--border); }
 
 <section>
   <div class="container">
+    <div class="section-label">Causal Map</div>
+    <div class="section-title">データ因果関係図</div>
+    <div class="section-desc">基軸DB・構造理解・変化検出・概念基盤がどのように接続しているか。構造理解が「次の方向性」を示し、変化検出がその実証的証拠を提供する対話的関係にある。</div>
+
+    <div style="width:100%;overflow-x:auto;margin:1.5rem 0;">
+      <svg viewBox="0 0 980 700" width="980" height="700" xmlns="http://www.w3.org/2000/svg" style="font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;display:block;margin:0 auto;">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="7" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,3 L0,6 Z" fill="var(--ci-12,#7A4033)"/></marker>
+          <marker id="ab" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="7" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,3 L0,6 Z" fill="#2980b9"/></marker>
+          <marker id="ag" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="7" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,3 L0,6 Z" fill="#b0a090"/></marker>
+          <filter id="ns" x="-3%" y="-3%" width="106%" height="110%"><feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#7A4033" flood-opacity="0.07"/></filter>
+        </defs>
+
+        <!-- Area backgrounds -->
+        <rect x="8" y="8" width="210" height="380" rx="12" fill="rgba(122,64,51,.03)" stroke="rgba(122,64,51,.12)"/>
+        <text x="113" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#B07256" letter-spacing="1.5" opacity=".8">基軸DB</text>
+
+        <rect x="235" y="8" width="300" height="380" rx="12" fill="rgba(213,84,0,.03)" stroke="rgba(213,84,0,.1)"/>
+        <text x="385" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#B07256" letter-spacing="1.5" opacity=".8">構造理解（3並列）</text>
+
+        <rect x="552" y="8" width="186" height="680" rx="12" fill="rgba(44,62,80,.03)" stroke="rgba(44,62,80,.1)"/>
+        <text x="645" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#B07256" letter-spacing="1.5" opacity=".8">変化検出（7系統）</text>
+
+        <rect x="755" y="8" width="218" height="380" rx="12" fill="rgba(122,64,51,.04)" stroke="rgba(122,64,51,.12)"/>
+        <text x="864" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#B07256" letter-spacing="1.5" opacity=".8">統合</text>
+
+        <rect x="8" y="410" width="528" height="280" rx="12" fill="rgba(108,52,131,.03)" stroke="rgba(108,52,131,.1)"/>
+        <text x="272" y="432" text-anchor="middle" font-size="9" font-weight="700" fill="#6c3483" letter-spacing="1.5" opacity=".8">概念基盤</text>
+
+        <!-- ===== ARROWS ===== -->
+        <!-- FI → PE -->
+        <path d="M 113,130 L 113,165" stroke="#7A4033" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+
+        <!-- PE → CLA -->
+        <path d="M 205,230 C 230,215 250,150 270,130" stroke="#7A4033" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+
+        <!-- FK → 各国FS -->
+        <path d="M 175,340 C 220,330 270,315 300,310" stroke="#7A4033" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+
+        <!-- 神話 → CLA -->
+        <path d="M 310,280 L 310,215" stroke="#1a5276" stroke-width="1.5" fill="none" marker-end="url(#ab)"/>
+
+        <!-- 構造理解 ↔ 変化検出 -->
+        <path d="M 520,130 L 565,115" stroke="#2980b9" stroke-width="2" fill="none" marker-end="url(#ab)"/>
+        <path d="M 565,100 L 520,115" stroke="#2980b9" stroke-width="2" fill="none" marker-end="url(#ab)"/>
+        <text x="530" y="92" font-size="7" fill="#2980b9" font-weight="700">予測↔実証</text>
+
+        <!-- PE → SG -->
+        <path d="M 205,210 C 350,170 480,75 568,70" stroke="#7A4033" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+
+        <!-- 基軸+構造 → Mega -->
+        <path d="M 205,230 C 450,220 650,180 770,180" stroke="#7A4033" stroke-width="1.5" fill="none" marker-end="url(#ar)" opacity=".6"/>
+        <path d="M 170,365 C 450,360 680,270 770,230" stroke="#7A4033" stroke-width="1.2" fill="none" marker-end="url(#ar)" opacity=".5"/>
+
+        <!-- 変化検出 → Mega -->
+        <path d="M 725,90 C 745,140 760,170 770,190" stroke="#b0a090" stroke-width="1" fill="none" marker-end="url(#ag)" stroke-dasharray="3,3" opacity=".4"/>
+        <path d="M 725,180 C 745,190 760,200 770,210" stroke="#b0a090" stroke-width="1" fill="none" marker-end="url(#ag)" stroke-dasharray="3,3" opacity=".4"/>
+        <path d="M 725,340 C 750,310 765,260 770,240" stroke="#b0a090" stroke-width="1" fill="none" marker-end="url(#ag)" stroke-dasharray="3,3" opacity=".35"/>
+        <path d="M 725,500 C 755,410 770,310 775,270" stroke="#b0a090" stroke-width="1" fill="none" marker-end="url(#ag)" stroke-dasharray="3,3" opacity=".3"/>
+        <path d="M 725,580 C 760,470 780,340 780,290" stroke="#b0a090" stroke-width="1" fill="none" marker-end="url(#ag)" stroke-dasharray="3,3" opacity=".25"/>
+
+        <!-- 概念 → Mega -->
+        <path d="M 350,480 C 560,450 700,330 770,260" stroke="#b0a090" stroke-width="1" fill="none" marker-end="url(#ag)" stroke-dasharray="3,3" opacity=".3"/>
+
+        <!-- AN ↔ PE -->
+        <path d="M 100,475 C 105,420 110,340 115,280" stroke="#6c3483" stroke-width="1.2" fill="none" marker-end="url(#ag)" stroke-dasharray="4,3" opacity=".5"/>
+        <text x="70" y="390" font-size="6.5" fill="#6c3483" opacity=".6">OCM×PESTLE</text>
+
+
+        <!-- ===== NODES ===== -->
+
+        <!-- FI -->
+        <g transform="translate(20,50)">
+          <rect width="186" height="70" rx="10" fill="#7A4033" filter="url(#ns)"/>
+          <text x="93" y="18" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.5)" font-weight="600">収集エンジン</text>
+          <text x="93" y="36" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">FI</text>
+          <text x="93" y="50" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.7)">Future Insight Platform</text>
+          <text x="93" y="62" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.45)">241K記事 | 日次600件</text>
+        </g>
+
+        <!-- PE -->
+        <g transform="translate(15,175)">
+          <rect width="196" height="82" rx="10" fill="#7A4033" filter="url(#ns)"/>
+          <rect x="4" y="4" width="188" height="74" rx="7" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+          <text x="98" y="16" text-anchor="middle" font-size="7" fill="#F0A671" font-weight="700" letter-spacing=".5">基軸</text>
+          <text x="98" y="36" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">PE</text>
+          <text x="98" y="50" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,.85)" font-weight="600">PESTLE DB</text>
+          <text x="98" y="64" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.5)">225K記事 | 6軸分類 | 36年</text>
+          <text x="98" y="76" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.4)">日次ニュースの基軸</text>
+        </g>
+
+        <!-- FK -->
+        <g transform="translate(15,280)">
+          <rect width="196" height="82" rx="10" fill="#7A4033" filter="url(#ns)"/>
+          <rect x="4" y="4" width="188" height="74" rx="7" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+          <text x="98" y="16" text-anchor="middle" font-size="7" fill="#F0A671" font-weight="700" letter-spacing=".5">基軸</text>
+          <text x="98" y="36" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">FK</text>
+          <text x="98" y="50" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,.85)" font-weight="600">Foresight KB</text>
+          <text x="98" y="64" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.5)">51Kレポート | 23K予測 | 5Kシナリオ</text>
+          <text x="98" y="76" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.4)">323機関 | フォーサイト知識の基軸</text>
+        </g>
+
+        <!-- CLA -->
+        <g transform="translate(255,50)">
+          <rect width="155" height="118" rx="10" fill="#B07256" filter="url(#ns)"/>
+          <text x="78" y="18" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">CLA</text>
+          <text x="78" y="32" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.8)" font-weight="600">因果階層分析</text>
+          <text x="78" y="48" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.55)">現在地と次の物語</text>
+          <text x="12" y="66" font-size="6.5" fill="rgba(255,255,255,.4)">L1 リタニー</text>
+          <text x="12" y="78" font-size="6.5" fill="rgba(255,255,255,.4)">L2 システム</text>
+          <text x="12" y="90" font-size="6.5" fill="rgba(255,255,255,.4)">L3 世界観</text>
+          <text x="12" y="102" font-size="6.5" fill="rgba(255,255,255,.4)">L4 神話</text>
+          <text x="78" y="114" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.35)">PE由来 | 324分析</text>
+        </g>
+
+        <!-- 18 Megatrend -->
+        <g transform="translate(425,50)">
+          <rect width="105" height="118" rx="10" fill="#B07256" filter="url(#ns)"/>
+          <text x="53" y="18" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">18</text>
+          <text x="53" y="32" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.8)" font-weight="600">メガトレンド</text>
+          <text x="53" y="48" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.55)">ミラツク独自</text>
+          <text x="53" y="64" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.45)">15冊→1,141予測</text>
+          <text x="53" y="78" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.45)">→GTA分析</text>
+          <text x="53" y="92" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.45)">10領域18軸</text>
+          <text x="53" y="114" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.35)">独自フレーム</text>
+        </g>
+
+        <!-- 神話系 -->
+        <g transform="translate(255,195)">
+          <rect width="155" height="80" rx="8" fill="#1a5276" filter="url(#ns)"/>
+          <text x="78" y="16" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">神話系データ</text>
+          <text x="78" y="30" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.6)">CLA L4補強 + 独立活用可</text>
+          <text x="10" y="46" font-size="6.5" fill="rgba(255,255,255,.5)">Thompson Motif: 45,496</text>
+          <text x="10" y="58" font-size="6.5" fill="rgba(255,255,255,.5)">UNESCO無形文化遺産: 849</text>
+          <text x="10" y="70" font-size="6.5" fill="rgba(255,255,255,.5)">世界観指標 + 神話変遷</text>
+        </g>
+
+        <!-- 各国フォーサイト -->
+        <g transform="translate(280,295)">
+          <rect width="170" height="75" rx="10" fill="#B07256" filter="url(#ns)"/>
+          <text x="85" y="18" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">各国フォーサイト</text>
+          <text x="85" y="34" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.7)">323機関の予測・シナリオ</text>
+          <text x="85" y="48" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.55)">横断比較→収束と盲点</text>
+          <text x="85" y="62" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.4)">FK由来 | 23K予測 | 5Kシナリオ</text>
+        </g>
+
+        <!-- ===== 変化検出 ===== -->
+        <g transform="translate(565,48)">
+          <rect width="160" height="38" rx="7" fill="#DC8766" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">1</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">SG ニュースシグナル</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">PE→AI+統計 | PE由来</text>
+        </g>
+        <g transform="translate(565,128)">
+          <rect width="160" height="38" rx="7" fill="#966D5E" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">2</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">IR 投資シグナル</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">RSS | 3,658調達 | 1,803社</text>
+        </g>
+        <g transform="translate(565,208)">
+          <rect width="160" height="38" rx="7" fill="#966D5E" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">3</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">SI 構造変化点</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">5軸理論スコアリング</text>
+        </g>
+        <g transform="translate(565,288)">
+          <rect width="160" height="38" rx="7" fill="#966D5E" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">4</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">PD 日本政策</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">23省庁 | 221K件</text>
+        </g>
+        <g transform="translate(565,368)">
+          <rect width="160" height="38" rx="7" fill="#966D5E" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">5</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">IC 企業IR</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">EDINET | 4,000社</text>
+        </g>
+        <g transform="translate(565,448)">
+          <rect width="160" height="38" rx="7" fill="#966D5E" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">6</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">AL 各国科技政策</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">114カ国 | 605重点領域</text>
+        </g>
+        <g transform="translate(565,528)">
+          <rect width="160" height="38" rx="7" fill="#966D5E" filter="url(#ns)"/>
+          <text x="10" y="14" font-size="6.5" fill="rgba(255,255,255,.65)" font-weight="700">7</text>
+          <text x="22" y="14" font-size="7.5" fill="#fff" font-weight="700">FD 技術フロンティア</text>
+          <text x="80" y="28" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">OpenAlex | 7次元 | 225研究者</text>
+        </g>
+
+        <!-- 変化検出まとめ -->
+        <g transform="translate(565,608)">
+          <rect width="160" height="46" rx="7" fill="rgba(150,109,94,.06)" stroke="rgba(150,109,94,.2)"/>
+          <text x="80" y="16" text-anchor="middle" font-size="7" fill="#966D5E" font-weight="700">7系統が多眼的に検出</text>
+          <text x="80" y="30" text-anchor="middle" font-size="6.5" fill="#966D5E">構造理解「次の方向性」の</text>
+          <text x="80" y="42" text-anchor="middle" font-size="6.5" fill="#966D5E">実証的証拠を提供</text>
+        </g>
+
+        <!-- Mega-Analysis -->
+        <g transform="translate(770,100)">
+          <rect width="190" height="225" rx="12" fill="#7A4033" filter="url(#ns)"/>
+          <rect x="4" y="4" width="182" height="217" rx="9" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <text x="95" y="22" text-anchor="middle" font-size="7" fill="#F0A671" font-weight="700" letter-spacing="1">AGGREGATOR</text>
+          <text x="95" y="44" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">Mega-Analysis</text>
+          <text x="95" y="60" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.7)">全DB横断統合分析</text>
+          <text x="14" y="82" font-size="7" fill="rgba(255,255,255,.5)" font-weight="600">直接JOIN:</text>
+          <text x="14" y="96" font-size="6.5" fill="rgba(255,255,255,.4)">PE + SG + CL + FK + FI</text>
+          <text x="14" y="116" font-size="7" fill="rgba(255,255,255,.5)" font-weight="600">参照可能:</text>
+          <text x="14" y="130" font-size="6.5" fill="rgba(255,255,255,.4)">7系統の変化検出</text>
+          <text x="14" y="142" font-size="6.5" fill="rgba(255,255,255,.4)">概念基盤 / 神話系</text>
+          <text x="14" y="154" font-size="6.5" fill="rgba(255,255,255,.4)">18メガトレンド</text>
+          <text x="14" y="176" font-size="7" fill="rgba(255,255,255,.5)" font-weight="600">出力:</text>
+          <text x="14" y="190" font-size="6.5" fill="rgba(255,255,255,.4)">CxO経営会議AI</text>
+          <text x="14" y="202" font-size="6.5" fill="rgba(255,255,255,.4)">Research Dashboard</text>
+          <text x="14" y="214" font-size="6.5" fill="rgba(255,255,255,.4)">意思決定支援</text>
+        </g>
+
+        <!-- ===== 概念基盤 ===== -->
+        <g transform="translate(25,450)">
+          <rect width="180" height="72" rx="9" fill="#6c3483" filter="url(#ns)"/>
+          <rect x="3" y="3" width="174" height="66" rx="7" fill="none" stroke="rgba(255,255,255,.15)"/>
+          <text x="90" y="16" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.5)" font-weight="600">概念基盤（母体）</text>
+          <text x="90" y="34" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">AK</text>
+          <text x="90" y="48" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.75)">Academic Knowledge DB</text>
+          <text x="90" y="62" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.45)">4,703知識単位 | 人文・社会・自然・工学・芸術</text>
+        </g>
+
+        <g transform="translate(240,450)">
+          <rect width="148" height="48" rx="7" fill="#884ea0" filter="url(#ns)"/>
+          <text x="74" y="14" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">AK人類学を拡張</text>
+          <text x="74" y="30" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">AN 人類学DB</text>
+          <text x="74" y="42" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.45)">500概念 | OCM | PESTLE連携</text>
+        </g>
+
+        <g transform="translate(240,520)">
+          <rect width="148" height="48" rx="7" fill="#884ea0" filter="url(#ns)"/>
+          <text x="74" y="14" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.5)">AK歴史学を拡張</text>
+          <text x="74" y="30" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">GF 歴史偉人DB</text>
+          <text x="74" y="42" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.45)">9,178人 | 1,050意思決定</text>
+        </g>
+
+        <!-- AK → AN, GF -->
+        <path d="M 205,485 L 240,478" stroke="#6c3483" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+        <path d="M 205,510 L 240,540" stroke="#6c3483" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+        <text x="213" y="472" font-size="6" fill="#6c3483" opacity=".6">切り出し</text>
+
+        <!-- Summary -->
+        <g transform="translate(420,445)">
+          <rect width="115" height="140" rx="7" fill="rgba(108,52,131,.04)" stroke="rgba(108,52,131,.15)"/>
+          <text x="58" y="16" text-anchor="middle" font-size="7.5" font-weight="700" fill="#7A4033">全体構造</text>
+          <line x1="8" y1="24" x2="107" y2="24" stroke="rgba(122,64,51,.15)"/>
+          <text x="10" y="40" font-size="6.5" fill="#7A4033" font-weight="700">基軸: FK + PE</text>
+          <text x="10" y="56" font-size="6.5" fill="#B07256" font-weight="700">構造理解: 3並列</text>
+          <text x="10" y="68" font-size="6" fill="#5a4a3a">CLA / 18MT / 各国FS</text>
+          <text x="10" y="84" font-size="6.5" fill="#966D5E" font-weight="700">変化検出: 7系統</text>
+          <text x="10" y="96" font-size="6" fill="#5a4a3a">構造理解の実証的証拠</text>
+          <text x="10" y="112" font-size="6.5" fill="#6c3483" font-weight="700">概念基盤: AK母体</text>
+          <text x="10" y="124" font-size="6" fill="#5a4a3a">AN,GF = 専門拡張</text>
+          <text x="10" y="136" font-size="6" fill="#5a4a3a">+ 神話系（独立活用可）</text>
+        </g>
+
+      </svg>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1rem;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
+        <div style="font-size:.88rem;font-weight:700;color:var(--ci-12);margin-bottom:4px;">基軸DB + 構造理解</div>
+        <div style="font-size:.8rem;color:var(--text-sub);line-height:1.65;">FKは323機関のフォーサイト知識、PEは日次ニュースの基軸。これらを3つのレンズ — CLA（因果階層分析）、18メガトレンド（ミラツク独自）、各国フォーサイト（FK由来） — で構造的に理解する。</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
+        <div style="font-size:.88rem;font-weight:700;color:var(--ci-12);margin-bottom:4px;">変化検出 + 概念基盤</div>
+        <div style="font-size:.8rem;color:var(--text-sub);line-height:1.65;">構造理解が示す「次の方向性」が実際に現れ始めている証拠を7系統（ニュース・投資・技術・政策・企業IR・科技政策・学術）が多眼的に検出。AKを母体とする概念基盤と神話系データが分析の学術的・文化的裏付けを提供する。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
     <div class="section-label">Core Assets</div>
     <div class="section-title">未来洞察・フォーサイト系データベース</div>
     <div class="section-desc">世界のフォーサイト機関・ニュースソース・学術文献から日次で情報を収集し、構造化分析を行うコアデータ基盤。</div>
