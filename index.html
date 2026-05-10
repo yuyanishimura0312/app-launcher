@@ -259,6 +259,8 @@
   .section-title.agent .section-indicator { background: #7c3aed; }
   .section-title.archived { color: #9a918a; }
   .section-title.archived .section-indicator { background: #bbb; }
+  .section-title.membership { color: #c87864; }
+  .section-title.membership .section-indicator { background: #c87864; }
   .app-card {
     display: flex;
     align-items: center;
@@ -1091,6 +1093,21 @@
 
 <script>
 const apps = [
+  // --- ミラツクメンバーシップコーナー（最上段） ---
+  {
+    category: "ミラツクメンバーシップ",
+    sectionType: "membership",
+    name: "Futures",
+    desc: "学びのコミュニティ Futures — 会員専用プラットフォーム（レポート・対談・連載・掲示板・チャット・招待発行）",
+    icon: "Ft", color: "#c87864",
+    url: "https://futures.emerging-future.org",
+    admin: "https://futures.emerging-future.org/admin/invites",
+    localCmd: "cd ~/projects/apps/futures-platform && npm run dev",
+    localUrl: "http://localhost:3100",
+    hosting: "AWS EC2 + ALB (emerging-future.org)",
+    badge: "公開", badgeType: "released"
+  },
+
   // --- 公開中の Web アプリ ---
   {
     category: "公開中の Web アプリ",
@@ -1264,8 +1281,8 @@ const apps = [
     badge: "公開", badgeType: "released"
   },
   {
-    category: "公開中の Web アプリ",
-    sectionType: "released",
+    category: "ミラツクメンバーシップ",
+    sectionType: "membership",
     name: "Miratuku Community",
     desc: "ミラツクコミュニティサイト",
     icon: "MC", color: "#059669",
@@ -1275,8 +1292,8 @@ const apps = [
     badge: "公開", badgeType: "released"
   },
   {
-    category: "公開中の Web アプリ",
-    sectionType: "released",
+    category: "ミラツクメンバーシップ",
+    sectionType: "membership",
     name: "Miratuku Strategy",
     desc: "メンバーシップコミュニティ「ROOM」のコンテンツ設計プロトタイプ。PESTLEデータから人類学的フォーサイトのコンテンツを生成するプロセスとサンプル集",
     icon: "MS", color: "#2d6a4f",
@@ -1287,8 +1304,8 @@ const apps = [
 
   // --- ローカル Web アプリ ---
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "ミラツクメンバーシップ",
+    sectionType: "membership",
     name: "Miratuku Commons",
     desc: "異分野メンバーシップサイト（対等な探究者のクローズド型コミュニティ、Next.js + Supabase）",
     icon: "MC", color: "#6d28d9",
@@ -1298,8 +1315,8 @@ const apps = [
     badge: "開発中", badgeType: "dev"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "ミラツクメンバーシップ",
+    sectionType: "membership",
     name: "Miratuku Membership",
     desc: "メンバーシップサイト + CRM（Stripe 決済 + SQLite）",
     icon: "MM", color: "#059669",
@@ -3499,6 +3516,7 @@ function renderApps(filter = '') {
     const btn = document.createElement('button');
     // Short labels for nav
     const shortLabels = {
+      'ミラツクメンバーシップ': 'メンバー',
       '公開中の Web アプリ': '公開中',
       'ローカル Web アプリ': 'ローカル',
       'CLI ツール': 'CLI',
