@@ -2164,26 +2164,28 @@ const apps = [
     badge: "公開", badgeType: "released"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Meeting Flow",
     desc: "Plaud連携の会議TODO自動化アプリ。録音→文字起こし→Claude AI分析→TODO一覧をWebダッシュボードで管理。デスクトップアプリ＋サイドバー対応",
     icon: "MF", color: "#0891b2",
+    url: "https://meeting-flow.vercel.app",
     localCmd: "cd ~/projects/apps/meeting-flow && python3 desktop.py",
     localUrl: "http://localhost:5200",
-    hosting: "Python + Vite/React + SQLite + pywebview",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel + Python desktop (pywebview)",
+    badge: "公開", badgeType: "released"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Doc Filler",
-    desc: "書類自動記入ツール。Excel/Wordテンプレートに参照情報をもとにAIが自動記入",
+    desc: "書類自動記入ツール。Excel/Wordテンプレートに参照情報をもとにAIが自動記入（要ログイン）",
     icon: "DF", color: "#b45309",
+    url: "https://doc-filler.vercel.app",
     localCmd: "cd ~/projects/apps/doc-filler && bash start.sh",
     localUrl: "http://localhost:8001",
-    hosting: "Flask",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel + Flask backend",
+    badge: "公開", badgeType: "released"
   },
   {
     category: "ローカル Web アプリ",
@@ -3106,11 +3108,11 @@ const apps = [
     category: "公開中の Web アプリ",
     sectionType: "released",
     name: "Claude Code Manual",
-    desc: "社内向け Claude Code 活用マニュアル（Webアプリ版）",
+    desc: "社内向け Claude Code 活用マニュアル（Webアプリ版・Next.js）",
     icon: "CM", color: "#7c3aed",
-    url: "https://yuyanishimura0312.github.io/claude-code-manual-app/",
+    url: "https://claude-code-manual-app.vercel.app",
     localCmd: "cd ~/projects/apps/claude-code-manual-app && npm run dev",
-    hosting: "GitHub Pages",
+    hosting: "Vercel",
     badge: "公開", badgeType: "released"
   },
   {
@@ -3144,24 +3146,26 @@ const apps = [
     badge: "ローカル", badgeType: "local"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "University Experts DB",
-    desc: "大学研究者・有識者ネットワークDB。バイアス戦略・データ拡張プラン搭載",
+    desc: "大学有識者データベース。審議会等有識者経験DB（バイアス戦略・データ拡張プラン搭載）。API最適化済（85%データ削減）",
     icon: "UE", color: "#9333ea",
+    url: "https://university-experts-db.vercel.app",
     localCmd: "cd ~/projects/apps/university-experts-db && bash scripts/start.sh",
-    hosting: "Frontend + Python scripts",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel + Python backend",
+    badge: "公開", badgeType: "released"
   },
   {
-    category: "ローカル Web アプリ",
-    sectionType: "local",
+    category: "公開中の Web アプリ",
+    sectionType: "released",
     name: "Data Dashboard",
-    desc: "全DBサマリーダッシュボード。db_summary.json から各DBの状態を一覧表示",
+    desc: "全DBサマリーダッシュボード。db_summary.json から各DBの状態（テーブル数・行数・サイズ）を一覧表示",
     icon: "DD", color: "#0369a1",
+    url: "https://data-dashboard-blush.vercel.app",
     localCmd: "open ~/projects/apps/data-dashboard/index.html",
-    hosting: "Static HTML",
-    badge: "ローカル", badgeType: "local"
+    hosting: "Vercel",
+    badge: "公開", badgeType: "released"
   },
   {
     category: "ローカル Web アプリ",
