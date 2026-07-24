@@ -1740,6 +1740,18 @@ const apps = [
   {
     category: "ローカル Web アプリ",
     sectionType: "local",
+    name: "Recordings by Miratuku",
+    desc: "Plaud 録音の照会・検索（要約・書き起こし全文・参加者・タグ）。書き起こしは自動化",
+    icon: "録", color: "#7A4033",
+    url: "http://localhost:5100/recordings",
+    standalone: true, winW: 1320, winH: 880,
+    localNote: "秘書アプリ内（bash ~/projects/apps/secretary-app/start.sh で起動）",
+    hosting: "Flask + SQLite",
+    badge: "ローカル", badgeType: "local"
+  },
+  {
+    category: "ローカル Web アプリ",
+    sectionType: "local",
     name: "Newsletter App",
     desc: "メルマガ管理・配信ツール（LibSQL）",
     icon: "NL", color: "#0284c7",
@@ -4198,11 +4210,25 @@ function renderFrequentApps() {
           navigator.clipboard.writeText(app.localCmd);
           showToast('コピー済: ' + app.localCmd);
         }
+      } else if (app.standalone) {
+        e.preventDefault();
+        openStandalone(app.url || app.localUrl, app.winW, app.winH);
       }
       recordAppUsage(app.name);
     });
     grid.appendChild(card);
   });
+}
+
+// Open a local app in its own standalone window (chromeless popup, no tab strip)
+function openStandalone(url, w, h) {
+  if (!url) return;
+  const width = w || 1320, height = h || 880;
+  const left = Math.max(0, Math.round((screen.availWidth - width) / 2));
+  const top = Math.max(0, Math.round((screen.availHeight - height) / 2));
+  const name = 'app_' + url.replace(/[^a-z0-9]/gi, '_');
+  window.open(url, name,
+    `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`);
 }
 
 // --- Sidebar rendering ---
@@ -4589,14 +4615,21 @@ function buildCard(app, isArchived) {
 
   // Wire up open buttons to track recent usage
   card.querySelectorAll('.btn-open').forEach(btn => {
-    btn.addEventListener('click', () => recordAppUsage(app.name));
+    btn.addEventListener('click', (e) => {
+      recordAppUsage(app.name);
+      if (app.standalone && (app.url || app.localUrl)) {
+        e.preventDefault();
+        openStandalone(app.url || app.localUrl, app.winW, app.winH);
+      }
+    });
   });
 
   card.addEventListener('click', () => {
     // Disable card-level click on mobile to avoid conflicts with action buttons
     if (window.innerWidth <= 640) return;
     recordAppUsage(app.name);
-    if (app.url) window.open(app.url, '_blank');
+    if (app.standalone && (app.url || app.localUrl)) openStandalone(app.url || app.localUrl, app.winW, app.winH);
+    else if (app.url) window.open(app.url, '_blank');
     else if (app.localUrl) window.open(app.localUrl, '_blank');
     else if (app.localCmd) {
       navigator.clipboard.writeText(app.localCmd);
